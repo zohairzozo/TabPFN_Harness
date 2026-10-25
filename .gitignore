@@ -1,0 +1,21 @@
+# Secrets
+.env
+
+# Data and caches
+results/cache/
+data/raw/
+
+# Model weights
+*.pt
+*.ckpt
+weights/
+models/
+checkpoints/
+tabpfn_weights/
+
+# Python
+__pycache__/
+*.egg-info/
+.venv/
+.pytest_cache/
+.ruff_cache/
