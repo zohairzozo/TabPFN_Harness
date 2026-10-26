@@ -8,6 +8,7 @@ description: >
   system, but with noise the state can escape past the unstable branch x = p
   and diverge, which is an abrupt failure.
 
+dynamics: transcritical
 equation:
   x: "(p(t)*x - x**2) dt + process_sd dW"
 notes: >
@@ -16,7 +17,7 @@ notes: >
   often this happens at noise level L3.
 
 state: [x]
-initial_state: 0.0
+initial_state: {kind: value, value: [0.0]}
 parameters:
   p0: -1.0
   p_c: 0.0
@@ -31,16 +32,20 @@ ramp:
 noise_levels: [L1, L2, L3]
 
 observation:
-  channels:
-    - "x + obs_sd * N(0, 1)"
+  variables: [x]
 
 series_length_points:
   slow: 5000
   fast: 1250
 
-tip_detector: >
-  The earlier of: (a) the time p(t) crosses p_c; (b) the first time x < p(t) - 0.5
-  (escape past the unstable branch). After an escape the simulation stops.
+tip_detector:
+  kind: escape_below_branch   # event: x < p(t) - margin
+  margin: 0.5
+  stop_after: 0.0             # stop the simulation at an escape
+  tip_at_critical: true       # if there is no earlier escape, the tip is when p crosses p_c
+  description: >
+    The earlier of: (a) the time p(t) crosses p_c; (b) the first time x < p(t) - 0.5
+    (escape past the unstable branch). After an escape the simulation stops.
 
 label:
   kind: bifurcation_distance
@@ -48,10 +53,10 @@ label:
 
 seed_sets: [A, B, C]
 
-scenario_ids:
-  - transcritical_L1_slow
-  - transcritical_L1_fast
-  - transcritical_L2_slow
-  - transcritical_L2_fast
-  - transcritical_L3_slow
-  - transcritical_L3_fast
+scenarios:
+  - {id: transcritical_L1_slow, noise_level: L1, speed: slow}
+  - {id: transcritical_L1_fast, noise_level: L1, speed: fast}
+  - {id: transcritical_L2_slow, noise_level: L2, speed: slow}
+  - {id: transcritical_L2_fast, noise_level: L2, speed: fast}
+  - {id: transcritical_L3_slow, noise_level: L3, speed: slow}
+  - {id: transcritical_L3_fast, noise_level: L3, speed: fast}

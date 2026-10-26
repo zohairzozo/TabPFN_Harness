@@ -6,6 +6,7 @@ description: >
   Saddle-node (fold) bifurcation. The lower stable state merges with an unstable
   state and disappears when p crosses p_c. The system then jumps to the upper state.
 
+dynamics: fold            # selects the drift function in src/pfngate/scenarios/dynamics.py
 equation:
   x: "(p(t) + x - x**3) dt + process_sd dW"
 notes: >
@@ -14,7 +15,7 @@ notes: >
   lands on the upper branch after the jump.
 
 state: [x]
-initial_state: lower_branch_equilibrium_at_p0
+initial_state: {kind: lower_branch_equilibrium}   # computed from p0
 parameters:
   p0: -0.5
   p_c: 0.3849              # 2 / (3 * sqrt(3)), where the lower branch disappears
@@ -29,14 +30,18 @@ ramp:
 noise_levels: [L1, L2, L3]
 
 observation:
-  channels:
-    - "x + obs_sd * N(0, 1)"
+  variables: [x]           # each observed as value + obs_sd * N(0, 1)
 
 series_length_points:      # after burn-in, at 0.1 time units per point
   slow: 5000
   fast: 1250
 
-tip_detector: "first time x > 0 (left the lower branch)"
+tip_detector:
+  kind: state_above
+  variable: x
+  threshold: 0.0
+  stop_after: null         # keep simulating to the full length after the tip
+  description: "first time x > 0 (left the lower branch)"
 
 label:
   kind: bifurcation_distance
@@ -44,10 +49,10 @@ label:
 
 seed_sets: [A, B, C]
 
-scenario_ids:              # grid: noise_levels x speeds
-  - fold_L1_slow
-  - fold_L1_fast
-  - fold_L2_slow
-  - fold_L2_fast
-  - fold_L3_slow
-  - fold_L3_fast
+scenarios:                 # grid: noise_levels x speeds
+  - {id: fold_L1_slow, noise_level: L1, speed: slow}
+  - {id: fold_L1_fast, noise_level: L1, speed: fast}
+  - {id: fold_L2_slow, noise_level: L2, speed: slow}
+  - {id: fold_L2_fast, noise_level: L2, speed: fast}
+  - {id: fold_L3_slow, noise_level: L3, speed: slow}
+  - {id: fold_L3_fast, noise_level: L3, speed: fast}

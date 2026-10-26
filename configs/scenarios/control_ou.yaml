@@ -4,25 +4,28 @@ role: control             # never tips; appears in every split
 tipping_type: none
 description: Stationary Ornstein-Uhlenbeck process. Nothing changes over time.
 
+dynamics: ou
 equation:
   x: "(-theta * x) dt + process_sd dW"
 
 state: [x]
-initial_state: 0.0
+initial_state: {kind: value, value: [0.0]}
 parameters:
   theta: 1.0              # same recovery rate as the bifurcation families at p0 = -1
 
-ramp: none
+ramp:
+  form: none
+
 noise_levels: [L1, L2, L3]
 
 observation:
-  channels:
-    - "x + obs_sd * N(0, 1)"
+  variables: [x]
 
 series_length_points:
   fixed: 5000
 
-tip_detector: none
+tip_detector:
+  kind: none
 
 label:
   kind: control
@@ -30,7 +33,7 @@ label:
 
 seed_sets: [A, B, C, D]
 
-scenario_ids:              # one per noise level; there is no ramp
-  - ou_L1
-  - ou_L2
-  - ou_L3
+scenarios:                 # one per noise level; there is no ramp
+  - {id: ou_L1, noise_level: L1, speed: null}
+  - {id: ou_L2, noise_level: L2, speed: null}
+  - {id: ou_L3, noise_level: L3, speed: null}

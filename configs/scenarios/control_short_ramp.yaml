@@ -7,11 +7,12 @@ description: >
   Resilience drops and then stays constant, but the system never tips. This tests
   whether a model raises a false alarm on "closer, but not close".
 
+dynamics: fold
 equation:
   x: "(p(t) + x - x**3) dt + process_sd dW"
 
 state: [x]
-initial_state: lower_branch_equilibrium_at_p0
+initial_state: {kind: lower_branch_equilibrium}
 parameters:
   p0: -0.5
   p_c: 0.3849
@@ -25,14 +26,18 @@ ramp:
 noise_levels: [L1, L2, L3]
 
 observation:
-  channels:
-    - "x + obs_sd * N(0, 1)"
+  variables: [x]
 
 series_length_points:
   fixed: 5000
 
-tip_detector: none
-sanity_check: "assert x < 0 for the whole series (never leaves the lower branch)"
+tip_detector:
+  kind: none
+
+sanity_check:              # checked in tests: never leaves the lower branch
+  kind: state_below
+  variable: x
+  threshold: 0.0
 
 label:
   kind: control
@@ -40,7 +45,7 @@ label:
 
 seed_sets: [A, B, C, D]
 
-scenario_ids:              # slow ramp only; see open questions in docs/LABELS.md
-  - short_ramp_L1
-  - short_ramp_L2
-  - short_ramp_L3
+scenarios:                 # slow ramp only; see open questions in docs/SPLITS.md
+  - {id: short_ramp_L1, noise_level: L1, speed: slow}
+  - {id: short_ramp_L2, noise_level: L2, speed: slow}
+  - {id: short_ramp_L3, noise_level: L3, speed: slow}

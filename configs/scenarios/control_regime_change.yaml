@@ -7,13 +7,14 @@ description: >
   mean shift, later a doubling of the noise. Variance and level both change, which
   many early-warning indicators read as a warning. Nothing is losing stability.
 
+dynamics: ou
 equation:
   x: "(-theta * (x - mu(t))) dt + s(t) dW"
   mu: "0 before t_shift, then shift_size * stationary_sd"
   s: "process_sd before t_var, then var_factor * process_sd"
 
 state: [x]
-initial_state: 0.0
+initial_state: {kind: value, value: [0.0]}
 parameters:
   theta: 1.0
   t_shift: 200.0          # 40% of the series
@@ -21,17 +22,19 @@ parameters:
   t_var: 350.0            # 70% of the series
   var_factor: 2.0
 
-ramp: none
+ramp:
+  form: steps             # no ramp: one mean step and one noise step (see equation)
+
 noise_levels: [L1, L2, L3]
 
 observation:
-  channels:
-    - "x + obs_sd * N(0, 1)"
+  variables: [x]
 
 series_length_points:
   fixed: 5000
 
-tip_detector: none
+tip_detector:
+  kind: none
 
 label:
   kind: control
@@ -39,7 +42,7 @@ label:
 
 seed_sets: [A, B, C, D]
 
-scenario_ids:
-  - regime_L1
-  - regime_L2
-  - regime_L3
+scenarios:
+  - {id: regime_L1, noise_level: L1, speed: null}
+  - {id: regime_L2, noise_level: L2, speed: null}
+  - {id: regime_L3, noise_level: L3, speed: null}

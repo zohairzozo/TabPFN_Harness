@@ -68,7 +68,7 @@ The target is a number in [0, 1]. 1 means far from the transition and 0 means at
 | hopf (subcritical) | in-prior | bifurcation distance | amplitude > 0.7 |
 | transcritical | in-prior | bifurcation distance | p crosses p_c, or escape past the unstable branch |
 | rate_tipping | out-of-prior | time to tip | x + lambda > 2 |
-| noise_tipping | out-of-prior | time to tip | x > 0.5 |
+| noise_tipping | out-of-prior | time to tip | x > 0.5, then x > 0 for 10 time units |
 | control_ou | control | 1 | none |
 | control_short_ramp | control | 1 | none (asserts x < 0) |
 | control_regime_change | control | 1 | none |

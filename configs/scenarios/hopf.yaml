@@ -7,6 +7,7 @@ description: >
   system jumps to a large-amplitude oscillation. We use the subcritical form because
   the jump is abrupt, which is closer to tipping than the gradual supercritical case.
 
+dynamics: hopf_subcritical
 equation:
   x: "(p(t)*x - omega*y + x*r2 - x*r2**2) dt + process_sd dW_x"
   y: "(omega*x + p(t)*y + y*r2 - y*r2**2) dt + process_sd dW_y"
@@ -17,7 +18,7 @@ notes: >
   For -0.25 < p < 0 the system is bistable, so noise can cause an early jump.
 
 state: [x, y]
-initial_state: origin
+initial_state: {kind: value, value: [0.0, 0.0]}   # the origin
 parameters:
   p0: -1.0
   p_c: 0.0
@@ -33,15 +34,17 @@ ramp:
 noise_levels: [L1, L2, L3]
 
 observation:
-  channels:
-    - "x + obs_sd * N(0, 1)"
-    - "y + obs_sd * N(0, 1)"
+  variables: [x, y]
 
 series_length_points:
   slow: 5000
   fast: 1250
 
-tip_detector: "first time sqrt(x**2 + y**2) > 0.7, using the true (noise-free observation) state"
+tip_detector:
+  kind: amplitude_above    # amplitude of the true state, before observation noise
+  threshold: 0.7
+  stop_after: null
+  description: "first time sqrt(x**2 + y**2) > 0.7"
 
 label:
   kind: bifurcation_distance
@@ -49,10 +52,10 @@ label:
 
 seed_sets: [A, B, C]
 
-scenario_ids:
-  - hopf_L1_slow
-  - hopf_L1_fast
-  - hopf_L2_slow
-  - hopf_L2_fast
-  - hopf_L3_slow
-  - hopf_L3_fast
+scenarios:
+  - {id: hopf_L1_slow, noise_level: L1, speed: slow}
+  - {id: hopf_L1_fast, noise_level: L1, speed: fast}
+  - {id: hopf_L2_slow, noise_level: L2, speed: slow}
+  - {id: hopf_L2_fast, noise_level: L2, speed: fast}
+  - {id: hopf_L3_slow, noise_level: L3, speed: slow}
+  - {id: hopf_L3_fast, noise_level: L3, speed: fast}

@@ -12,13 +12,14 @@ source:
     Ditlevsen P. D., Johnsen S. J. (2010). Tipping points: Early warning and wishful
     thinking. Geophys. Res. Lett. 37, L19703. doi:10.1029/2010GL044486
   why: "argues that noise-induced transitions give no critical-slowing-down warning"
-  status: "citation to be checked before coding"
+  status: "citation to be checked"
 
+dynamics: double_well
 equation:
   x: "(x - x**3) dt + sigma(t) dW"
 
 state: [x]
-initial_state: -1.0       # bottom of the left well
+initial_state: {kind: value, value: [-1.0]}   # bottom of the left well
 parameters:
   ramp_start: 100.0       # sigma = sigma0 before this time
   sigma_max: 0.5
@@ -31,23 +32,32 @@ noise_levels:
   N3: {sigma0: 0.20, obs_sd: 0.05}
 
 ramp:
-  form: linear            # sigma rises from sigma0 to sigma_max, then holds
+  form: linear_noise      # sigma rises from sigma0 to sigma_max, then holds
   speeds:
     slow: {ramp_duration: 400.0}
     fast: {ramp_duration: 100.0}
-  run_after_tip: 10.0
 
 observation:
-  channels:
-    - "x + obs_sd * N(0, 1)"
+  variables: [x]
 
 series_length_points:
   max: 9000               # ramp_start + slow ramp + hold = 900 time units
 
-tip_detector: "first time x > 0.5 (well inside the right basin)"
+tip_detector:
+  kind: state_above
+  variable: x
+  threshold: 0.5
+  dwell: 10.0             # after entering, x must stay above dwell_level for 10 time units
+  dwell_level: 0.0        # (the right basin); otherwise the entry does not count
+  stop_after: 10.0        # counted from the end of the dwell
+  description: >
+    First time x > 0.5 after which x stays in the right basin (x > 0) for 10 time
+    units. At high noise the state can touch x > 0.5 and fall back; that is not a tip.
+
 no_tip_policy: >
-  If a trajectory does not tip before the cap, it is dropped and the count of
-  dropped trajectories is written to results/. Expected to be rare at sigma_max = 0.5.
+  If a trajectory does not tip before the cap, generate() returns tip_time = None and
+  a NaN target. The dataset step drops it and writes the count of dropped trajectories
+  to results/. Expected to be rare at sigma_max = 0.5.
 
 label:
   kind: time_to_tip
@@ -55,10 +65,10 @@ label:
 
 seed_sets: [D]
 
-scenario_ids:
-  - noise_N1_slow
-  - noise_N1_fast
-  - noise_N2_slow
-  - noise_N2_fast
-  - noise_N3_slow
-  - noise_N3_fast
+scenarios:
+  - {id: noise_N1_slow, noise_level: N1, speed: slow}
+  - {id: noise_N1_fast, noise_level: N1, speed: fast}
+  - {id: noise_N2_slow, noise_level: N2, speed: slow}
+  - {id: noise_N2_fast, noise_level: N2, speed: fast}
+  - {id: noise_N3_slow, noise_level: N3, speed: slow}
+  - {id: noise_N3_fast, noise_level: N3, speed: fast}

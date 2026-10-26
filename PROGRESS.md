@@ -27,6 +27,15 @@ Append to this file at the end of every session.
 - Splits use seed sets A (context), B (validation), C (in-prior test) and D (out-of-prior test). Controls are in every split.
 - Status: approved as drafted. Open questions are listed at the end of both docs and are still open.
 
+### 2026-10-26 (scenario simulator)
+
+- Implemented the approved design in `src/pfngate/scenarios/` (config, dynamics, forcing, detect, simulate, labels, trajectory, scenario). `load_scenarios()` reads the YAML files; `Scenario.generate(seed)` returns a `Trajectory`. All parameter values come from the YAML.
+- The YAML files gained machine-readable fields (dynamics, observation variables, structured tip detectors, a scenario list, split names). The design itself did not change, except as noted below.
+- Change from the approved design: the noise-induced tip detector now requires the state to stay in the right basin (x > 0) for 10 time units after entering x > 0.5. Without this, at high noise the state touched x > 0.5 and fell back, which is not a tip. LABELS.md updated.
+- `tests/test_scenarios.py` covers: tipping scenarios leave their start state at the tip, controls never tip, R-tipping tips at 1.5 and 3 times r_c but not at 0.5 times r_c (noise-free), determinism, and hand-checked labels.
+- `scripts/plot_scenarios.py` writes one figure per family to `results/figs/`.
+- A one-off scratch check over every planned seed found: every tipping trajectory tips, no control tips, and no noise-induced trajectory had to be dropped. Transcritical escapes before p_c in most L2 and L3 slow-ramp runs. This confirms the open question in LABELS.md. The check is not yet a script in `scripts/` with output in `results/`.
+
 ## Decisions
 
 - Model version: v3.5. Keep the model version in the results JSON for every run. Never redistribute the weights.

@@ -1,5 +1,5 @@
 # Shared settings for every scenario family.
-# Approved design (2026-10-26). No simulator code reads this yet.
+# Approved design (2026-10-26). Read by src/pfngate/scenarios/.
 # Docs: docs/LABELS.md (targets and labels), docs/SPLITS.md (seed sets and splits).
 
 version: 1
@@ -33,10 +33,10 @@ labels:
 # The RNG for a trajectory is numpy SeedSequence([crc32(scenario_id), seed]),
 # so the same seed number in two scenarios gives independent noise.
 seed_sets:
-  A: {start: 1000, count: 20}   # context pool (in-prior families + controls)
-  B: {start: 2000, count: 10}   # in-prior validation (gate thresholds tuned here only)
-  C: {start: 3000, count: 10}   # in-prior test
-  D: {start: 4000, count: 10}   # out-of-prior test (rate, noise families + controls)
+  A: {start: 1000, count: 20, split: context}            # in-prior families + controls
+  B: {start: 2000, count: 10, split: validation}         # gate thresholds tuned here only
+  C: {start: 3000, count: 10, split: test_in_prior}
+  D: {start: 4000, count: 10, split: test_out_of_prior}  # rate, noise families + controls
 
 family_files:
   - fold.yaml
