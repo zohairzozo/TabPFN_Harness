@@ -1,0 +1,70 @@
+# Approved design (2026-10-26).
+family: rate_tipping
+role: out_of_prior        # test only; never in the context pool or validation
+tipping_type: rate_induced
+description: >
+  Rate-induced tipping (R-tipping). A stable state exists for every fixed value of
+  lambda, so there is no bifurcation. The system tips only because lambda moves
+  faster than the state can follow.
+
+source:
+  citation: >
+    Ashwin P., Wieczorek S., Vitolo R., Cox P. (2012). Tipping points in open systems:
+    bifurcation, noise-induced and rate-dependent examples in the climate system.
+    Phil. Trans. R. Soc. A 370, 1166-1184. doi:10.1098/rsta.2011.0306
+  form_used: "dx/dt = (x + lambda)^2 - 1, the canonical R-tipping example in that paper"
+  status: "citation and equation to be checked against the paper before coding"
+
+equation:
+  x: "(((x + lambda(t))**2 - 1) / tau) dt + process_sd dW"
+notes: >
+  In the moving frame y = x + lambda, dy/dt = (y^2 - 1)/tau + r while lambda ramps at
+  rate r. A stable state y = -sqrt(1 - r*tau) exists only if r < 1/tau. So for an
+  unbounded linear ramp the critical rate is r_c = 1/tau. Our ramp is finite
+  (lambda stops at lambda_max), which can push the effective critical rate slightly
+  above 1/tau when r is close to r_c. The chosen rates are far from r_c.
+
+state: [x]
+initial_state: -1.0       # stable state at lambda = 0
+parameters:
+  tau: 50.0               # time scale; r_c = 1 / tau = 0.02
+  lambda_max: 10.0
+  ramp_start: 300.0       # lambda = 0 before this time
+
+ramp:
+  form: linear_finite     # lambda(t) = clip(r * (t - ramp_start), 0, lambda_max)
+  speeds:
+    slow: {rate: 0.03}    # 1.5 * r_c, tips about 180 time units after ramp start
+    fast: {rate: 0.06}    # 3.0 * r_c, tips about 80 time units after ramp start
+  run_after_tip: 10.0     # stop the simulation 10 time units after the tip
+
+noise_levels: [L1, L2, L3]
+
+observation:
+  channels:
+    - "x + obs_sd * N(0, 1)"
+
+series_length_points:
+  max: 10000              # 1000 time units cap; real length ends at tip + 10
+
+tip_detector: "first time x + lambda(t) > 2 (past the point of no return)"
+
+label:
+  kind: time_to_tip
+  formula: "clip((t_tip - t) / horizon, 0, 1)"
+
+required_unit_test: >
+  Noise-free (process_sd = 0): with r = 0.5 * r_c the state tracks the moving stable
+  state and never tips; with r = 1.5 * r_c and r = 3 * r_c it tips before lambda
+  reaches lambda_max. The test lives in tests/ and must pass before this family
+  is used.
+
+seed_sets: [D]
+
+scenario_ids:
+  - rate_L1_slow
+  - rate_L1_fast
+  - rate_L2_slow
+  - rate_L2_fast
+  - rate_L3_slow
+  - rate_L3_fast

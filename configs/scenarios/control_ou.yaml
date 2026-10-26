@@ -1,0 +1,36 @@
+# Approved design (2026-10-26).
+family: control_ou
+role: control             # never tips; appears in every split
+tipping_type: none
+description: Stationary Ornstein-Uhlenbeck process. Nothing changes over time.
+
+equation:
+  x: "(-theta * x) dt + process_sd dW"
+
+state: [x]
+initial_state: 0.0
+parameters:
+  theta: 1.0              # same recovery rate as the bifurcation families at p0 = -1
+
+ramp: none
+noise_levels: [L1, L2, L3]
+
+observation:
+  channels:
+    - "x + obs_sd * N(0, 1)"
+
+series_length_points:
+  fixed: 5000
+
+tip_detector: none
+
+label:
+  kind: control
+  formula: "1 everywhere"
+
+seed_sets: [A, B, C, D]
+
+scenario_ids:              # one per noise level; there is no ramp
+  - ou_L1
+  - ou_L2
+  - ou_L3

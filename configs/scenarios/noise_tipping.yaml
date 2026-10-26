@@ -1,0 +1,64 @@
+# Approved design (2026-10-26).
+family: noise_tipping
+role: out_of_prior        # test only; never in the context pool or validation
+tipping_type: noise_induced
+description: >
+  Noise-induced tipping in a symmetric double well. The landscape never changes.
+  The system starts in the left well and crosses to the right well because the
+  noise grows. There is no bifurcation and no critical slowing down.
+
+source:
+  citation: >
+    Ditlevsen P. D., Johnsen S. J. (2010). Tipping points: Early warning and wishful
+    thinking. Geophys. Res. Lett. 37, L19703. doi:10.1029/2010GL044486
+  why: "argues that noise-induced transitions give no critical-slowing-down warning"
+  status: "citation to be checked before coding"
+
+equation:
+  x: "(x - x**3) dt + sigma(t) dW"
+
+state: [x]
+initial_state: -1.0       # bottom of the left well
+parameters:
+  ramp_start: 100.0       # sigma = sigma0 before this time
+  sigma_max: 0.5
+  hold_after_ramp: 400.0  # keep sigma = sigma_max for at most this long
+
+# This family uses its own noise levels: the level sets the starting process noise.
+noise_levels:
+  N1: {sigma0: 0.10, obs_sd: 0.01}
+  N2: {sigma0: 0.15, obs_sd: 0.025}
+  N3: {sigma0: 0.20, obs_sd: 0.05}
+
+ramp:
+  form: linear            # sigma rises from sigma0 to sigma_max, then holds
+  speeds:
+    slow: {ramp_duration: 400.0}
+    fast: {ramp_duration: 100.0}
+  run_after_tip: 10.0
+
+observation:
+  channels:
+    - "x + obs_sd * N(0, 1)"
+
+series_length_points:
+  max: 9000               # ramp_start + slow ramp + hold = 900 time units
+
+tip_detector: "first time x > 0.5 (well inside the right basin)"
+no_tip_policy: >
+  If a trajectory does not tip before the cap, it is dropped and the count of
+  dropped trajectories is written to results/. Expected to be rare at sigma_max = 0.5.
+
+label:
+  kind: time_to_tip
+  formula: "clip((t_tip - t) / horizon, 0, 1)"
+
+seed_sets: [D]
+
+scenario_ids:
+  - noise_N1_slow
+  - noise_N1_fast
+  - noise_N2_slow
+  - noise_N2_fast
+  - noise_N3_slow
+  - noise_N3_fast

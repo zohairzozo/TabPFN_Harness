@@ -1,0 +1,57 @@
+# Approved design (2026-10-26).
+family: transcritical
+role: in_prior
+tipping_type: bifurcation
+description: >
+  Transcritical bifurcation. The state x = 0 is stable for p < 0 and exchanges
+  stability with the branch x = p at p_c = 0. There is no jump in the noise-free
+  system, but with noise the state can escape past the unstable branch x = p
+  and diverge, which is an abrupt failure.
+
+equation:
+  x: "(p(t)*x - x**2) dt + process_sd dW"
+notes: >
+  Plain normal form. Escapes below the unstable branch are treated as tipping
+  events (see tip_detector). See the open question in docs/LABELS.md about how
+  often this happens at noise level L3.
+
+state: [x]
+initial_state: 0.0
+parameters:
+  p0: -1.0
+  p_c: 0.0
+
+ramp:
+  form: linear
+  speeds:
+    slow: {time_to_critical: 400.0}
+    fast: {time_to_critical: 100.0}
+  run_after_critical: 0.25
+
+noise_levels: [L1, L2, L3]
+
+observation:
+  channels:
+    - "x + obs_sd * N(0, 1)"
+
+series_length_points:
+  slow: 5000
+  fast: 1250
+
+tip_detector: >
+  The earlier of: (a) the time p(t) crosses p_c; (b) the first time x < p(t) - 0.5
+  (escape past the unstable branch). After an escape the simulation stops.
+
+label:
+  kind: bifurcation_distance
+  formula: "clip((p_c - p(t)) / (p_c - p0), 0, 1)"
+
+seed_sets: [A, B, C]
+
+scenario_ids:
+  - transcritical_L1_slow
+  - transcritical_L1_fast
+  - transcritical_L2_slow
+  - transcritical_L2_fast
+  - transcritical_L3_slow
+  - transcritical_L3_fast

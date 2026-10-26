@@ -1,0 +1,45 @@
+# Approved design (2026-10-26).
+family: control_regime_change
+role: control
+tipping_type: none
+description: >
+  A stable Ornstein-Uhlenbeck process that changes regime without tipping: first a
+  mean shift, later a doubling of the noise. Variance and level both change, which
+  many early-warning indicators read as a warning. Nothing is losing stability.
+
+equation:
+  x: "(-theta * (x - mu(t))) dt + s(t) dW"
+  mu: "0 before t_shift, then shift_size * stationary_sd"
+  s: "process_sd before t_var, then var_factor * process_sd"
+
+state: [x]
+initial_state: 0.0
+parameters:
+  theta: 1.0
+  t_shift: 200.0          # 40% of the series
+  shift_size: 3.0         # in units of the stationary sd, process_sd / sqrt(2 * theta)
+  t_var: 350.0            # 70% of the series
+  var_factor: 2.0
+
+ramp: none
+noise_levels: [L1, L2, L3]
+
+observation:
+  channels:
+    - "x + obs_sd * N(0, 1)"
+
+series_length_points:
+  fixed: 5000
+
+tip_detector: none
+
+label:
+  kind: control
+  formula: "1 everywhere"
+
+seed_sets: [A, B, C, D]
+
+scenario_ids:
+  - regime_L1
+  - regime_L2
+  - regime_L3

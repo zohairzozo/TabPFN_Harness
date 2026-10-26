@@ -1,0 +1,46 @@
+# Approved design (2026-10-26).
+family: control_short_ramp
+role: control
+tipping_type: none
+description: >
+  The fold system with a ramp that stops halfway to the bifurcation and then holds.
+  Resilience drops and then stays constant, but the system never tips. This tests
+  whether a model raises a false alarm on "closer, but not close".
+
+equation:
+  x: "(p(t) + x - x**3) dt + process_sd dW"
+
+state: [x]
+initial_state: lower_branch_equilibrium_at_p0
+parameters:
+  p0: -0.5
+  p_c: 0.3849
+  p_stop: -0.0575          # where (p_c - p) / (p_c - p0) = 0.5
+
+ramp:
+  form: linear_then_hold  # same rate as the fold slow ramp, stops at p_stop
+  speeds:
+    slow: {time_to_critical: 400.0}   # reaches p_stop at t = 200, then holds
+
+noise_levels: [L1, L2, L3]
+
+observation:
+  channels:
+    - "x + obs_sd * N(0, 1)"
+
+series_length_points:
+  fixed: 5000
+
+tip_detector: none
+sanity_check: "assert x < 0 for the whole series (never leaves the lower branch)"
+
+label:
+  kind: control
+  formula: "1 everywhere"
+
+seed_sets: [A, B, C, D]
+
+scenario_ids:              # slow ramp only; see open questions in docs/LABELS.md
+  - short_ramp_L1
+  - short_ramp_L2
+  - short_ramp_L3

@@ -1,0 +1,49 @@
+# Shared settings for every scenario family.
+# Approved design (2026-10-26). No simulator code reads this yet.
+# Docs: docs/LABELS.md (targets and labels), docs/SPLITS.md (seed sets and splits).
+
+version: 1
+
+time:
+  integrator: euler_maruyama
+  dt: 0.01                 # integration step, in model time units
+  observe_every: 10        # keep every 10th step -> observation interval 0.1 time units
+  burn_in: 50.0            # time units at the start parameter, simulated and then discarded
+
+# Noise levels. process_sd is the sd of the additive Wiener noise in the equation.
+# obs_sd is the sd of Gaussian measurement noise added to each observed channel.
+# The noise-induced family defines its own levels (noise is its driver).
+noise_levels:
+  L1: {process_sd: 0.02, obs_sd: 0.01}
+  L2: {process_sd: 0.05, obs_sd: 0.025}
+  L3: {process_sd: 0.10, obs_sd: 0.05}
+
+windows:
+  length: 400              # observed points = 40 time units
+  stride: 50               # observed points = 5 time units
+  keep_only_before_tip: true   # a window must end at or before the realised tip time
+
+labels:
+  horizon: 100.0           # time units; used by time-to-tip targets (rate, noise families)
+  positive_max: 0.2        # binary positive if target at window end <= 0.2
+  negative_min: 0.6        # binary negative if target at window end >= 0.6
+                           # windows with 0.2 < target < 0.6 are dropped
+
+# Seed sets. A trajectory is identified by (scenario_id, seed).
+# The RNG for a trajectory is numpy SeedSequence([crc32(scenario_id), seed]),
+# so the same seed number in two scenarios gives independent noise.
+seed_sets:
+  A: {start: 1000, count: 20}   # context pool (in-prior families + controls)
+  B: {start: 2000, count: 10}   # in-prior validation (gate thresholds tuned here only)
+  C: {start: 3000, count: 10}   # in-prior test
+  D: {start: 4000, count: 10}   # out-of-prior test (rate, noise families + controls)
+
+family_files:
+  - fold.yaml
+  - hopf.yaml
+  - transcritical.yaml
+  - rate_tipping.yaml
+  - noise_tipping.yaml
+  - control_ou.yaml
+  - control_short_ramp.yaml
+  - control_regime_change.yaml

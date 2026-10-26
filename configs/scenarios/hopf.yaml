@@ -1,0 +1,58 @@
+# Approved design (2026-10-26).
+family: hopf
+role: in_prior
+tipping_type: bifurcation
+description: >
+  Subcritical Hopf bifurcation. The stable fixed point loses stability at p_c and the
+  system jumps to a large-amplitude oscillation. We use the subcritical form because
+  the jump is abrupt, which is closer to tipping than the gradual supercritical case.
+
+equation:
+  x: "(p(t)*x - omega*y + x*r2 - x*r2**2) dt + process_sd dW_x"
+  y: "(omega*x + p(t)*y + y*r2 - y*r2**2) dt + process_sd dW_y"
+  r2: "x**2 + y**2"
+notes: >
+  Normal form of the subcritical Hopf bifurcation with a quintic term so the
+  oscillation amplitude stays bounded (large cycle radius is about 1 near p = 0).
+  For -0.25 < p < 0 the system is bistable, so noise can cause an early jump.
+
+state: [x, y]
+initial_state: origin
+parameters:
+  p0: -1.0
+  p_c: 0.0
+  omega: 1.0               # period about 6.3 time units = 63 observed points
+
+ramp:
+  form: linear
+  speeds:
+    slow: {time_to_critical: 400.0}
+    fast: {time_to_critical: 100.0}
+  run_after_critical: 0.25
+
+noise_levels: [L1, L2, L3]
+
+observation:
+  channels:
+    - "x + obs_sd * N(0, 1)"
+    - "y + obs_sd * N(0, 1)"
+
+series_length_points:
+  slow: 5000
+  fast: 1250
+
+tip_detector: "first time sqrt(x**2 + y**2) > 0.7, using the true (noise-free observation) state"
+
+label:
+  kind: bifurcation_distance
+  formula: "clip((p_c - p(t)) / (p_c - p0), 0, 1)"
+
+seed_sets: [A, B, C]
+
+scenario_ids:
+  - hopf_L1_slow
+  - hopf_L1_fast
+  - hopf_L2_slow
+  - hopf_L2_fast
+  - hopf_L3_slow
+  - hopf_L3_fast

@@ -1,0 +1,53 @@
+# Approved design (2026-10-26).
+family: fold
+role: in_prior
+tipping_type: bifurcation
+description: >
+  Saddle-node (fold) bifurcation. The lower stable state merges with an unstable
+  state and disappears when p crosses p_c. The system then jumps to the upper state.
+
+equation:
+  x: "(p(t) + x - x**3) dt + process_sd dW"
+notes: >
+  The fold normal form x' = p - x^2 diverges after tipping. We use the cubic version
+  x' = p + x - x^3, which has the same fold locally, so the series stays bounded and
+  lands on the upper branch after the jump.
+
+state: [x]
+initial_state: lower_branch_equilibrium_at_p0
+parameters:
+  p0: -0.5
+  p_c: 0.3849              # 2 / (3 * sqrt(3)), where the lower branch disappears
+
+ramp:
+  form: linear             # p(t) = p0 + (p_c - p0) * t / time_to_critical
+  speeds:
+    slow: {time_to_critical: 400.0}
+    fast: {time_to_critical: 100.0}
+  run_after_critical: 0.25 # keep simulating for 0.25 * time_to_critical after the crossing
+
+noise_levels: [L1, L2, L3]
+
+observation:
+  channels:
+    - "x + obs_sd * N(0, 1)"
+
+series_length_points:      # after burn-in, at 0.1 time units per point
+  slow: 5000
+  fast: 1250
+
+tip_detector: "first time x > 0 (left the lower branch)"
+
+label:
+  kind: bifurcation_distance
+  formula: "clip((p_c - p(t)) / (p_c - p0), 0, 1)"
+
+seed_sets: [A, B, C]
+
+scenario_ids:              # grid: noise_levels x speeds
+  - fold_L1_slow
+  - fold_L1_fast
+  - fold_L2_slow
+  - fold_L2_fast
+  - fold_L3_slow
+  - fold_L3_fast
