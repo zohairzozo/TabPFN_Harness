@@ -45,7 +45,25 @@ Append to this file at the end of every session.
 - `tests/test_features.py`: shapes, no NaNs, features unchanged when later data is altered, no trajectory in two splits (plan level and dataset level), scale-free features, Kendall tau equals scipy.
 - Built all four splits. Each takes well under a minute on this CPU and loads from the cache almost instantly afterwards. Window and label counts are in `results/datasets/`.
 
+### 2026-10-26 (classic EWS baseline)
+
+- Implemented `src/pfngate/evals/baseline_ews.py`. For each window it takes the detrended variance and the lag-1 autocorrelation (averaged over channels). The score is the mean of their Kendall taus against time over the current window and the K - 1 before it. Only past windows are used. The first K - 1 windows of each trajectory have no score and are left out.
+- Implemented `src/pfngate/evals/metrics.py`: class-balanced AUROC (sklearn, balanced sample weights), a percentile bootstrap CI that resamples whole trajectories, false-alarm rates on controls (share of windows and share of trajectories with any alarm), and `write_json`. With weights that are constant within a class, the balanced AUROC equals the plain AUROC. The JSON says so.
+- Settings are in `configs/baseline_ews.yaml`: K = 16, alarm threshold 0.5, 1000 bootstrap resamples. They were fixed before the first run and have not been tuned.
+- `scripts/run_baseline_ews.py` scores the validation, in-prior test and out-of-prior test splits. It writes `results/baseline_ews.json` and draws `results/figs/baseline_auroc.png` from that JSON. A full rerun gave an identical JSON. Window counts match `results/datasets/`.
+- `tests/test_baseline_ews.py`: the rolling tau matches scipy, the score does not change when later data is altered, the score is the mean of the two taus, the bootstrap resamples trajectories rather than windows, the false-alarm rate is checked by hand, and the JSON writer handles numpy types and NaN.
+- **Result: the baseline is weak, and it is committed as it is.** Numbers are in `results/baseline_ews.json` and are not copied here.
+  - Sanity check 1 only partly passes. In-prior AUROC is above 0.5 with a CI that excludes 0.5, but not by much. Transcritical is at chance.
+  - Sanity check 2 passes. Out-of-prior AUROC is near 0.5.
+  - Sanity check 3 fails. Controls alarm on a sizeable share of windows, and every control trajectory alarms at least once.
+- Suspected cause: the choice of K = 16, not a bug. The windows are 128 points long with stride 16, so 16 windows span 368 points, only about three independent windows. The tau is therefore close to noise, even on controls.
+  - A scratch check on the validation split found that the window-level lag-1 autocorrelation and the variance relative to the first window separate positives from negatives far better than the trend score. The signal is in the data, and the short-span tau loses it.
+  - The classic method (Dakos et al. 2012) takes the tau from the start of the series. Switching to it would change the baseline's definition after test results have been seen. That change was not made.
+- The transcritical result matches open question 1 in LABELS.md: at higher noise, trajectories escape before p_c, so the labels and the actual tip disagree.
+- A trajectory-level false-alarm rate of 100% is built into the metric: any per-window threshold is crossed at least once in about 300 windows. Treat the window rate as the informative number.
+
 ## Decisions
 
 - Model version: v3.5. Keep the model version in the results JSON for every run. Never redistribute the weights.
 - Features are scale-free only. No raw variance or raw level, so the model cannot tell systems apart by their units or noise level.
+- The classic EWS baseline stays at K = 16 as it was configured before the first run. It is reported as weak and is not retuned after seeing test results.

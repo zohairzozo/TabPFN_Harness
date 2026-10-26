@@ -65,6 +65,11 @@ def trajectory_windows(tr: Trajectory, fc: FeatureConfig, common: CommonConfig) 
     return pd.DataFrame(data, columns=list(COLUMNS))
 
 
+def target_defined(sc: Scenario, tr: Trajectory) -> bool:
+    """False for a time-to-tip trajectory that never tipped: its target is undefined."""
+    return not (sc.label_kind == "time_to_tip" and tr.tip_time is None)
+
+
 def split_plan(
     split: str, scenarios: dict[str, Scenario], seeds_per_scenario: int | None = None
 ) -> list[tuple[Scenario, int]]:
@@ -118,8 +123,8 @@ def build_dataset(
     frames, dropped = [], []
     for sc, seed in split_plan(split, scenarios, seeds_per_scenario):
         tr = sc.generate(seed)
-        if sc.label_kind == "time_to_tip" and tr.tip_time is None:
-            dropped.append(trajectory_id(sc.scenario_id, seed))  # no tip: target undefined
+        if not target_defined(sc, tr):
+            dropped.append(trajectory_id(sc.scenario_id, seed))
             continue
         frames.append(trajectory_windows(tr, fc, common))
     df = pd.concat(frames, ignore_index=True)

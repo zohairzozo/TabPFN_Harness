@@ -1,0 +1,23 @@
+# Classic early-warning baseline (scripts/run_baseline_ews.py).
+# All values were fixed before the first run. Do not tune them to improve the result.
+
+rolling:
+  k_windows: 16            # Kendall tau over the current window and the 15 before it
+                           # (with stride 16 this spans 128 + 15 * 16 = 368 points)
+combine: mean              # score = mean of tau(variance) and tau(lag-1 autocorrelation)
+
+alarm_threshold: 0.5       # an alarm is raised when the score is at or above this value
+
+splits:                    # the context split is never scored; it is for the PFN context
+  - validation
+  - test_in_prior
+  - test_out_of_prior
+
+bootstrap:
+  n: 1000                  # resamples of trajectories (not windows)
+  seed: 0
+  ci: 0.95
+
+output:
+  json: results/baseline_ews.json
+  figure: results/figs/baseline_auroc.png
