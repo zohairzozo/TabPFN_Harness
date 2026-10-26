@@ -36,6 +36,16 @@ Append to this file at the end of every session.
 - `scripts/plot_scenarios.py` writes one figure per family to `results/figs/`.
 - A one-off scratch check over every planned seed found: every tipping trajectory tips, no control tips, and no noise-induced trajectory had to be dropped. Transcritical escapes before p_c in most L2 and L3 slow-ramp runs. This confirms the open question in LABELS.md. The check is not yet a script in `scripts/` with output in `results/`.
 
+### 2026-10-26 (features)
+
+- Implemented `src/pfngate/features/` (config, windows, compute, dataset). Settings are in `configs/features.yaml`: window 128 points, stride 16, linear detrend, sub-windows of 32 with stride 8, low-frequency share of the spectrum up to 10% of Nyquist.
+- Window settings moved from `configs/scenarios/_common.yaml` (which said 400 / 50 and was unused by code) to `configs/features.yaml`. LABELS.md updated.
+- Features per window, computed on the linearly detrended window only: `variance_log_ratio`, `ac1`, `skewness`, `kurtosis`, `trend_slope`, `tau_variance`, `tau_ac1`, `low_freq_power`. All are scale-free (unchanged by `a * x + b` with `a > 0`). Plain variance is replaced by the log ratio of late to early variance, because raw variance depends on units and noise level. Hopf's two channels are averaged.
+- `build_dataset(split)` returns one row per window (ids, family, split, seed, window end, target, binary label, features), caches it as a pickle under `results/cache/` (gitignored), and for full builds writes counts to `results/datasets/<split>_summary.json`.
+- `tests/test_features.py`: shapes, no NaNs, features unchanged when later data is altered, no trajectory in two splits (plan level and dataset level), scale-free features, Kendall tau equals scipy.
+- Built all four splits. Each takes well under a minute on this CPU and loads from the cache almost instantly afterwards. Window and label counts are in `results/datasets/`.
+
 ## Decisions
 
 - Model version: v3.5. Keep the model version in the results JSON for every run. Never redistribute the weights.
+- Features are scale-free only. No raw variance or raw level, so the model cannot tell systems apart by their units or noise level.

@@ -9,7 +9,7 @@ We build our own small suite of simulated series, in the spirit of the kausable 
 ## Terms
 
 - **Trajectory**: one simulated series, identified by `(scenario_id, seed)`.
-- **Window**: 400 consecutive observed points (40 time units), taken with a stride of 50 points. A window is described by its **end time** `t`. All labels refer to the window end, because that is "now" for an early-warning model.
+- **Window**: consecutive observed points cut from one trajectory. Length and stride are set in `configs/features.yaml` (currently 128 points, or 12.8 time units, with a stride of 16). A window is described by its **end time** `t`. All labels refer to the window end, because that is "now" for an early-warning model.
 - **Critical time `t_c`**: for bifurcation families, the time the control parameter `p(t)` crosses its critical value `p_c`. It is known exactly from the spec.
 - **Realised tip time `t_tip`**: the first time the simulated state actually tips, according to the family's `tip_detector`. This can differ from `t_c`. Noise can make the system tip early, and a fast ramp can make it tip late.
 
@@ -84,5 +84,5 @@ There is no simulated `p(t)` in real data and usually no known tip time. **Label
 3. **Subcritical or supercritical Hopf.** Subcritical gives an abrupt jump (current choice). Supercritical is the textbook case in many early-warning papers but has no jump, only a growing oscillation.
 4. **Early tipping in bistable families.** At L3 the fold and subcritical Hopf may often tip well before `p_c`, which removes most positive windows from those trajectories. We should check the count of positives per scenario once simulated.
 5. **Noise-induced family and variance.** Its noise rises over time, so variance rises too. A model that relies on variance may "warn" correctly for the wrong reason (more noise, not lower stability). This is worth reporting, not hiding.
-6. **Window length.** 400 points (40 time units) is a guess. Critical slowing down is easier to see in long windows, but long windows reduce the number of windows on fast ramps.
+6. **Window length.** The approved draft used 400 points; the features step now uses 128 points (12.8 time units) with a stride of 16, set in `configs/features.yaml`. Critical slowing down is easier to see in long windows, but long windows reduce the number of windows on fast ramps. 128 points is short compared with the slow ramps.
 7. **Citations.** The R-tipping form (Ashwin et al. 2012) and the noise-induced reference (Ditlevsen and Johnsen 2010) are cited from memory. Both must be checked against the papers before any code uses them.

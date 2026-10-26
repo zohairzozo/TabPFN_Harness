@@ -1,0 +1,25 @@
+# Windowing and early-warning features. Read by src/pfngate/features/.
+# Every feature is computed from the points inside one window only, so a window's
+# features cannot depend on anything after its end.
+
+window:
+  length: 128              # observed points (12.8 time units at 0.1 per point)
+  stride: 16               # observed points between consecutive window ends
+  keep_only_before_tip: true   # a window must end at or before the realised tip time
+
+detrend: linear            # least-squares line fitted inside the window and removed
+
+subwindow:                 # for the Kendall-tau trend features
+  length: 32               # observed points per sub-window
+  stride: 8                # 13 sub-windows per 128-point window
+
+spectrum:
+  low_frequency_fraction: 0.1   # "low" = frequencies up to this fraction of Nyquist
+
+channels: mean             # multi-channel series (Hopf): features averaged over channels
+
+cache:
+  dir: results/cache       # gitignored
+  version: 1               # bump when feature code changes, to invalidate old caches
+
+summary_dir: results/datasets   # per-split counts, written by code, tracked in git

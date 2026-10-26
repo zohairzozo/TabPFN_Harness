@@ -1,0 +1,51 @@
+{
+  "split": "validation",
+  "n_trajectories": 270,
+  "n_windows": 53063,
+  "dropped_trajectories_no_tip": [],
+  "windows_by_family_and_label": {
+    "control_ou": {
+      "-1": 0,
+      "0": 9150,
+      "1": 0
+    },
+    "control_regime_change": {
+      "-1": 0,
+      "0": 9150,
+      "1": 0
+    },
+    "control_short_ramp": {
+      "-1": 0,
+      "0": 9150,
+      "1": 0
+    },
+    "fold": {
+      "-1": 3750,
+      "0": 3330,
+      "1": 2175
+    },
+    "hopf": {
+      "-1": 3722,
+      "0": 3330,
+      "1": 1543
+    },
+    "transcritical": {
+      "-1": 3468,
+      "0": 3330,
+      "1": 965
+    }
+  },
+  "window_length": 128,
+  "stride": 16,
+  "features": [
+    "variance_log_ratio",
+    "ac1",
+    "skewness",
+    "kurtosis",
+    "trend_slope",
+    "tau_variance",
+    "tau_ac1",
+    "low_freq_power"
+  ],
+  "cache_file": "features_validation_0994b216477e71b9.pkl"
+}

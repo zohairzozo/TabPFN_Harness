@@ -1,0 +1,46 @@
+{
+  "split": "test_out_of_prior",
+  "n_trajectories": 210,
+  "n_windows": 53664,
+  "dropped_trajectories_no_tip": [],
+  "windows_by_family_and_label": {
+    "control_ou": {
+      "-1": 0,
+      "0": 9150,
+      "1": 0
+    },
+    "control_regime_change": {
+      "-1": 0,
+      "0": 9150,
+      "1": 0
+    },
+    "control_short_ramp": {
+      "-1": 0,
+      "0": 9150,
+      "1": 0
+    },
+    "noise_tipping": {
+      "-1": 1500,
+      "0": 9234,
+      "1": 749
+    },
+    "rate_tipping": {
+      "-1": 1500,
+      "0": 12485,
+      "1": 746
+    }
+  },
+  "window_length": 128,
+  "stride": 16,
+  "features": [
+    "variance_log_ratio",
+    "ac1",
+    "skewness",
+    "kurtosis",
+    "trend_slope",
+    "tau_variance",
+    "tau_ac1",
+    "low_freq_power"
+  ],
+  "cache_file": "features_test_out_of_prior_6583efddd473f1e7.pkl"
+}

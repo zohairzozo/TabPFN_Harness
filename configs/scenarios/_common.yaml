@@ -18,10 +18,7 @@ noise_levels:
   L2: {process_sd: 0.05, obs_sd: 0.025}
   L3: {process_sd: 0.10, obs_sd: 0.05}
 
-windows:
-  length: 400              # observed points = 40 time units
-  stride: 50               # observed points = 5 time units
-  keep_only_before_tip: true   # a window must end at or before the realised tip time
+# Window length, stride and the pre-tip rule live in configs/features.yaml.
 
 labels:
   horizon: 100.0           # time units; used by time-to-tip targets (rate, noise families)
