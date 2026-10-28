@@ -1,0 +1,38 @@
+# Gate thresholds. Written by scripts/build_gate_config.py from docs/GATE.md and the
+# context pool (seed set A). Do not edit by hand. Only a file with status "tuned" may be
+# frozen (configs/gate.frozen.sha256), and test, out-of-prior and real-data evaluation
+# refuse to run until it is.
+status: tuned
+bad_run:
+  interval: [0.05, 0.95]
+  min_coverage: 0.8
+  tolerance: 1.0e-06
+checks:
+  min_context_size: {threshold: 100}
+  ood_share:
+    limit: 0.3
+    k: 10
+    quantile: 0.99
+    n_sample: 5000
+    distance_cut: 1.7923948917361958
+    feature_names: [variance_log_ratio, ac1, skewness, kurtosis, trend_slope, tau_variance, tau_ac1, low_freq_power]
+    feature_mean: [0.020673741084866522, 0.49261435041451085, 0.0038347622038482523, -0.15396890519498826,
+      0.21445994396712367, 0.008807297942040345, 0.007751704482219675, 0.4498727797708366]
+    feature_std: [0.4613048421410105, 0.18989501761683036, 0.23930357124987198, 0.4085570060210421, 1.351060457022141,
+      0.3505620287325775, 0.3385419195126988, 0.1867829340541743]
+    n_pool_rows: 105980
+    n_pool_trajectories: 540
+  near_tipping_support: {role: advisory, limit: 0.5, k: 5, target_max: 0.2, quantile: 0.99, n_sample: 5000,
+    distance_cut: 2.2183809678023763, n_near_rows: 9229}
+  interval_width_cap: {threshold: 0.6, role: advisory}
+  context_calibration: {low: 0.7, high: 1.0, folds: 5}
+  context_not_degenerate: {min_rows: 10, positive_max: 0.2, negative_min: 0.6}
+  output_integrity: {max_repaired_share: 0.01, required_method: full_distribution}
+alert_thresholds: {random: 0.18987940152847654, knn: 0.14265158151044804}
+applicability:
+  backend: tabpfn_local
+  model_version: v3.5
+  package_version: 9.2.0
+  max_context: 200
+  data_version: 7537845ee16feb9f
+  strategies: [random, knn]

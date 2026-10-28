@@ -77,6 +77,19 @@ def false_alarm_rate(score: np.ndarray, groups: np.ndarray, threshold: float) ->
     }
 
 
+def alarm_threshold_for_rate(scores: np.ndarray, rate: float) -> float:
+    """The smallest threshold at which at most `rate` of these scores raise an alarm.
+
+    Used on validation controls only. An alarm is score >= threshold (as in
+    false_alarm_rate), so the threshold is the first float above the (1 - rate) quantile.
+    Ties at the quantile therefore do not alarm.
+    """
+    s = np.asarray(scores, dtype=float)
+    if len(s) == 0 or not 0.0 < rate < 1.0:
+        raise ValueError("need some scores and a rate inside (0, 1)")
+    return float(np.nextafter(np.quantile(s, 1.0 - rate, method="higher"), np.inf))
+
+
 def _to_json(obj: Any) -> Any:
     if isinstance(obj, np.generic):
         return obj.item()

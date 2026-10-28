@@ -8,6 +8,8 @@ combine: mean              # score = mean of tau(variance) and tau(lag-1 autocor
 
 alarm_threshold: 0.5       # an alarm is raised when the score is at or above this value
 
+target_false_alarm_rate: 0.05   # same rule as the PFN runs: threshold from VALIDATION controls
+
 splits:                    # the context split is never scored; it is for the PFN context
   - validation
   - test_in_prior

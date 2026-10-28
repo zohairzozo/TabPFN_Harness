@@ -1,0 +1,5092 @@
+{
+  "method": "pfn",
+  "backend": "tabpfn_local",
+  "strategy": "random",
+  "oracle": false,
+  "split": "ood",
+  "dataset_splits": [
+    "test_out_of_prior"
+  ],
+  "model_version": "v3.5",
+  "package_version": "9.2.0",
+  "device": "cpu",
+  "seed": 0,
+  "critical_threshold": 0.2,
+  "quantile_levels": [
+    0.05,
+    0.25,
+    0.5,
+    0.75,
+    0.95
+  ],
+  "max_context": 200,
+  "max_context_config_default": 2000,
+  "seeds_per_scenario": 3,
+  "bootstrap": {
+    "n": 1000,
+    "seed": 0,
+    "ci": 0.95
+  },
+  "scores": {
+    "neg_median": "minus the median of the predicted target; higher means closer to the tip",
+    "p_critical": "predicted probability that the target is at or below critical_threshold"
+  },
+  "pool": {
+    "n_rows": 105980,
+    "n_trajectories": 540
+  },
+  "versions": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1"
+  },
+  "n_trajectories": 36,
+  "n_windows": 7922,
+  "n_cache_hits": 36,
+  "skipped": [],
+  "timing": {
+    "total_wall_seconds": 706.0571704999893,
+    "n_trajectories": 36,
+    "latency_seconds_median": 6.875557849998586,
+    "latency_seconds_mean": 6.966834500000307,
+    "latency_seconds_max": 9.185797399957664,
+    "fit_seconds_median": 0.18973720000940375,
+    "predict_seconds_median": 6.68308500002604,
+    "windows_per_trajectory_median": 216.0
+  },
+  "trajectories": [
+    {
+      "trajectory_id": "rate_L1_slow/4000",
+      "scenario_id": "rate_L1_slow",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 269,
+      "context_size": 200,
+      "context_hash": "9e3b70633b17aa75",
+      "fit_seconds": 0.3156773999799043,
+      "predict_seconds": 8.87011999997776,
+      "latency_seconds": 9.185797399957664,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L1_slow/4000",
+        "strategy": "random",
+        "context_hash": "9e3b70633b17aa75",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.2379182156133829,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.238 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.925,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.925, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 15.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "15 context rows with target <= 0.2 and 143 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9594482271330108,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.959, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 165,
+        "no_alert": 104
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.925,
+        "n_trajectories": 162,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 24.265518000000156
+      },
+      "gate_seconds": 24.27851069997996,
+      "ground_truth": {
+        "coverage_90": 0.7881040892193308,
+        "bad": true,
+        "coverage_90_positive_windows": 1.0,
+        "n_positive_windows": 12,
+        "calibration_error": 0.2553903345724907,
+        "observed_frequency": {
+          "0.05": 0.0,
+          "0.25": 0.022304832713754646,
+          "0.5": 0.09665427509293681,
+          "0.75": 0.3159851301115242,
+          "0.95": 0.7881040892193308
+        },
+        "pinball_loss": {
+          "0.05": 0.04096825983367155,
+          "0.25": 0.15634610216852962,
+          "0.5": 0.20710625797758508,
+          "0.75": 0.15730730112056215,
+          "0.95": 0.02012177202014349
+        },
+        "mean_pinball_loss": 0.11636993862409839,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L1_slow/4001",
+      "scenario_id": "rate_L1_slow",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 271,
+      "context_size": 200,
+      "context_hash": "4c8119a10b919220",
+      "fit_seconds": 0.20948819996556267,
+      "predict_seconds": 7.62289719999535,
+      "latency_seconds": 7.832385399960913,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L1_slow/4001",
+        "strategy": "random",
+        "context_hash": "4c8119a10b919220",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.2656826568265683,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.266 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.955,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.955, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 20.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "20 context rows with target <= 0.2 and 142 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9807477482181832,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.981, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.988929889298893,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.989 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 210,
+        "no_alert": 61
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.955,
+        "n_trajectories": 166,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 17.79898999998113
+      },
+      "gate_seconds": 17.811992799979635,
+      "ground_truth": {
+        "coverage_90": 0.9040590405904059,
+        "bad": false,
+        "coverage_90_positive_windows": 1.0,
+        "n_positive_windows": 13,
+        "calibration_error": 0.277859778597786,
+        "observed_frequency": {
+          "0.05": 0.0,
+          "0.25": 0.01107011070110701,
+          "0.5": 0.05166051660516605,
+          "0.75": 0.14391143911439114,
+          "0.95": 0.9040590405904059
+        },
+        "pinball_loss": {
+          "0.05": 0.04222831069862354,
+          "0.25": 0.1754177610969715,
+          "0.5": 0.2549256113122261,
+          "0.75": 0.1774381327224412,
+          "0.95": 0.005814179000500725
+        },
+        "mean_pinball_loss": 0.1311647989661526,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L1_slow/4002",
+      "scenario_id": "rate_L1_slow",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 265,
+      "context_size": 200,
+      "context_hash": "b499e7005f6105db",
+      "fit_seconds": 0.18606370000634342,
+      "predict_seconds": 7.037117399973795,
+      "latency_seconds": 7.223181099980138,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L1_slow/4002",
+        "strategy": "random",
+        "context_hash": "b499e7005f6105db",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.32452830188679244,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.325 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.945,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.945, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 16.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "16 context rows with target <= 0.2 and 140 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9660097738266197,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.966, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": false,
+        "reasons": [
+          "ood_share: 0.325 of query windows are far from the pool, limit 0.3"
+        ],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": [
+          "ood_share"
+        ]
+      },
+      "decisions": {
+        "abstain": 265,
+        "alert": 0,
+        "no_alert": 0
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.945,
+        "n_trajectories": 167,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 18.28011829999741
+      },
+      "gate_seconds": 18.293897600029595,
+      "ground_truth": {
+        "coverage_90": 0.8981132075471698,
+        "bad": false,
+        "coverage_90_positive_windows": 0.9166666666666666,
+        "n_positive_windows": 12,
+        "calibration_error": 0.2086792452830189,
+        "observed_frequency": {
+          "0.05": 0.0037735849056603774,
+          "0.25": 0.07169811320754717,
+          "0.5": 0.1320754716981132,
+          "0.75": 0.3471698113207547,
+          "0.95": 0.9018867924528302
+        },
+        "pinball_loss": {
+          "0.05": 0.041537502865576566,
+          "0.25": 0.15281613267551847,
+          "0.5": 0.16876296351934408,
+          "0.75": 0.08276701368482495,
+          "0.95": 0.007286088443824448
+        },
+        "mean_pinball_loss": 0.0906339402378177,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L1_fast/4000",
+      "scenario_id": "rate_L1_fast",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 216,
+      "context_size": 200,
+      "context_hash": "aa63ce09e0075dc8",
+      "fit_seconds": 0.1950901999953203,
+      "predict_seconds": 6.676211500016507,
+      "latency_seconds": 6.871301700011827,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L1_fast/4000",
+        "strategy": "random",
+        "context_hash": "aa63ce09e0075dc8",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.16666666666666666,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.167 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.945,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.945, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 14.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "14 context rows with target <= 0.2 and 146 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9564122045775012,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.956, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 95,
+        "no_alert": 121
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.945,
+        "n_trajectories": 160,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 17.406978599959984
+      },
+      "gate_seconds": 17.41942230000859,
+      "ground_truth": {
+        "coverage_90": 0.9398148148148148,
+        "bad": false,
+        "coverage_90_positive_windows": 0.5833333333333334,
+        "n_positive_windows": 12,
+        "calibration_error": 0.18388888888888888,
+        "observed_frequency": {
+          "0.05": 0.023148148148148147,
+          "0.25": 0.0787037037037037,
+          "0.5": 0.18981481481481483,
+          "0.75": 0.35185185185185186,
+          "0.95": 0.9629629629629629
+        },
+        "pinball_loss": {
+          "0.05": 0.040531602283932544,
+          "0.25": 0.13998465029923735,
+          "0.5": 0.138834406936239,
+          "0.75": 0.0793270444436413,
+          "0.95": 0.0072126665023554155
+        },
+        "mean_pinball_loss": 0.08117807409308112,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L1_fast/4001",
+      "scenario_id": "rate_L1_fast",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 216,
+      "context_size": 200,
+      "context_hash": "3c700a1e05bfa301",
+      "fit_seconds": 0.2771255999687128,
+      "predict_seconds": 6.4184829000150785,
+      "latency_seconds": 6.695608499983791,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L1_fast/4001",
+        "strategy": "random",
+        "context_hash": "3c700a1e05bfa301",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.17592592592592593,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.176 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.93,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.930, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 14.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "14 context rows with target <= 0.2 and 142 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9735024845862001,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.974, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 129,
+        "no_alert": 87
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.93,
+        "n_trajectories": 163,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 17.766122100001667
+      },
+      "gate_seconds": 17.779679900035262,
+      "ground_truth": {
+        "coverage_90": 0.9166666666666666,
+        "bad": false,
+        "coverage_90_positive_windows": 1.0,
+        "n_positive_windows": 13,
+        "calibration_error": 0.24722222222222223,
+        "observed_frequency": {
+          "0.05": 0.0,
+          "0.25": 0.004629629629629629,
+          "0.5": 0.1111111111111111,
+          "0.75": 0.23148148148148148,
+          "0.95": 0.9166666666666666
+        },
+        "pinball_loss": {
+          "0.05": 0.04011641181552151,
+          "0.25": 0.14644891922679623,
+          "0.5": 0.1647120839392866,
+          "0.75": 0.09155044524835594,
+          "0.95": 0.008782153813489804
+        },
+        "mean_pinball_loss": 0.09032200280869002,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L1_fast/4002",
+      "scenario_id": "rate_L1_fast",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 210,
+      "context_size": 200,
+      "context_hash": "12044fe1ba841fbf",
+      "fit_seconds": 0.2009849000023678,
+      "predict_seconds": 6.546490800043102,
+      "latency_seconds": 6.74747570004547,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L1_fast/4002",
+        "strategy": "random",
+        "context_hash": "12044fe1ba841fbf",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.09523809523809523,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.095 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.935,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.935, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 18.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "18 context rows with target <= 0.2 and 129 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9829929953796761,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.983, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.9476190476190476,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.948 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 121,
+        "no_alert": 89
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.935,
+        "n_trajectories": 155,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 17.552772200026084
+      },
+      "gate_seconds": 17.56717660004506,
+      "ground_truth": {
+        "coverage_90": 0.9380952380952381,
+        "bad": false,
+        "coverage_90_positive_windows": 1.0,
+        "n_positive_windows": 13,
+        "calibration_error": 0.1895238095238095,
+        "observed_frequency": {
+          "0.05": 0.0,
+          "0.25": 0.0761904761904762,
+          "0.5": 0.18571428571428572,
+          "0.75": 0.3523809523809524,
+          "0.95": 0.9380952380952381
+        },
+        "pinball_loss": {
+          "0.05": 0.040081523946058406,
+          "0.25": 0.1617650026865745,
+          "0.5": 0.2048987474482759,
+          "0.75": 0.11029676544276946,
+          "0.95": 0.008703435418290552
+        },
+        "mean_pinball_loss": 0.10514909498839378,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L2_slow/4000",
+      "scenario_id": "rate_L2_slow",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 280,
+      "context_size": 200,
+      "context_hash": "2d7995b71a2f6acc",
+      "fit_seconds": 0.17539039999246597,
+      "predict_seconds": 7.547913399990648,
+      "latency_seconds": 7.723303799983114,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L2_slow/4000",
+        "strategy": "random",
+        "context_hash": "2d7995b71a2f6acc",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.1357142857142857,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.136 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.925,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.925, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 19.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "19 context rows with target <= 0.2 and 135 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9397697396863027,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.940, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 156,
+        "no_alert": 124
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.925,
+        "n_trajectories": 159,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 18.778477299958467
+      },
+      "gate_seconds": 18.79211199999554,
+      "ground_truth": {
+        "coverage_90": 0.7714285714285715,
+        "bad": true,
+        "coverage_90_positive_windows": 0.6923076923076923,
+        "n_positive_windows": 13,
+        "calibration_error": 0.26642857142857135,
+        "observed_frequency": {
+          "0.05": 0.014285714285714285,
+          "0.25": 0.04642857142857143,
+          "0.5": 0.11071428571428571,
+          "0.75": 0.21071428571428572,
+          "0.95": 0.7857142857142857
+        },
+        "pinball_loss": {
+          "0.05": 0.04255933938080647,
+          "0.25": 0.15855947539910126,
+          "0.5": 0.21101427515060073,
+          "0.75": 0.15220338747006015,
+          "0.95": 0.03436969189443122
+        },
+        "mean_pinball_loss": 0.11974123385899996,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L2_slow/4001",
+      "scenario_id": "rate_L2_slow",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 277,
+      "context_size": 200,
+      "context_hash": "7d0634a07b53e215",
+      "fit_seconds": 0.19448689999990165,
+      "predict_seconds": 7.331835500022862,
+      "latency_seconds": 7.526322400022764,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L2_slow/4001",
+        "strategy": "random",
+        "context_hash": "7d0634a07b53e215",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.22382671480144403,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.224 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.96,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.960, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 17.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "17 context rows with target <= 0.2 and 138 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9776247761595768,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.978, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 201,
+        "no_alert": 76
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.96,
+        "n_trajectories": 164,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 18.894450899970252
+      },
+      "gate_seconds": 18.908509900036734,
+      "ground_truth": {
+        "coverage_90": 0.7906137184115524,
+        "bad": true,
+        "coverage_90_positive_windows": 0.5384615384615384,
+        "n_positive_windows": 13,
+        "calibration_error": 0.26895306859205775,
+        "observed_frequency": {
+          "0.05": 0.021660649819494584,
+          "0.25": 0.05054151624548736,
+          "0.5": 0.08303249097472924,
+          "0.75": 0.18772563176895307,
+          "0.95": 0.8122743682310469
+        },
+        "pinball_loss": {
+          "0.05": 0.04614138830328503,
+          "0.25": 0.182667071011265,
+          "0.5": 0.24702188497779431,
+          "0.75": 0.1582444094669284,
+          "0.95": 0.007249430630828849
+        },
+        "mean_pinball_loss": 0.12826483687802032,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L2_slow/4002",
+      "scenario_id": "rate_L2_slow",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 257,
+      "context_size": 200,
+      "context_hash": "3dbdfe4f868d1cbe",
+      "fit_seconds": 0.17934460000833496,
+      "predict_seconds": 7.691912799957208,
+      "latency_seconds": 7.871257399965543,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L2_slow/4002",
+        "strategy": "random",
+        "context_hash": "3dbdfe4f868d1cbe",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.1828793774319066,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.183 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.935,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.935, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 19.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "19 context rows with target <= 0.2 and 140 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9385248522510989,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.939, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 150,
+        "no_alert": 107
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.935,
+        "n_trajectories": 170,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 17.314474600018002
+      },
+      "gate_seconds": 17.32769509998616,
+      "ground_truth": {
+        "coverage_90": 0.8832684824902723,
+        "bad": false,
+        "coverage_90_positive_windows": 1.0,
+        "n_positive_windows": 13,
+        "calibration_error": 0.2245136186770428,
+        "observed_frequency": {
+          "0.05": 0.0,
+          "0.25": 0.054474708171206226,
+          "0.5": 0.17120622568093385,
+          "0.75": 0.26848249027237353,
+          "0.95": 0.8832684824902723
+        },
+        "pinball_loss": {
+          "0.05": 0.039855807768579,
+          "0.25": 0.15615200868492576,
+          "0.5": 0.20439385073053423,
+          "0.75": 0.1326328502041507,
+          "0.95": 0.00808827882729786
+        },
+        "mean_pinball_loss": 0.10822455924309753,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L2_fast/4000",
+      "scenario_id": "rate_L2_fast",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 209,
+      "context_size": 200,
+      "context_hash": "d4f871bc5c114021",
+      "fit_seconds": 0.1981915999785997,
+      "predict_seconds": 6.447701599972788,
+      "latency_seconds": 6.645893199951388,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L2_fast/4000",
+        "strategy": "random",
+        "context_hash": "d4f871bc5c114021",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.09569377990430622,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.096 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.94,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.940, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 22.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "22 context rows with target <= 0.2 and 144 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9540908722096964,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.954, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 90,
+        "no_alert": 119
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.94,
+        "n_trajectories": 159,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 17.70845219999319
+      },
+      "gate_seconds": 17.725123399985023,
+      "ground_truth": {
+        "coverage_90": 0.8803827751196173,
+        "bad": false,
+        "coverage_90_positive_windows": 0.8333333333333334,
+        "n_positive_windows": 12,
+        "calibration_error": 0.18995215311004782,
+        "observed_frequency": {
+          "0.05": 0.019138755980861243,
+          "0.25": 0.15311004784688995,
+          "0.5": 0.21052631578947367,
+          "0.75": 0.2679425837320574,
+          "0.95": 0.8995215311004785
+        },
+        "pinball_loss": {
+          "0.05": 0.03922459119082061,
+          "0.25": 0.16529038026706674,
+          "0.5": 0.21692580863232258,
+          "0.75": 0.14301213561413442,
+          "0.95": 0.010697948609936463
+        },
+        "mean_pinball_loss": 0.11503017286285615,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L2_fast/4001",
+      "scenario_id": "rate_L2_fast",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 212,
+      "context_size": 200,
+      "context_hash": "0034d9a1d22239d5",
+      "fit_seconds": 0.18159360002027825,
+      "predict_seconds": 6.475909199973103,
+      "latency_seconds": 6.657502799993381,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L2_fast/4001",
+        "strategy": "random",
+        "context_hash": "0034d9a1d22239d5",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.10377358490566038,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.104 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.93,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.930, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 13.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "13 context rows with target <= 0.2 and 144 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.8886807567470609,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.889, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 69,
+        "no_alert": 143
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.93,
+        "n_trajectories": 162,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 19.36277649999829
+      },
+      "gate_seconds": 19.375862500048243,
+      "ground_truth": {
+        "coverage_90": 0.7688679245283019,
+        "bad": true,
+        "coverage_90_positive_windows": 0.5833333333333334,
+        "n_positive_windows": 12,
+        "calibration_error": 0.21490566037735848,
+        "observed_frequency": {
+          "0.05": 0.05188679245283019,
+          "0.25": 0.1320754716981132,
+          "0.5": 0.19811320754716982,
+          "0.75": 0.22641509433962265,
+          "0.95": 0.8207547169811321
+        },
+        "pinball_loss": {
+          "0.05": 0.042138482562389695,
+          "0.25": 0.1580484814028809,
+          "0.5": 0.19656801182006653,
+          "0.75": 0.1279918425629345,
+          "0.95": 0.027215598085748013
+        },
+        "mean_pinball_loss": 0.11039248328680393,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L2_fast/4002",
+      "scenario_id": "rate_L2_fast",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 222,
+      "context_size": 200,
+      "context_hash": "5c2bb1e450673349",
+      "fit_seconds": 0.18006859999150038,
+      "predict_seconds": 6.2617693999782205,
+      "latency_seconds": 6.441837999969721,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L2_fast/4002",
+        "strategy": "random",
+        "context_hash": "5c2bb1e450673349",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.12162162162162163,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.122 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.94,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.940, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 22.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "22 context rows with target <= 0.2 and 140 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9546510676340992,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.955, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.9864864864864865,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.986 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 100,
+        "no_alert": 122
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.94,
+        "n_trajectories": 166,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 22.198086499993224
+      },
+      "gate_seconds": 22.212156700028572,
+      "ground_truth": {
+        "coverage_90": 0.8603603603603603,
+        "bad": false,
+        "coverage_90_positive_windows": 0.6923076923076923,
+        "n_positive_windows": 13,
+        "calibration_error": 0.21711711711711718,
+        "observed_frequency": {
+          "0.05": 0.018018018018018018,
+          "0.25": 0.09009009009009009,
+          "0.5": 0.16666666666666666,
+          "0.75": 0.26126126126126126,
+          "0.95": 0.8783783783783784
+        },
+        "pinball_loss": {
+          "0.05": 0.04104505519092836,
+          "0.25": 0.16363521369295853,
+          "0.5": 0.19680064132939618,
+          "0.75": 0.1262592544421199,
+          "0.95": 0.01751686004532561
+        },
+        "mean_pinball_loss": 0.10905140494014572,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L3_slow/4000",
+      "scenario_id": "rate_L3_slow",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 265,
+      "context_size": 200,
+      "context_hash": "3744be70137154c1",
+      "fit_seconds": 0.2821383000118658,
+      "predict_seconds": 7.223123800009489,
+      "latency_seconds": 7.505262100021355,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L3_slow/4000",
+        "strategy": "random",
+        "context_hash": "3744be70137154c1",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.10943396226415095,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.109 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.935,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.935, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 22.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "22 context rows with target <= 0.2 and 132 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9869422907987359,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.987, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.9622641509433962,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.962 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 195,
+        "no_alert": 70
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.935,
+        "n_trajectories": 166,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 19.132678300025873
+      },
+      "gate_seconds": 19.151955100009218,
+      "ground_truth": {
+        "coverage_90": 0.8301886792452831,
+        "bad": false,
+        "coverage_90_positive_windows": 0.9166666666666666,
+        "n_positive_windows": 12,
+        "calibration_error": 0.269811320754717,
+        "observed_frequency": {
+          "0.05": 0.0037735849056603774,
+          "0.25": 0.03018867924528302,
+          "0.5": 0.08679245283018867,
+          "0.75": 0.19622641509433963,
+          "0.95": 0.8339622641509434
+        },
+        "pinball_loss": {
+          "0.05": 0.042695543986354494,
+          "0.25": 0.1772057838212306,
+          "0.5": 0.2499538682132231,
+          "0.75": 0.17844968149044532,
+          "0.95": 0.02457527262734782
+        },
+        "mean_pinball_loss": 0.13457603002772026,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L3_slow/4001",
+      "scenario_id": "rate_L3_slow",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 304,
+      "context_size": 200,
+      "context_hash": "27e6f7ffdbba4245",
+      "fit_seconds": 0.19263539998792112,
+      "predict_seconds": 8.067445900000166,
+      "latency_seconds": 8.260081299988087,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L3_slow/4001",
+        "strategy": "random",
+        "context_hash": "27e6f7ffdbba4245",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.1611842105263158,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.161 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.93,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.930, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 16.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "16 context rows with target <= 0.2 and 146 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9549812030610807,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.955, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 122,
+        "no_alert": 182
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.93,
+        "n_trajectories": 149,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 19.98308450001059
+      },
+      "gate_seconds": 19.998419000010472,
+      "ground_truth": {
+        "coverage_90": 0.993421052631579,
+        "bad": false,
+        "coverage_90_positive_windows": 0.8333333333333334,
+        "n_positive_windows": 12,
+        "calibration_error": 0.2351315789473684,
+        "observed_frequency": {
+          "0.05": 0.006578947368421052,
+          "0.25": 0.08881578947368421,
+          "0.5": 0.13157894736842105,
+          "0.75": 0.19736842105263158,
+          "0.95": 1.0
+        },
+        "pinball_loss": {
+          "0.05": 0.0426492411186586,
+          "0.25": 0.16485119542575388,
+          "0.5": 0.1800477135832499,
+          "0.75": 0.05267312858737014,
+          "0.95": 0.0051347285262292345
+        },
+        "mean_pinball_loss": 0.08907120144825234,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L3_slow/4002",
+      "scenario_id": "rate_L3_slow",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 271,
+      "context_size": 200,
+      "context_hash": "319c699f4846b41d",
+      "fit_seconds": 0.1768028000369668,
+      "predict_seconds": 7.380201399966609,
+      "latency_seconds": 7.5570042000035755,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L3_slow/4002",
+        "strategy": "random",
+        "context_hash": "319c699f4846b41d",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.11439114391143912,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.114 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.945,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.945, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 15.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "15 context rows with target <= 0.2 and 141 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9494347578047876,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.949, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.988929889298893,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.989 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 159,
+        "no_alert": 112
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.945,
+        "n_trajectories": 157,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 17.56907849997515
+      },
+      "gate_seconds": 17.581516800040845,
+      "ground_truth": {
+        "coverage_90": 0.988929889298893,
+        "bad": false,
+        "coverage_90_positive_windows": 1.0,
+        "n_positive_windows": 12,
+        "calibration_error": 0.21372693726937272,
+        "observed_frequency": {
+          "0.05": 0.0,
+          "0.25": 0.04797047970479705,
+          "0.5": 0.14760147601476015,
+          "0.75": 0.3247232472324723,
+          "0.95": 0.988929889298893
+        },
+        "pinball_loss": {
+          "0.05": 0.041263373636908185,
+          "0.25": 0.15816120949519696,
+          "0.5": 0.15353514746753164,
+          "0.75": 0.05497290485877081,
+          "0.95": 0.00577802447769676
+        },
+        "mean_pinball_loss": 0.08274213198722088,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L3_fast/4000",
+      "scenario_id": "rate_L3_fast",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 213,
+      "context_size": 200,
+      "context_hash": "3f66ad76dfb163e2",
+      "fit_seconds": 0.18941580003593117,
+      "predict_seconds": 6.532728900026996,
+      "latency_seconds": 6.722144700062927,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L3_fast/4000",
+        "strategy": "random",
+        "context_hash": "3f66ad76dfb163e2",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.0892018779342723,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.089 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.925,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.925, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 22.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "22 context rows with target <= 0.2 and 138 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9885156597098699,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.989, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 132,
+        "no_alert": 81
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.925,
+        "n_trajectories": 156,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 18.655993399966974
+      },
+      "gate_seconds": 18.6684416999924,
+      "ground_truth": {
+        "coverage_90": 0.892018779342723,
+        "bad": false,
+        "coverage_90_positive_windows": 1.0,
+        "n_positive_windows": 12,
+        "calibration_error": 0.23427230046948355,
+        "observed_frequency": {
+          "0.05": 0.0,
+          "0.25": 0.056338028169014086,
+          "0.5": 0.13615023474178403,
+          "0.75": 0.24413145539906103,
+          "0.95": 0.892018779342723
+        },
+        "pinball_loss": {
+          "0.05": 0.04134178961860385,
+          "0.25": 0.16274832365118172,
+          "0.5": 0.20237169162072058,
+          "0.75": 0.11545909633003089,
+          "0.95": 0.008660884218087148
+        },
+        "mean_pinball_loss": 0.10611635708772485,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L3_fast/4001",
+      "scenario_id": "rate_L3_fast",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 215,
+      "context_size": 200,
+      "context_hash": "0d65be04d02693b8",
+      "fit_seconds": 0.1851613000035286,
+      "predict_seconds": 6.849157300021034,
+      "latency_seconds": 7.034318600024562,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L3_fast/4001",
+        "strategy": "random",
+        "context_hash": "0d65be04d02693b8",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.12093023255813953,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.121 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.96,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.960, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 21.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "21 context rows with target <= 0.2 and 133 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9488690238857383,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.949, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 86,
+        "no_alert": 129
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.96,
+        "n_trajectories": 163,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 18.87050779996207
+      },
+      "gate_seconds": 18.88574629998766,
+      "ground_truth": {
+        "coverage_90": 0.9116279069767442,
+        "bad": false,
+        "coverage_90_positive_windows": 0.4166666666666667,
+        "n_positive_windows": 12,
+        "calibration_error": 0.19209302325581395,
+        "observed_frequency": {
+          "0.05": 0.03255813953488372,
+          "0.25": 0.12558139534883722,
+          "0.5": 0.17674418604651163,
+          "0.75": 0.26046511627906976,
+          "0.95": 0.9441860465116279
+        },
+        "pinball_loss": {
+          "0.05": 0.04298104002559933,
+          "0.25": 0.157634366047397,
+          "0.5": 0.18194846862834474,
+          "0.75": 0.0938177683030343,
+          "0.95": 0.008494709608214036
+        },
+        "mean_pinball_loss": 0.09697527052251788,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "rate_L3_fast/4002",
+      "scenario_id": "rate_L3_fast",
+      "family": "rate_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 205,
+      "context_size": 200,
+      "context_hash": "1927d7c86bfbb544",
+      "fit_seconds": 0.17292149999411777,
+      "predict_seconds": 6.183679900015704,
+      "latency_seconds": 6.356601400009822,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "rate_L3_fast/4002",
+        "strategy": "random",
+        "context_hash": "1927d7c86bfbb544",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.14146341463414633,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.141 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.945,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.945, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 19.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "19 context rows with target <= 0.2 and 135 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9662794771119229,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.966, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.9951219512195122,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.995 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 119,
+        "no_alert": 86
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.945,
+        "n_trajectories": 150,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 17.723594899987802
+      },
+      "gate_seconds": 17.73399719997542,
+      "ground_truth": {
+        "coverage_90": 0.8780487804878049,
+        "bad": false,
+        "coverage_90_positive_windows": 0.8461538461538461,
+        "n_positive_windows": 13,
+        "calibration_error": 0.1926829268292683,
+        "observed_frequency": {
+          "0.05": 0.00975609756097561,
+          "0.25": 0.08780487804878048,
+          "0.5": 0.17073170731707318,
+          "0.75": 0.3804878048780488,
+          "0.95": 0.8878048780487805
+        },
+        "pinball_loss": {
+          "0.05": 0.039618104647924736,
+          "0.25": 0.1540234314521407,
+          "0.5": 0.21425034239243151,
+          "0.75": 0.15417789820902056,
+          "0.95": 0.011538718342982495
+        },
+        "mean_pinball_loss": 0.11472169900889999,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N1_slow/4000",
+      "scenario_id": "noise_N1_slow",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 336,
+      "context_size": 200,
+      "context_hash": "0a75eaeaadfd78c4",
+      "fit_seconds": 0.19604970002546906,
+      "predict_seconds": 7.965195900003891,
+      "latency_seconds": 8.16124560002936,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N1_slow/4000",
+        "strategy": "random",
+        "context_hash": "0a75eaeaadfd78c4",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.026785714285714284,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.027 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.96,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.960, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 18.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "18 context rows with target <= 0.2 and 137 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.876376969566987,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.876, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 82,
+        "no_alert": 254
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.96,
+        "n_trajectories": 164,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 18.544611599994823
+      },
+      "gate_seconds": 18.57303349999711,
+      "ground_truth": {
+        "coverage_90": 0.9553571428571429,
+        "bad": false,
+        "coverage_90_positive_windows": 0.75,
+        "n_positive_windows": 12,
+        "calibration_error": 0.23547619047619045,
+        "observed_frequency": {
+          "0.05": 0.01488095238095238,
+          "0.25": 0.0744047619047619,
+          "0.5": 0.12797619047619047,
+          "0.75": 0.17559523809523808,
+          "0.95": 0.9702380952380952
+        },
+        "pinball_loss": {
+          "0.05": 0.04047719770151546,
+          "0.25": 0.14229694004262347,
+          "0.5": 0.13060582828776515,
+          "0.75": 0.04961369308041135,
+          "0.95": 0.005008445908220605
+        },
+        "mean_pinball_loss": 0.07360042100410721,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N1_slow/4001",
+      "scenario_id": "noise_N1_slow",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 265,
+      "context_size": 200,
+      "context_hash": "f4c3d469fdde2eac",
+      "fit_seconds": 0.19005859998287633,
+      "predict_seconds": 7.165056400001049,
+      "latency_seconds": 7.355114999983925,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N1_slow/4001",
+        "strategy": "random",
+        "context_hash": "f4c3d469fdde2eac",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.045283018867924525,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.045 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.93,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.930, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 22.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "22 context rows with target <= 0.2 and 124 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.7501915116235619,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.750, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 9,
+        "no_alert": 256
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.93,
+        "n_trajectories": 163,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 18.719701300025918
+      },
+      "gate_seconds": 18.74742560001323,
+      "ground_truth": {
+        "coverage_90": 0.9471698113207547,
+        "bad": false,
+        "coverage_90_positive_windows": 0.3076923076923077,
+        "n_positive_windows": 13,
+        "calibration_error": 0.10037735849056606,
+        "observed_frequency": {
+          "0.05": 0.052830188679245285,
+          "0.25": 0.18867924528301888,
+          "0.5": 0.22641509433962265,
+          "0.75": 0.8641509433962264,
+          "0.95": 1.0
+        },
+        "pinball_loss": {
+          "0.05": 0.039630815612996376,
+          "0.25": 0.10355675066400465,
+          "0.5": 0.06719766566165389,
+          "0.75": 0.030851727673731198,
+          "0.95": 0.006013884015906597
+        },
+        "mean_pinball_loss": 0.04945016872565854,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N1_slow/4002",
+      "scenario_id": "noise_N1_slow",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 230,
+      "context_size": 200,
+      "context_hash": "6249a29001e2b506",
+      "fit_seconds": 0.2836222000187263,
+      "predict_seconds": 6.689958500035573,
+      "latency_seconds": 6.973580700054299,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N1_slow/4002",
+        "strategy": "random",
+        "context_hash": "6249a29001e2b506",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.021739130434782608,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.022 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.935,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.935, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 10.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "10 context rows with target <= 0.2 and 145 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.8694764549116603,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.869, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 40,
+        "no_alert": 190
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.935,
+        "n_trajectories": 164,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 19.76533120003296
+      },
+      "gate_seconds": 19.786328500020318,
+      "ground_truth": {
+        "coverage_90": 0.9434782608695652,
+        "bad": false,
+        "coverage_90_positive_windows": 0.46153846153846156,
+        "n_positive_windows": 13,
+        "calibration_error": 0.15304347826086956,
+        "observed_frequency": {
+          "0.05": 0.030434782608695653,
+          "0.25": 0.11304347826086956,
+          "0.5": 0.22608695652173913,
+          "0.75": 0.4391304347826087,
+          "0.95": 0.9739130434782609
+        },
+        "pinball_loss": {
+          "0.05": 0.036830362835853454,
+          "0.25": 0.12389473737294585,
+          "0.5": 0.11320030544515655,
+          "0.75": 0.05747810865864244,
+          "0.95": 0.009251727921794736
+        },
+        "mean_pinball_loss": 0.0681310484468786,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N1_fast/4000",
+      "scenario_id": "noise_N1_fast",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 162,
+      "context_size": 200,
+      "context_hash": "7aecb9a978b81089",
+      "fit_seconds": 0.17301510000834242,
+      "predict_seconds": 5.926502600021195,
+      "latency_seconds": 6.099517700029537,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N1_fast/4000",
+        "strategy": "random",
+        "context_hash": "7aecb9a978b81089",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.012345679012345678,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.012 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.96,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.960, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 17.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "17 context rows with target <= 0.2 and 141 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.7572768806764012,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.757, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 18,
+        "no_alert": 144
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.96,
+        "n_trajectories": 170,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 22.64195399999153
+      },
+      "gate_seconds": 22.660808900021948,
+      "ground_truth": {
+        "coverage_90": 0.9320987654320988,
+        "bad": false,
+        "coverage_90_positive_windows": 0.5833333333333334,
+        "n_positive_windows": 12,
+        "calibration_error": 0.06074074074074075,
+        "observed_frequency": {
+          "0.05": 0.04938271604938271,
+          "0.25": 0.25308641975308643,
+          "0.5": 0.345679012345679,
+          "0.75": 0.6358024691358025,
+          "0.95": 0.9814814814814815
+        },
+        "pinball_loss": {
+          "0.05": 0.03434518888141118,
+          "0.25": 0.11084265116121618,
+          "0.5": 0.09559189981845255,
+          "0.75": 0.05512178661730055,
+          "0.95": 0.00963797915784756
+        },
+        "mean_pinball_loss": 0.0611079011272456,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N1_fast/4001",
+      "scenario_id": "noise_N1_fast",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 112,
+      "context_size": 200,
+      "context_hash": "d73115991d216a24",
+      "fit_seconds": 0.19328290002886206,
+      "predict_seconds": 5.138948799984064,
+      "latency_seconds": 5.332231700012926,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N1_fast/4001",
+        "strategy": "random",
+        "context_hash": "d73115991d216a24",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.05357142857142857,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.054 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.93,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.930, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 11.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "11 context rows with target <= 0.2 and 147 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.8644617647717028,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.864, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 25,
+        "no_alert": 87
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.93,
+        "n_trajectories": 155,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 20.23132889997214
+      },
+      "gate_seconds": 20.24227069999324,
+      "ground_truth": {
+        "coverage_90": 0.9285714285714286,
+        "bad": false,
+        "coverage_90_positive_windows": 0.6923076923076923,
+        "n_positive_windows": 13,
+        "calibration_error": 0.05714285714285714,
+        "observed_frequency": {
+          "0.05": 0.05357142857142857,
+          "0.25": 0.3482142857142857,
+          "0.5": 0.5625,
+          "0.75": 0.6607142857142857,
+          "0.95": 0.9821428571428571
+        },
+        "pinball_loss": {
+          "0.05": 0.03134953885354919,
+          "0.25": 0.12316097179545595,
+          "0.5": 0.15606402796446114,
+          "0.75": 0.08205618337013278,
+          "0.95": 0.014175973091492213
+        },
+        "mean_pinball_loss": 0.08136133901501826,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N1_fast/4002",
+      "scenario_id": "noise_N1_fast",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 160,
+      "context_size": 200,
+      "context_hash": "3b363fb4dd600cc9",
+      "fit_seconds": 0.18199879996245727,
+      "predict_seconds": 5.435566300002392,
+      "latency_seconds": 5.61756509996485,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N1_fast/4002",
+        "strategy": "random",
+        "context_hash": "3b363fb4dd600cc9",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.05625,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.056 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.945,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.945, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 18.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "18 context rows with target <= 0.2 and 141 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9103504619037757,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.910, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.9875,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.988 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 16,
+        "no_alert": 144
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.945,
+        "n_trajectories": 157,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 20.22738570004003
+      },
+      "gate_seconds": 20.24592199997278,
+      "ground_truth": {
+        "coverage_90": 0.99375,
+        "bad": false,
+        "coverage_90_positive_windows": 0.9230769230769231,
+        "n_positive_windows": 13,
+        "calibration_error": 0.11125,
+        "observed_frequency": {
+          "0.05": 0.00625,
+          "0.25": 0.1375,
+          "0.5": 0.34375,
+          "0.75": 0.94375,
+          "0.95": 1.0
+        },
+        "pinball_loss": {
+          "0.05": 0.03582365805310997,
+          "0.25": 0.11416363200888975,
+          "0.5": 0.07318025044910016,
+          "0.75": 0.04784755882709789,
+          "0.95": 0.009850685724481322
+        },
+        "mean_pinball_loss": 0.05617315701253582,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N2_slow/4000",
+      "scenario_id": "noise_N2_slow",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 249,
+      "context_size": 200,
+      "context_hash": "0dcc8019bbb81bb5",
+      "fit_seconds": 0.18495819997042418,
+      "predict_seconds": 6.8195771999889985,
+      "latency_seconds": 7.004535399959423,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N2_slow/4000",
+        "strategy": "random",
+        "context_hash": "0dcc8019bbb81bb5",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.04417670682730924,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.044 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.935,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.935, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 13.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "13 context rows with target <= 0.2 and 143 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.8314104257992112,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.831, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 48,
+        "no_alert": 201
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.935,
+        "n_trajectories": 148,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 20.014940099965315
+      },
+      "gate_seconds": 20.03906919999281,
+      "ground_truth": {
+        "coverage_90": 0.9317269076305221,
+        "bad": false,
+        "coverage_90_positive_windows": 0.6666666666666666,
+        "n_positive_windows": 12,
+        "calibration_error": 0.19469879518072292,
+        "observed_frequency": {
+          "0.05": 0.024096385542168676,
+          "0.25": 0.12449799196787148,
+          "0.5": 0.18473895582329317,
+          "0.75": 0.24899598393574296,
+          "0.95": 0.9558232931726908
+        },
+        "pinball_loss": {
+          "0.05": 0.03502687885286176,
+          "0.25": 0.10787467885332795,
+          "0.5": 0.1051907492457365,
+          "0.75": 0.053003837781761,
+          "0.95": 0.007114636338173261
+        },
+        "mean_pinball_loss": 0.06164215621437209,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N2_slow/4001",
+      "scenario_id": "noise_N2_slow",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 248,
+      "context_size": 200,
+      "context_hash": "ff99840dffa19270",
+      "fit_seconds": 0.1775049000279978,
+      "predict_seconds": 6.767061399994418,
+      "latency_seconds": 6.944566300022416,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N2_slow/4001",
+        "strategy": "random",
+        "context_hash": "ff99840dffa19270",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.04435483870967742,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.044 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.955,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.955, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 16.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "16 context rows with target <= 0.2 and 135 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9465314736887628,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.947, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 66,
+        "no_alert": 182
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.955,
+        "n_trajectories": 166,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 20.044563899980858
+      },
+      "gate_seconds": 20.066893199982587,
+      "ground_truth": {
+        "coverage_90": 0.9959677419354839,
+        "bad": false,
+        "coverage_90_positive_windows": 1.0,
+        "n_positive_windows": 12,
+        "calibration_error": 0.21838709677419352,
+        "observed_frequency": {
+          "0.05": 0.0,
+          "0.25": 0.08870967741935484,
+          "0.5": 0.17338709677419356,
+          "0.75": 0.24193548387096775,
+          "0.95": 0.9959677419354839
+        },
+        "pinball_loss": {
+          "0.05": 0.03998844057600857,
+          "0.25": 0.1382674682956258,
+          "0.5": 0.12397823474864211,
+          "0.75": 0.04160352029208429,
+          "0.95": 0.006327604495224838
+        },
+        "mean_pinball_loss": 0.07003305368151712,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N2_slow/4002",
+      "scenario_id": "noise_N2_slow",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 210,
+      "context_size": 200,
+      "context_hash": "40a7be4dbc1aaecf",
+      "fit_seconds": 0.1839314000098966,
+      "predict_seconds": 6.695882599975448,
+      "latency_seconds": 6.879813999985345,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N2_slow/4002",
+        "strategy": "random",
+        "context_hash": "40a7be4dbc1aaecf",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.02857142857142857,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.029 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.95,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.950, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 22.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "22 context rows with target <= 0.2 and 129 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.8747158172685916,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.875, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 34,
+        "no_alert": 176
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.95,
+        "n_trajectories": 170,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 19.364665500004776
+      },
+      "gate_seconds": 19.38335299998289,
+      "ground_truth": {
+        "coverage_90": 0.9523809523809523,
+        "bad": false,
+        "coverage_90_positive_windows": 0.25,
+        "n_positive_windows": 12,
+        "calibration_error": 0.06571428571428573,
+        "observed_frequency": {
+          "0.05": 0.04285714285714286,
+          "0.25": 0.20476190476190476,
+          "0.5": 0.2761904761904762,
+          "0.75": 0.7571428571428571,
+          "0.95": 0.9952380952380953
+        },
+        "pinball_loss": {
+          "0.05": 0.040723228945094676,
+          "0.25": 0.13257477359037856,
+          "0.5": 0.09661393467807713,
+          "0.75": 0.041284543504149535,
+          "0.95": 0.0074363760210821245
+        },
+        "mean_pinball_loss": 0.0637265713477564,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N2_fast/4000",
+      "scenario_id": "noise_N2_fast",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 94,
+      "context_size": 200,
+      "context_hash": "977450a15cb33ab1",
+      "fit_seconds": 0.2590850999695249,
+      "predict_seconds": 4.909921300015412,
+      "latency_seconds": 5.169006399984937,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N2_fast/4000",
+        "strategy": "random",
+        "context_hash": "977450a15cb33ab1",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.0,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.000 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.94,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.940, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 13.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "13 context rows with target <= 0.2 and 147 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9239348653381032,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.924, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 33,
+        "no_alert": 61
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.94,
+        "n_trajectories": 165,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 20.49720789998537
+      },
+      "gate_seconds": 20.507827699999325,
+      "ground_truth": {
+        "coverage_90": 0.9787234042553191,
+        "bad": false,
+        "coverage_90_positive_windows": 0.8333333333333334,
+        "n_positive_windows": 12,
+        "calibration_error": 0.07106382978723405,
+        "observed_frequency": {
+          "0.05": 0.02127659574468085,
+          "0.25": 0.10638297872340426,
+          "0.5": 0.43617021276595747,
+          "0.75": 0.6808510638297872,
+          "0.95": 1.0
+        },
+        "pinball_loss": {
+          "0.05": 0.029037102361538378,
+          "0.25": 0.08921143506539123,
+          "0.5": 0.07483095433925907,
+          "0.75": 0.06945097891115938,
+          "0.95": 0.016395383908079035
+        },
+        "mean_pinball_loss": 0.05578517091708542,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N2_fast/4001",
+      "scenario_id": "noise_N2_fast",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 115,
+      "context_size": 200,
+      "context_hash": "17af95b3ad1f5d13",
+      "fit_seconds": 0.19419499998912215,
+      "predict_seconds": 5.428591100033373,
+      "latency_seconds": 5.622786100022495,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N2_fast/4001",
+        "strategy": "random",
+        "context_hash": "17af95b3ad1f5d13",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.0,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.000 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.945,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.945, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 15.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "15 context rows with target <= 0.2 and 137 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.8499848404554108,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.850, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 12,
+        "no_alert": 103
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.945,
+        "n_trajectories": 166,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 20.797016800031997
+      },
+      "gate_seconds": 20.80797830002848,
+      "ground_truth": {
+        "coverage_90": 0.9478260869565217,
+        "bad": false,
+        "coverage_90_positive_windows": 0.6153846153846154,
+        "n_positive_windows": 13,
+        "calibration_error": 0.0582608695652174,
+        "observed_frequency": {
+          "0.05": 0.05217391304347826,
+          "0.25": 0.17391304347826086,
+          "0.5": 0.40869565217391307,
+          "0.75": 0.6782608695652174,
+          "0.95": 1.0
+        },
+        "pinball_loss": {
+          "0.05": 0.030707008917613517,
+          "0.25": 0.09845832574709745,
+          "0.5": 0.09473639527754646,
+          "0.75": 0.061113047905157536,
+          "0.95": 0.013795997494635028
+        },
+        "mean_pinball_loss": 0.05976215506841,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N2_fast/4002",
+      "scenario_id": "noise_N2_fast",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 179,
+      "context_size": 200,
+      "context_hash": "1825c8a0f7d60cd9",
+      "fit_seconds": 0.1851613000035286,
+      "predict_seconds": 5.9620386000024155,
+      "latency_seconds": 6.147199900005944,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N2_fast/4002",
+        "strategy": "random",
+        "context_hash": "1825c8a0f7d60cd9",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.0670391061452514,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.067 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.945,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.945, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 22.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "22 context rows with target <= 0.2 and 143 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.9225229800457693,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.923, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.9720670391061452,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.972 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 42,
+        "no_alert": 137
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.945,
+        "n_trajectories": 166,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 19.871043099963572
+      },
+      "gate_seconds": 19.885953999997582,
+      "ground_truth": {
+        "coverage_90": 0.9608938547486033,
+        "bad": false,
+        "coverage_90_positive_windows": 0.6923076923076923,
+        "n_positive_windows": 13,
+        "calibration_error": 0.12223463687150837,
+        "observed_frequency": {
+          "0.05": 0.03910614525139665,
+          "0.25": 0.1340782122905028,
+          "0.5": 0.25139664804469275,
+          "0.75": 0.5642458100558659,
+          "0.95": 1.0
+        },
+        "pinball_loss": {
+          "0.05": 0.03907051474684935,
+          "0.25": 0.12367644705800915,
+          "0.5": 0.09726300136738018,
+          "0.75": 0.049991938947271865,
+          "0.95": 0.008617207891693722
+        },
+        "mean_pinball_loss": 0.06372382200224086,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N3_slow/4000",
+      "scenario_id": "noise_N3_slow",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 156,
+      "context_size": 200,
+      "context_hash": "a5420df8b40d9a12",
+      "fit_seconds": 0.17909819999476895,
+      "predict_seconds": 6.027995300013572,
+      "latency_seconds": 6.207093500008341,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N3_slow/4000",
+        "strategy": "random",
+        "context_hash": "a5420df8b40d9a12",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.00641025641025641,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.006 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.945,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.945, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 18.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "18 context rows with target <= 0.2 and 127 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.841621356499912,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.842, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.9615384615384616,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.962 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 0,
+        "no_alert": 156
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.945,
+        "n_trajectories": 161,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 20.2941593999858
+      },
+      "gate_seconds": 20.306927600002382,
+      "ground_truth": {
+        "coverage_90": 0.9487179487179487,
+        "bad": false,
+        "coverage_90_positive_windows": 0.38461538461538464,
+        "n_positive_windows": 13,
+        "calibration_error": 0.052564102564102565,
+        "observed_frequency": {
+          "0.05": 0.05128205128205128,
+          "0.25": 0.2692307692307692,
+          "0.5": 0.3782051282051282,
+          "0.75": 0.6794871794871795,
+          "0.95": 1.0
+        },
+        "pinball_loss": {
+          "0.05": 0.034807293352640066,
+          "0.25": 0.10699560640595035,
+          "0.5": 0.11028306645368367,
+          "0.75": 0.05297245082354445,
+          "0.95": 0.010099180748347153
+        },
+        "mean_pinball_loss": 0.06303151955683314,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N3_slow/4001",
+      "scenario_id": "noise_N3_slow",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 318,
+      "context_size": 200,
+      "context_hash": "ae1883b318e83b56",
+      "fit_seconds": 0.1936996000004001,
+      "predict_seconds": 8.789757999998983,
+      "latency_seconds": 8.983457599999383,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N3_slow/4001",
+        "strategy": "random",
+        "context_hash": "ae1883b318e83b56",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.0031446540880503146,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.003 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.95,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.950, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 29.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "29 context rows with target <= 0.2 and 131 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.8907068785350223,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.891, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.9339622641509434,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.934 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 66,
+        "no_alert": 252
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.95,
+        "n_trajectories": 164,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 20.705086799978744
+      },
+      "gate_seconds": 20.74069360003341,
+      "ground_truth": {
+        "coverage_90": 0.9591194968553459,
+        "bad": false,
+        "coverage_90_positive_windows": 0.4166666666666667,
+        "n_positive_windows": 12,
+        "calibration_error": 0.19987421383647802,
+        "observed_frequency": {
+          "0.05": 0.0220125786163522,
+          "0.25": 0.08176100628930817,
+          "0.5": 0.16981132075471697,
+          "0.75": 0.3081761006289308,
+          "0.95": 0.9811320754716981
+        },
+        "pinball_loss": {
+          "0.05": 0.040728468343284564,
+          "0.25": 0.1318280965161329,
+          "0.5": 0.11014803814147292,
+          "0.75": 0.042662538678086975,
+          "0.95": 0.004935906105251211
+        },
+        "mean_pinball_loss": 0.06606060955684571,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N3_slow/4002",
+      "scenario_id": "noise_N3_slow",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 222,
+      "context_size": 200,
+      "context_hash": "0eda7e69f7a3dc6a",
+      "fit_seconds": 0.17531180003425106,
+      "predict_seconds": 6.661740000010468,
+      "latency_seconds": 6.837051800044719,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N3_slow/4002",
+        "strategy": "random",
+        "context_hash": "0eda7e69f7a3dc6a",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.013513513513513514,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.014 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.93,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.930, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 12.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "12 context rows with target <= 0.2 and 146 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.839528980043458,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.840, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 26,
+        "no_alert": 196
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.93,
+        "n_trajectories": 167,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 20.107812499976717
+      },
+      "gate_seconds": 20.139555100002326,
+      "ground_truth": {
+        "coverage_90": 0.9819819819819819,
+        "bad": false,
+        "coverage_90_positive_windows": 0.6923076923076923,
+        "n_positive_windows": 13,
+        "calibration_error": 0.18666666666666668,
+        "observed_frequency": {
+          "0.05": 0.018018018018018018,
+          "0.25": 0.0990990990990991,
+          "0.5": 0.18018018018018017,
+          "0.75": 0.36936936936936937,
+          "0.95": 1.0
+        },
+        "pinball_loss": {
+          "0.05": 0.03509255136444499,
+          "0.25": 0.10002371378534983,
+          "0.5": 0.07538544309438297,
+          "0.75": 0.03746076321275367,
+          "0.95": 0.007125133007317827
+        },
+        "mean_pinball_loss": 0.05101752089284985,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N3_fast/4000",
+      "scenario_id": "noise_N3_fast",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 191,
+      "context_size": 200,
+      "context_hash": "8b2f168f869d572f",
+      "fit_seconds": 0.17680600000312552,
+      "predict_seconds": 6.230845999962185,
+      "latency_seconds": 6.40765199996531,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N3_fast/4000",
+        "strategy": "random",
+        "context_hash": "8b2f168f869d572f",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.07329842931937172,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.073 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.95,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.950, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 16.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "16 context rows with target <= 0.2 and 141 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.8823047904032052,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.882, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.9895287958115183,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.990 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 35,
+        "no_alert": 156
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.95,
+        "n_trajectories": 162,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 20.285972799989395
+      },
+      "gate_seconds": 20.301474899984896,
+      "ground_truth": {
+        "coverage_90": 0.9738219895287958,
+        "bad": false,
+        "coverage_90_positive_windows": 0.6923076923076923,
+        "n_positive_windows": 13,
+        "calibration_error": 0.1912041884816754,
+        "observed_frequency": {
+          "0.05": 0.020942408376963352,
+          "0.25": 0.1099476439790576,
+          "0.5": 0.193717277486911,
+          "0.75": 0.31413612565445026,
+          "0.95": 0.9947643979057592
+        },
+        "pinball_loss": {
+          "0.05": 0.03588052220824071,
+          "0.25": 0.11449532620177873,
+          "0.5": 0.08644114420648952,
+          "0.75": 0.049924284385219404,
+          "0.95": 0.00933388392786319
+        },
+        "mean_pinball_loss": 0.0592150321859183,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N3_fast/4001",
+      "scenario_id": "noise_N3_fast",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 92,
+      "context_size": 200,
+      "context_hash": "f542d8799b6027e9",
+      "fit_seconds": 0.19728520000353456,
+      "predict_seconds": 5.780880799982697,
+      "latency_seconds": 5.978165999986231,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N3_fast/4001",
+        "strategy": "random",
+        "context_hash": "f542d8799b6027e9",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.0,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.000 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.94,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.940, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 16.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "16 context rows with target <= 0.2 and 139 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.8224515104686729,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.822, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 1.0,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "1.000 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 2,
+        "no_alert": 90
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.94,
+        "n_trajectories": 169,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 22.316371700027958
+      },
+      "gate_seconds": 22.328567299991846,
+      "ground_truth": {
+        "coverage_90": 0.9565217391304348,
+        "bad": false,
+        "coverage_90_positive_windows": 0.6923076923076923,
+        "n_positive_windows": 13,
+        "calibration_error": 0.07869565217391306,
+        "observed_frequency": {
+          "0.05": 0.043478260869565216,
+          "0.25": 0.391304347826087,
+          "0.5": 0.6739130434782609,
+          "0.75": 0.7282608695652174,
+          "0.95": 1.0
+        },
+        "pinball_loss": {
+          "0.05": 0.026929019037431393,
+          "0.25": 0.10969030836717562,
+          "0.5": 0.1597414920685829,
+          "0.75": 0.08528973134251702,
+          "0.95": 0.017118269732509957
+        },
+        "mean_pinball_loss": 0.07975376410964338,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    },
+    {
+      "trajectory_id": "noise_N3_fast/4002",
+      "scenario_id": "noise_N3_fast",
+      "family": "noise_tipping",
+      "split": "test_out_of_prior",
+      "n_windows": 206,
+      "context_size": 200,
+      "context_hash": "ba1457d0255a1161",
+      "fit_seconds": 0.2980892999912612,
+      "predict_seconds": 7.930088200024329,
+      "latency_seconds": 8.22817750001559,
+      "cache_hit": true,
+      "gate": {
+        "run_id": "tabpfn_local-random-ood-20261028T183923Z-b21853cc",
+        "trajectory_id": "noise_N3_fast/4002",
+        "strategy": "random",
+        "context_hash": "ba1457d0255a1161",
+        "checks": [
+          {
+            "name": "min_context_size",
+            "value": 200.0,
+            "threshold": 100.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "200 context rows, need at least 100",
+            "source": "fixed"
+          },
+          {
+            "name": "ood_share",
+            "value": 0.06796116504854369,
+            "threshold": 0.3,
+            "comparison": "<=",
+            "passed": true,
+            "reason": "0.068 of query windows are far from the pool, limit 0.3",
+            "source": "tuned"
+          },
+          {
+            "name": "context_calibration",
+            "value": 0.945,
+            "threshold": [
+              0.7,
+              1.0
+            ],
+            "comparison": "within",
+            "passed": true,
+            "reason": "held-out context coverage 0.945, allowed [0.7, 1.0]",
+            "source": "tuned"
+          },
+          {
+            "name": "context_not_degenerate",
+            "value": 23.0,
+            "threshold": 10.0,
+            "comparison": ">=",
+            "passed": true,
+            "reason": "23 context rows with target <= 0.2 and 132 with target >= 0.6, need 10 of each",
+            "source": "fixed"
+          },
+          {
+            "name": "output_integrity",
+            "value": 0.0,
+            "threshold": 0.01,
+            "comparison": "== and <=",
+            "passed": true,
+            "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+            "source": "fixed"
+          }
+        ],
+        "advisories": [
+          {
+            "name": "interval_width_cap",
+            "value": 0.917021349920377,
+            "threshold": 0.6,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "median 90% interval width 0.917, cap 0.6",
+            "source": "fixed"
+          },
+          {
+            "name": "near_tipping_support",
+            "value": 0.9563106796116505,
+            "threshold": 0.5,
+            "comparison": "<=",
+            "passed": false,
+            "reason": "0.956 of query windows have no near-tipping context row within the cut",
+            "source": "fixed"
+          }
+        ],
+        "passed": true,
+        "reasons": [],
+        "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+        "gate_config_status": "tuned",
+        "gate_code_version": "0.1.0",
+        "failed": []
+      },
+      "decisions": {
+        "abstain": 0,
+        "alert": 38,
+        "no_alert": 168
+      },
+      "decisions_note": null,
+      "context_calibration": {
+        "coverage": 0.945,
+        "n_trajectories": 167,
+        "n_rows": 200,
+        "n_folds": 5,
+        "n_cache_hits": 0,
+        "seconds": 18.415366199973505
+      },
+      "gate_seconds": 18.432879800035153,
+      "ground_truth": {
+        "coverage_90": 0.9514563106796117,
+        "bad": false,
+        "coverage_90_positive_windows": 0.6153846153846154,
+        "n_positive_windows": 13,
+        "calibration_error": 0.13844660194174757,
+        "observed_frequency": {
+          "0.05": 0.024271844660194174,
+          "0.25": 0.13106796116504854,
+          "0.5": 0.24757281553398058,
+          "0.75": 0.48058252427184467,
+          "0.95": 0.9757281553398058
+        },
+        "pinball_loss": {
+          "0.05": 0.03943915676093282,
+          "0.25": 0.13476105982447176,
+          "0.5": 0.12124516599183317,
+          "0.75": 0.053863464361845234,
+          "0.95": 0.007966950332571433
+        },
+        "mean_pinball_loss": 0.07145515945433088,
+        "used_by_gate": false
+      },
+      "p_critical": null
+    }
+  ],
+  "trace_file": "results/traces/tabpfn_local-random-ood-20261028T183923Z-b21853cc.jsonl",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "gate": {
+    "config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+    "config_status": "tuned",
+    "note": null,
+    "n_runs": 36,
+    "n_passed": 35,
+    "n_blocked": 1,
+    "abstention_rate": 0.027777777777777776,
+    "blocked_by_check": {
+      "ood_share": 1
+    },
+    "advisories_failed": {
+      "interval_width_cap": 36,
+      "near_tipping_support": 36
+    },
+    "n_bad": 4,
+    "coverage_90_mean_all": 0.9187103833641067,
+    "coverage_90_mean_accepted": 0.9192988741017335,
+    "bad_share_all": 0.1111111111111111,
+    "bad_share_accepted": 0.11428571428571428,
+    "blocking": {
+      "n_counted": 36,
+      "n_blocked": 1,
+      "n_bad": 4,
+      "n_bad_blocked": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "abstention_good": 0.03125
+    },
+    "blocking_ci": {
+      "precision": [
+        0.0,
+        0.0
+      ],
+      "recall": [
+        0.0,
+        0.0
+      ]
+    },
+    "precision_blocking_bad": 0.0,
+    "recall_blocking_bad": 0.0,
+    "auroc_accepted": {
+      "tipping_only": {
+        "neg_median": {
+          "auroc": 0.5816714711067767,
+          "ci_low": 0.5257967010408212,
+          "ci_high": 0.6330853719416157,
+          "ci": 0.95,
+          "n_boot": 1000,
+          "n_boot_skipped": 0,
+          "n_trajectories": 35,
+          "n_positive_windows": 439,
+          "n_negative_windows": 6343,
+          "role": null
+        },
+        "p_critical": {
+          "auroc": 0.6006653793377247,
+          "ci_low": 0.5464010148448616,
+          "ci_high": 0.6537957751456579,
+          "ci": 0.95,
+          "n_boot": 1000,
+          "n_boot_skipped": 0,
+          "n_trajectories": 35,
+          "n_positive_windows": 439,
+          "n_negative_windows": 6343,
+          "role": null
+        }
+      },
+      "family:noise_tipping": {
+        "neg_median": {
+          "auroc": 0.6354809872265104,
+          "ci_low": 0.560943878170199,
+          "ci_high": 0.7149262355586583,
+          "ci": 0.95,
+          "n_boot": 1000,
+          "n_boot_skipped": 0,
+          "n_trajectories": 18,
+          "n_positive_windows": 227,
+          "n_negative_windows": 2868,
+          "role": "out_of_prior"
+        },
+        "p_critical": {
+          "auroc": 0.6939416560681724,
+          "ci_low": 0.6300199798880157,
+          "ci_high": 0.7590315032192616,
+          "ci": 0.95,
+          "n_boot": 1000,
+          "n_boot_skipped": 0,
+          "n_trajectories": 18,
+          "n_positive_windows": 227,
+          "n_negative_windows": 2868,
+          "role": "out_of_prior"
+        }
+      },
+      "family:rate_tipping": {
+        "neg_median": {
+          "auroc": 0.5779801818922293,
+          "ci_low": 0.4936948494354012,
+          "ci_high": 0.6589430568080307,
+          "ci": 0.95,
+          "n_boot": 1000,
+          "n_boot_skipped": 0,
+          "n_trajectories": 17,
+          "n_positive_windows": 212,
+          "n_negative_windows": 3475,
+          "role": "out_of_prior"
+        },
+        "p_critical": {
+          "auroc": 0.5751947875661805,
+          "ci_low": 0.4921454840725693,
+          "ci_high": 0.6632369499290333,
+          "ci": 0.95,
+          "n_boot": 1000,
+          "n_boot_skipped": 0,
+          "n_trajectories": 17,
+          "n_positive_windows": 212,
+          "n_negative_windows": 3475,
+          "role": "out_of_prior"
+        }
+      }
+    }
+  },
+  "auroc": {
+    "tipping_only": {
+      "neg_median": {
+        "auroc": 0.5842587246724787,
+        "ci_low": 0.5374086152664368,
+        "ci_high": 0.6330515768341762,
+        "ci": 0.95,
+        "n_boot": 1000,
+        "n_boot_skipped": 0,
+        "n_trajectories": 36,
+        "n_positive_windows": 451,
+        "n_negative_windows": 6571,
+        "role": null
+      },
+      "p_critical": {
+        "auroc": 0.5994534879287571,
+        "ci_low": 0.5471066366992309,
+        "ci_high": 0.6489235148507303,
+        "ci": 0.95,
+        "n_boot": 1000,
+        "n_boot_skipped": 0,
+        "n_trajectories": 36,
+        "n_positive_windows": 451,
+        "n_negative_windows": 6571,
+        "role": null
+      }
+    },
+    "family:noise_tipping": {
+      "neg_median": {
+        "auroc": 0.6354809872265104,
+        "ci_low": 0.560943878170199,
+        "ci_high": 0.7149262355586583,
+        "ci": 0.95,
+        "n_boot": 1000,
+        "n_boot_skipped": 0,
+        "n_trajectories": 18,
+        "n_positive_windows": 227,
+        "n_negative_windows": 2868,
+        "role": "out_of_prior"
+      },
+      "p_critical": {
+        "auroc": 0.6939416560681724,
+        "ci_low": 0.6300199798880157,
+        "ci_high": 0.7590315032192616,
+        "ci": 0.95,
+        "n_boot": 1000,
+        "n_boot_skipped": 0,
+        "n_trajectories": 18,
+        "n_positive_windows": 227,
+        "n_negative_windows": 2868,
+        "role": "out_of_prior"
+      }
+    },
+    "family:rate_tipping": {
+      "neg_median": {
+        "auroc": 0.5847020755372117,
+        "ci_low": 0.5031272688173485,
+        "ci_high": 0.6639589711645897,
+        "ci": 0.95,
+        "n_boot": 1000,
+        "n_boot_skipped": 0,
+        "n_trajectories": 18,
+        "n_positive_windows": 224,
+        "n_negative_windows": 3703,
+        "role": "out_of_prior"
+      },
+      "p_critical": {
+        "auroc": 0.5770152578990033,
+        "ci_low": 0.4939426443375401,
+        "ci_high": 0.6628153426719657,
+        "ci": 0.95,
+        "n_boot": 1000,
+        "n_boot_skipped": 0,
+        "n_trajectories": 18,
+        "n_positive_windows": 224,
+        "n_negative_windows": 3703,
+        "role": "out_of_prior"
+      }
+    }
+  }
+}

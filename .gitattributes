@@ -1,0 +1,2 @@
+configs/gate.yaml -text
+configs/gate.frozen.sha256 -text

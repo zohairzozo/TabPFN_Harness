@@ -1,0 +1,200 @@
+{
+  "method": "pfn",
+  "backend": "tabpfn_local",
+  "strategy": "family_matched",
+  "oracle": true,
+  "split": "ood",
+  "dataset_splits": [
+    "test_out_of_prior"
+  ],
+  "model_version": "v3.5",
+  "package_version": "9.2.0",
+  "device": "cpu",
+  "seed": 0,
+  "critical_threshold": 0.2,
+  "quantile_levels": [
+    0.05,
+    0.25,
+    0.5,
+    0.75,
+    0.95
+  ],
+  "max_context": 200,
+  "max_context_config_default": 2000,
+  "seeds_per_scenario": 3,
+  "bootstrap": {
+    "n": 1000,
+    "seed": 0,
+    "ci": 0.95
+  },
+  "scores": {
+    "neg_median": "minus the median of the predicted target; higher means closer to the tip",
+    "p_critical": "predicted probability that the target is at or below critical_threshold"
+  },
+  "pool": {
+    "n_rows": 105980,
+    "n_trajectories": 540
+  },
+  "versions": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1"
+  },
+  "n_trajectories": 0,
+  "n_windows": 0,
+  "n_cache_hits": 0,
+  "skipped": [
+    {
+      "trajectory_id": "rate_L1_slow/4000",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L1_slow/4000"
+    },
+    {
+      "trajectory_id": "rate_L1_slow/4001",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L1_slow/4001"
+    },
+    {
+      "trajectory_id": "rate_L1_slow/4002",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L1_slow/4002"
+    },
+    {
+      "trajectory_id": "rate_L1_fast/4000",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L1_fast/4000"
+    },
+    {
+      "trajectory_id": "rate_L1_fast/4001",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L1_fast/4001"
+    },
+    {
+      "trajectory_id": "rate_L1_fast/4002",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L1_fast/4002"
+    },
+    {
+      "trajectory_id": "rate_L2_slow/4000",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L2_slow/4000"
+    },
+    {
+      "trajectory_id": "rate_L2_slow/4001",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L2_slow/4001"
+    },
+    {
+      "trajectory_id": "rate_L2_slow/4002",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L2_slow/4002"
+    },
+    {
+      "trajectory_id": "rate_L2_fast/4000",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L2_fast/4000"
+    },
+    {
+      "trajectory_id": "rate_L2_fast/4001",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L2_fast/4001"
+    },
+    {
+      "trajectory_id": "rate_L2_fast/4002",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L2_fast/4002"
+    },
+    {
+      "trajectory_id": "rate_L3_slow/4000",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L3_slow/4000"
+    },
+    {
+      "trajectory_id": "rate_L3_slow/4001",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L3_slow/4001"
+    },
+    {
+      "trajectory_id": "rate_L3_slow/4002",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L3_slow/4002"
+    },
+    {
+      "trajectory_id": "rate_L3_fast/4000",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L3_fast/4000"
+    },
+    {
+      "trajectory_id": "rate_L3_fast/4001",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L3_fast/4001"
+    },
+    {
+      "trajectory_id": "rate_L3_fast/4002",
+      "reason": "no pool rows in family 'rate_tipping' for rate_L3_fast/4002"
+    },
+    {
+      "trajectory_id": "noise_N1_slow/4000",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N1_slow/4000"
+    },
+    {
+      "trajectory_id": "noise_N1_slow/4001",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N1_slow/4001"
+    },
+    {
+      "trajectory_id": "noise_N1_slow/4002",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N1_slow/4002"
+    },
+    {
+      "trajectory_id": "noise_N1_fast/4000",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N1_fast/4000"
+    },
+    {
+      "trajectory_id": "noise_N1_fast/4001",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N1_fast/4001"
+    },
+    {
+      "trajectory_id": "noise_N1_fast/4002",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N1_fast/4002"
+    },
+    {
+      "trajectory_id": "noise_N2_slow/4000",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N2_slow/4000"
+    },
+    {
+      "trajectory_id": "noise_N2_slow/4001",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N2_slow/4001"
+    },
+    {
+      "trajectory_id": "noise_N2_slow/4002",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N2_slow/4002"
+    },
+    {
+      "trajectory_id": "noise_N2_fast/4000",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N2_fast/4000"
+    },
+    {
+      "trajectory_id": "noise_N2_fast/4001",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N2_fast/4001"
+    },
+    {
+      "trajectory_id": "noise_N2_fast/4002",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N2_fast/4002"
+    },
+    {
+      "trajectory_id": "noise_N3_slow/4000",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N3_slow/4000"
+    },
+    {
+      "trajectory_id": "noise_N3_slow/4001",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N3_slow/4001"
+    },
+    {
+      "trajectory_id": "noise_N3_slow/4002",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N3_slow/4002"
+    },
+    {
+      "trajectory_id": "noise_N3_fast/4000",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N3_fast/4000"
+    },
+    {
+      "trajectory_id": "noise_N3_fast/4001",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N3_fast/4001"
+    },
+    {
+      "trajectory_id": "noise_N3_fast/4002",
+      "reason": "no pool rows in family 'noise_tipping' for noise_N3_fast/4002"
+    }
+  ],
+  "timing": {
+    "total_wall_seconds": 3.6584350999910384,
+    "n_trajectories": 0
+  },
+  "trajectories": [],
+  "trace_file": "results/traces/tabpfn_local-family_matched-ood-20261027T161530Z-138d0006.jsonl",
+  "auroc": null
+}

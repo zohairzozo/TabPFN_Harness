@@ -1,0 +1,36 @@
+# PFN backend settings, read by src/pfngate/pfn/.
+
+backend: tabpfn_local      # tabpfn_local | tabpfn_client | tippfn | fake
+
+# Verified on 2026-10-26 with tabpfn 9.2.0 (results/timing_tabpfn.json).
+# The weights for v3.x are gated and non-commercial. Never redistribute them.
+model_version: v3.5
+device: cpu
+seed: 0
+
+# Every backend returns these quantile levels (TipPFN would return 99).
+quantile_levels: [0.05, 0.25, 0.5, 0.75, 0.95]
+
+# p_critical is the probability that the target is at or below this value.
+# The target is 0 at the tip and 1 far from it (docs/LABELS.md).
+critical_threshold: 0.2
+
+# Context selection (src/pfngate/pfn/context.py).
+context:
+  max_context: 2000        # rows. v3.5 on CPU refuses more than 5000; predict time grows
+                           # quickly with context size (results/timing_tabpfn.json)
+  knn_neighbors: 50        # nearest context rows taken per query window
+  balanced_near_share: 0.25  # knn_balanced: share of the context reserved for pool rows near
+                             # tipping (target <= critical_threshold). Fixed by design in
+                             # docs/GATE.md (decision 6), not tuned.
+
+# Scoring (src/pfngate/evals/run_pfn.py). The bootstrap settings are the same as in
+# configs/baseline_ews.yaml so both are scored alike (a test checks they match).
+evaluation:
+  target_false_alarm_rate: 0.05   # the alarm threshold is set so that at most this share of
+                                  # VALIDATION control windows alarm. Never tuned on test.
+  bootstrap: {n: 1000, seed: 0, ci: 0.95}
+
+# tabpfn-client sends the data to a remote server. Off unless set to true here.
+tabpfn_client:
+  enabled: false

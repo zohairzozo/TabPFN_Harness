@@ -40,6 +40,7 @@ class BaselineConfig:
     k_windows: int
     combine: str
     alarm_threshold: float
+    target_false_alarm_rate: float
     splits: tuple[str, ...]
     bootstrap_n: int
     bootstrap_seed: int
@@ -55,6 +56,7 @@ def load_baseline_config(path: Path = DEFAULT_BASELINE_CONFIG) -> BaselineConfig
         k_windows=int(raw["rolling"]["k_windows"]),
         combine=str(raw["combine"]),
         alarm_threshold=float(raw["alarm_threshold"]),
+        target_false_alarm_rate=float(raw["target_false_alarm_rate"]),
         splits=tuple(raw["splits"]),
         bootstrap_n=int(raw["bootstrap"]["n"]),
         bootstrap_seed=int(raw["bootstrap"]["seed"]),

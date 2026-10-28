@@ -25,7 +25,12 @@ from pfngate.evals.baseline_ews import (  # noqa: E402
     load_baseline_config,
     score_split,
 )
-from pfngate.evals.metrics import bootstrap_auroc, false_alarm_rate, write_json  # noqa: E402
+from pfngate.evals.metrics import (  # noqa: E402
+    alarm_threshold_for_rate,
+    bootstrap_auroc,
+    false_alarm_rate,
+    write_json,
+)
 from pfngate.features import load_feature_config  # noqa: E402
 from pfngate.scenarios import load_scenarios  # noqa: E402
 
@@ -65,6 +70,35 @@ def false_alarm_block(controls: pd.DataFrame, cfg: BaselineConfig) -> dict[str, 
     }
 
 
+def validation_threshold_block(
+    controls_by_split: dict[str, pd.DataFrame], cfg: BaselineConfig
+) -> dict[str, Any]:
+    """False alarms on controls at a threshold set from VALIDATION controls only.
+
+    The threshold is the smallest value at which at most target_false_alarm_rate of the
+    validation control windows alarm. It is then applied unchanged to the other splits.
+    """
+    thr = alarm_threshold_for_rate(
+        controls_by_split["validation"]["score"].to_numpy(), cfg.target_false_alarm_rate
+    )
+
+    def rates(controls: pd.DataFrame) -> dict[str, Any]:
+        groups = {"all_controls": controls, **dict(iter(controls.groupby("family")))}
+        return {
+            name: false_alarm_rate(g["score"].to_numpy(), g["trajectory_id"].to_numpy(), thr)
+            for name, g in groups.items()
+        }
+
+    held_out = pd.concat([g for s, g in controls_by_split.items() if s != "validation"])
+    return {
+        "rule": "threshold from validation controls only, then applied unchanged to the rest",
+        "target_window_false_alarm_rate": cfg.target_false_alarm_rate,
+        "threshold": thr,
+        "splits": {split: rates(g) for split, g in controls_by_split.items()},
+        "held_out_pooled": rates(held_out),
+    }
+
+
 def run(cfg: BaselineConfig) -> dict[str, Any]:
     fc = load_feature_config()
     scenarios = load_scenarios()
@@ -90,12 +124,14 @@ def run(cfg: BaselineConfig) -> dict[str, Any]:
         "splits": {},
     }
     all_controls = []
+    controls_by_split: dict[str, pd.DataFrame] = {}
     for split in cfg.splits:
         t0 = time.perf_counter()
         df, dropped = score_split(split, scenarios, fc, cfg)
         scored = df[df["score"].notna()]
         controls = scored[scored["role"] == "control"]
         all_controls.append(controls)
+        controls_by_split[split] = controls
         result["splits"][split] = {
             "n_trajectories": int(df["trajectory_id"].nunique()),
             "n_windows": len(df),
@@ -106,6 +142,9 @@ def run(cfg: BaselineConfig) -> dict[str, Any]:
         }
         print(f"{split}: {len(df)} windows in {time.perf_counter() - t0:.1f} s")
     result["false_alarms_pooled"] = false_alarm_block(pd.concat(all_controls), cfg)
+    result["false_alarms_at_validation_threshold"] = validation_threshold_block(
+        controls_by_split, cfg
+    )
     return result
 
 

@@ -1,0 +1,1374 @@
+{
+  "method": "pfn",
+  "backend": "tabpfn_local",
+  "strategy": "family_matched",
+  "oracle": true,
+  "split": "controls",
+  "dataset_splits": [
+    "validation",
+    "test_in_prior",
+    "test_out_of_prior"
+  ],
+  "model_version": "v3.5",
+  "package_version": "9.2.0",
+  "device": "cpu",
+  "seed": 0,
+  "critical_threshold": 0.2,
+  "quantile_levels": [
+    0.05,
+    0.25,
+    0.5,
+    0.75,
+    0.95
+  ],
+  "max_context": 200,
+  "max_context_config_default": 2000,
+  "seeds_per_scenario": 3,
+  "bootstrap": {
+    "n": 1000,
+    "seed": 0,
+    "ci": 0.95
+  },
+  "scores": {
+    "neg_median": "minus the median of the predicted target; higher means closer to the tip",
+    "p_critical": "predicted probability that the target is at or below critical_threshold"
+  },
+  "pool": {
+    "n_rows": 105980,
+    "n_trajectories": 540
+  },
+  "versions": {
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1"
+  },
+  "n_trajectories": 81,
+  "n_windows": 24705,
+  "n_cache_hits": 0,
+  "skipped": [],
+  "timing": {
+    "total_wall_seconds": 39.745511699991766,
+    "n_trajectories": 81,
+    "latency_seconds_median": 0.2191061000339687,
+    "latency_seconds_mean": 0.22953997036646245,
+    "latency_seconds_max": 0.38217820005957037,
+    "fit_seconds_median": 0.21859180001774803,
+    "predict_seconds_median": 0.000526999996509403,
+    "windows_per_trajectory_median": 305.0
+  },
+  "trajectories": [
+    {
+      "trajectory_id": "ou_L1/2000",
+      "scenario_id": "ou_L1",
+      "family": "control_ou",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "eed76ff37506132a",
+      "fit_seconds": 0.3716779000242241,
+      "predict_seconds": 0.0105003000353463,
+      "latency_seconds": 0.38217820005957037,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L1/2001",
+      "scenario_id": "ou_L1",
+      "family": "control_ou",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "c5daff0795b745b2",
+      "fit_seconds": 0.3152059999993071,
+      "predict_seconds": 0.0005671000108122826,
+      "latency_seconds": 0.3157731000101194,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L1/2002",
+      "scenario_id": "ou_L1",
+      "family": "control_ou",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "906711b043148450",
+      "fit_seconds": 0.20045200001914054,
+      "predict_seconds": 0.0004450000124052167,
+      "latency_seconds": 0.20089700003154576,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L2/2000",
+      "scenario_id": "ou_L2",
+      "family": "control_ou",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "0a11ac2f09b4122a",
+      "fit_seconds": 0.3026807999704033,
+      "predict_seconds": 0.000649999943561852,
+      "latency_seconds": 0.30333079991396517,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L2/2001",
+      "scenario_id": "ou_L2",
+      "family": "control_ou",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "d193702ba0230a4e",
+      "fit_seconds": 0.22653210000135005,
+      "predict_seconds": 0.0007877000025473535,
+      "latency_seconds": 0.2273198000038974,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L2/2002",
+      "scenario_id": "ou_L2",
+      "family": "control_ou",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "b22e61e8b9e06fd4",
+      "fit_seconds": 0.1772604000288993,
+      "predict_seconds": 0.00034819997381418943,
+      "latency_seconds": 0.1776086000027135,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L3/2000",
+      "scenario_id": "ou_L3",
+      "family": "control_ou",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "22abbcaeed268472",
+      "fit_seconds": 0.1652542999945581,
+      "predict_seconds": 0.0003535000141710043,
+      "latency_seconds": 0.1656078000087291,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L3/2001",
+      "scenario_id": "ou_L3",
+      "family": "control_ou",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "1e78027e029f02c7",
+      "fit_seconds": 0.1628783000051044,
+      "predict_seconds": 0.00034900003811344504,
+      "latency_seconds": 0.16322730004321784,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L3/2002",
+      "scenario_id": "ou_L3",
+      "family": "control_ou",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "45df56a6036cd655",
+      "fit_seconds": 0.16842530004214495,
+      "predict_seconds": 0.0004181999829597771,
+      "latency_seconds": 0.16884350002510473,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L1/2000",
+      "scenario_id": "short_ramp_L1",
+      "family": "control_short_ramp",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "2a67a2fe4825184d",
+      "fit_seconds": 0.2909844000241719,
+      "predict_seconds": 0.0005054000066593289,
+      "latency_seconds": 0.29148980003083125,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L1/2001",
+      "scenario_id": "short_ramp_L1",
+      "family": "control_short_ramp",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "4621036f8a222bb5",
+      "fit_seconds": 0.1726382999913767,
+      "predict_seconds": 0.0004005000228062272,
+      "latency_seconds": 0.17303880001418293,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L1/2002",
+      "scenario_id": "short_ramp_L1",
+      "family": "control_short_ramp",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "928a82dc41c5232f",
+      "fit_seconds": 0.17326150002190843,
+      "predict_seconds": 0.0004293000092729926,
+      "latency_seconds": 0.17369080003118142,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L2/2000",
+      "scenario_id": "short_ramp_L2",
+      "family": "control_short_ramp",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "d2a28c6bce4b6362",
+      "fit_seconds": 0.17532119998941198,
+      "predict_seconds": 0.0004259999841451645,
+      "latency_seconds": 0.17574719997355714,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L2/2001",
+      "scenario_id": "short_ramp_L2",
+      "family": "control_short_ramp",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "15acfb50e853d459",
+      "fit_seconds": 0.22304169996641576,
+      "predict_seconds": 0.00047109997831285,
+      "latency_seconds": 0.2235127999447286,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L2/2002",
+      "scenario_id": "short_ramp_L2",
+      "family": "control_short_ramp",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "14b447025a55263c",
+      "fit_seconds": 0.18283940001856536,
+      "predict_seconds": 0.0005863999831490219,
+      "latency_seconds": 0.18342580000171438,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L3/2000",
+      "scenario_id": "short_ramp_L3",
+      "family": "control_short_ramp",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "17eb7bb72fee078f",
+      "fit_seconds": 0.19567729998379946,
+      "predict_seconds": 0.0003895999980159104,
+      "latency_seconds": 0.19606689998181537,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L3/2001",
+      "scenario_id": "short_ramp_L3",
+      "family": "control_short_ramp",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "4016df771e23a5b4",
+      "fit_seconds": 0.17099179996876046,
+      "predict_seconds": 0.00039569998625665903,
+      "latency_seconds": 0.17138749995501712,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L3/2002",
+      "scenario_id": "short_ramp_L3",
+      "family": "control_short_ramp",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "c6d9a96eaae60baf",
+      "fit_seconds": 0.2816296999808401,
+      "predict_seconds": 0.0005041999975219369,
+      "latency_seconds": 0.282133899978362,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L1/2000",
+      "scenario_id": "regime_L1",
+      "family": "control_regime_change",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "5a372b4cf2c74ac2",
+      "fit_seconds": 0.1914905000012368,
+      "predict_seconds": 0.002782600000500679,
+      "latency_seconds": 0.19427310000173748,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L1/2001",
+      "scenario_id": "regime_L1",
+      "family": "control_regime_change",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "c838c9b6e1d70367",
+      "fit_seconds": 0.17490529996575788,
+      "predict_seconds": 0.001243299979250878,
+      "latency_seconds": 0.17614859994500875,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L1/2002",
+      "scenario_id": "regime_L1",
+      "family": "control_regime_change",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "2602aae7efcd62c8",
+      "fit_seconds": 0.20750859996769577,
+      "predict_seconds": 0.0004990999586880207,
+      "latency_seconds": 0.2080076999263838,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L2/2000",
+      "scenario_id": "regime_L2",
+      "family": "control_regime_change",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "e2d86a70df1010c4",
+      "fit_seconds": 0.1746541999746114,
+      "predict_seconds": 0.0004886999959126115,
+      "latency_seconds": 0.175142899970524,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L2/2001",
+      "scenario_id": "regime_L2",
+      "family": "control_regime_change",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "d280a793f72d68c0",
+      "fit_seconds": 0.2248879999970086,
+      "predict_seconds": 0.0006775999790988863,
+      "latency_seconds": 0.22556559997610748,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L2/2002",
+      "scenario_id": "regime_L2",
+      "family": "control_regime_change",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "dbaebca503120386",
+      "fit_seconds": 0.1806817000033334,
+      "predict_seconds": 0.0004317999701015651,
+      "latency_seconds": 0.18111349997343495,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L3/2000",
+      "scenario_id": "regime_L3",
+      "family": "control_regime_change",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "9275c6da03673b80",
+      "fit_seconds": 0.20109919999958947,
+      "predict_seconds": 0.000526999996509403,
+      "latency_seconds": 0.20162619999609888,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L3/2001",
+      "scenario_id": "regime_L3",
+      "family": "control_regime_change",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "16dad4cd00d8093b",
+      "fit_seconds": 0.3678552000201307,
+      "predict_seconds": 0.0005081999697722495,
+      "latency_seconds": 0.368363399989903,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L3/2002",
+      "scenario_id": "regime_L3",
+      "family": "control_regime_change",
+      "split": "validation",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "327f115c3705692b",
+      "fit_seconds": 0.18752700003096834,
+      "predict_seconds": 0.0004161999677307904,
+      "latency_seconds": 0.18794319999869913,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L1/3000",
+      "scenario_id": "ou_L1",
+      "family": "control_ou",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "650632cce284468d",
+      "fit_seconds": 0.18351399997482076,
+      "predict_seconds": 0.0005040999967604876,
+      "latency_seconds": 0.18401809997158125,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L1/3001",
+      "scenario_id": "ou_L1",
+      "family": "control_ou",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "86d4276ac13356fb",
+      "fit_seconds": 0.20473960001254454,
+      "predict_seconds": 0.000637299963273108,
+      "latency_seconds": 0.20537689997581765,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L1/3002",
+      "scenario_id": "ou_L1",
+      "family": "control_ou",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "1d121bd1d0d51556",
+      "fit_seconds": 0.1978073000209406,
+      "predict_seconds": 0.0005521999555639923,
+      "latency_seconds": 0.1983594999765046,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L2/3000",
+      "scenario_id": "ou_L2",
+      "family": "control_ou",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "7cfe9e203d133a45",
+      "fit_seconds": 0.21090589999221265,
+      "predict_seconds": 0.0004997999640181661,
+      "latency_seconds": 0.21140569995623082,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L2/3001",
+      "scenario_id": "ou_L2",
+      "family": "control_ou",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "3794cffe953aa236",
+      "fit_seconds": 0.20035190001362935,
+      "predict_seconds": 0.0005100999842397869,
+      "latency_seconds": 0.20086199999786913,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L2/3002",
+      "scenario_id": "ou_L2",
+      "family": "control_ou",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "47626f13c9ce6b7e",
+      "fit_seconds": 0.20164019998628646,
+      "predict_seconds": 0.0004810999962501228,
+      "latency_seconds": 0.20212129998253658,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L3/3000",
+      "scenario_id": "ou_L3",
+      "family": "control_ou",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "8d44b7f89b76c720",
+      "fit_seconds": 0.28826000000117347,
+      "predict_seconds": 0.00039659999310970306,
+      "latency_seconds": 0.28865659999428317,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L3/3001",
+      "scenario_id": "ou_L3",
+      "family": "control_ou",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "19ef4acf1f36b3a0",
+      "fit_seconds": 0.18615279998630285,
+      "predict_seconds": 0.0005160999717190862,
+      "latency_seconds": 0.18666889995802194,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L3/3002",
+      "scenario_id": "ou_L3",
+      "family": "control_ou",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "68db6bb91e9783ce",
+      "fit_seconds": 0.22701669996604323,
+      "predict_seconds": 0.0006172999856062233,
+      "latency_seconds": 0.22763399995164946,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L1/3000",
+      "scenario_id": "short_ramp_L1",
+      "family": "control_short_ramp",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "9588be3bbcc51d30",
+      "fit_seconds": 0.184194200031925,
+      "predict_seconds": 0.0005392999737523496,
+      "latency_seconds": 0.18473350000567734,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L1/3001",
+      "scenario_id": "short_ramp_L1",
+      "family": "control_short_ramp",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "e88f1283fed05e13",
+      "fit_seconds": 0.22721109999110922,
+      "predict_seconds": 0.0006432000081986189,
+      "latency_seconds": 0.22785429999930784,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L1/3002",
+      "scenario_id": "short_ramp_L1",
+      "family": "control_short_ramp",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "efd528a3436283ae",
+      "fit_seconds": 0.18823630001861602,
+      "predict_seconds": 0.0005302000208757818,
+      "latency_seconds": 0.1887665000394918,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L2/3000",
+      "scenario_id": "short_ramp_L2",
+      "family": "control_short_ramp",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "76df154409a0a801",
+      "fit_seconds": 0.25524540001060814,
+      "predict_seconds": 0.0007725000032223761,
+      "latency_seconds": 0.2560179000138305,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L2/3001",
+      "scenario_id": "short_ramp_L2",
+      "family": "control_short_ramp",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "f0b72845e386060e",
+      "fit_seconds": 0.21924430003855377,
+      "predict_seconds": 0.0005072999629192054,
+      "latency_seconds": 0.21975160000147298,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L2/3002",
+      "scenario_id": "short_ramp_L2",
+      "family": "control_short_ramp",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "aed8383b06f89984",
+      "fit_seconds": 0.3743228000239469,
+      "predict_seconds": 0.0006729000015184283,
+      "latency_seconds": 0.37499570002546534,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L3/3000",
+      "scenario_id": "short_ramp_L3",
+      "family": "control_short_ramp",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "2f24880d910d174f",
+      "fit_seconds": 0.19703199999639764,
+      "predict_seconds": 0.0008523000287823379,
+      "latency_seconds": 0.19788430002517998,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L3/3001",
+      "scenario_id": "short_ramp_L3",
+      "family": "control_short_ramp",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "c88f6aab4a8c20ae",
+      "fit_seconds": 0.2683279000339098,
+      "predict_seconds": 0.0005596000119112432,
+      "latency_seconds": 0.26888750004582107,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L3/3002",
+      "scenario_id": "short_ramp_L3",
+      "family": "control_short_ramp",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "7d1d2dfaaa4d42ad",
+      "fit_seconds": 0.21293539996258914,
+      "predict_seconds": 0.0006125000072643161,
+      "latency_seconds": 0.21354789996985346,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L1/3000",
+      "scenario_id": "regime_L1",
+      "family": "control_regime_change",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "17446c53bf20fa36",
+      "fit_seconds": 0.2241488000145182,
+      "predict_seconds": 0.0005688999663107097,
+      "latency_seconds": 0.2247176999808289,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L1/3001",
+      "scenario_id": "regime_L1",
+      "family": "control_regime_change",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "d1fcab0e648ed3bc",
+      "fit_seconds": 0.20703509997110814,
+      "predict_seconds": 0.00048260000767186284,
+      "latency_seconds": 0.20751769997878,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L1/3002",
+      "scenario_id": "regime_L1",
+      "family": "control_regime_change",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "0cc20b3b24c6a626",
+      "fit_seconds": 0.23106349998852238,
+      "predict_seconds": 0.0006426000036299229,
+      "latency_seconds": 0.2317060999921523,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L2/3000",
+      "scenario_id": "regime_L2",
+      "family": "control_regime_change",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "362b56e9eea28448",
+      "fit_seconds": 0.29046979994745925,
+      "predict_seconds": 0.0005600000149570405,
+      "latency_seconds": 0.2910297999624163,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L2/3001",
+      "scenario_id": "regime_L2",
+      "family": "control_regime_change",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "c524127eef3fbdda",
+      "fit_seconds": 0.25608369999099523,
+      "predict_seconds": 0.0033757000346668065,
+      "latency_seconds": 0.25945940002566203,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L2/3002",
+      "scenario_id": "regime_L2",
+      "family": "control_regime_change",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "f292fe75f2b48948",
+      "fit_seconds": 0.19143080001231283,
+      "predict_seconds": 0.0005089000333100557,
+      "latency_seconds": 0.19193970004562289,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L3/3000",
+      "scenario_id": "regime_L3",
+      "family": "control_regime_change",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "ca4c82788d346e39",
+      "fit_seconds": 0.24232879996998236,
+      "predict_seconds": 0.000491499959025532,
+      "latency_seconds": 0.2428202999290079,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L3/3001",
+      "scenario_id": "regime_L3",
+      "family": "control_regime_change",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "b59f9e18db2ebc30",
+      "fit_seconds": 0.19982229999732226,
+      "predict_seconds": 0.0005270999972708523,
+      "latency_seconds": 0.2003493999945931,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L3/3002",
+      "scenario_id": "regime_L3",
+      "family": "control_regime_change",
+      "split": "test_in_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "2d96f93f63f75e88",
+      "fit_seconds": 0.22822739998809993,
+      "predict_seconds": 0.0006916000274941325,
+      "latency_seconds": 0.22891900001559407,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L1/4000",
+      "scenario_id": "ou_L1",
+      "family": "control_ou",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "6567ff2b998021e1",
+      "fit_seconds": 0.19785320002119988,
+      "predict_seconds": 0.0004352999967522919,
+      "latency_seconds": 0.19828850001795217,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L1/4001",
+      "scenario_id": "ou_L1",
+      "family": "control_ou",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "78b2bfcbf25b870e",
+      "fit_seconds": 0.18122199998470023,
+      "predict_seconds": 0.0006692999741062522,
+      "latency_seconds": 0.18189129995880648,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L1/4002",
+      "scenario_id": "ou_L1",
+      "family": "control_ou",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "4e1de7ef3e159f7c",
+      "fit_seconds": 0.33962280000559986,
+      "predict_seconds": 0.0006338999955914915,
+      "latency_seconds": 0.34025670000119135,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L2/4000",
+      "scenario_id": "ou_L2",
+      "family": "control_ou",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "cfd6f4f820245e30",
+      "fit_seconds": 0.2058479999541305,
+      "predict_seconds": 0.000507800024934113,
+      "latency_seconds": 0.2063557999790646,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L2/4001",
+      "scenario_id": "ou_L2",
+      "family": "control_ou",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "ed864cae39e6f20e",
+      "fit_seconds": 0.2591005000285804,
+      "predict_seconds": 0.0005164999747648835,
+      "latency_seconds": 0.2596170000033453,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L2/4002",
+      "scenario_id": "ou_L2",
+      "family": "control_ou",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "de12c4055fb8ad96",
+      "fit_seconds": 0.2332033999846317,
+      "predict_seconds": 0.0006186999962665141,
+      "latency_seconds": 0.2338220999808982,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L3/4000",
+      "scenario_id": "ou_L3",
+      "family": "control_ou",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "d953e47380e1336b",
+      "fit_seconds": 0.2366217999951914,
+      "predict_seconds": 0.0005113999941386282,
+      "latency_seconds": 0.23713319998933002,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L3/4001",
+      "scenario_id": "ou_L3",
+      "family": "control_ou",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "2a8853e4cfb5c600",
+      "fit_seconds": 0.2317122000386007,
+      "predict_seconds": 0.0005841999663971364,
+      "latency_seconds": 0.23229640000499785,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "ou_L3/4002",
+      "scenario_id": "ou_L3",
+      "family": "control_ou",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "76776f8bfd850689",
+      "fit_seconds": 0.2507264000014402,
+      "predict_seconds": 0.0005771000287495553,
+      "latency_seconds": 0.25130350003018975,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L1/4000",
+      "scenario_id": "short_ramp_L1",
+      "family": "control_short_ramp",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "c7b129c0e721bb28",
+      "fit_seconds": 0.24594339996110648,
+      "predict_seconds": 0.0005463999696075916,
+      "latency_seconds": 0.24648979993071407,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L1/4001",
+      "scenario_id": "short_ramp_L1",
+      "family": "control_short_ramp",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "b535019d908e8800",
+      "fit_seconds": 0.3322112000314519,
+      "predict_seconds": 0.0007030999986454844,
+      "latency_seconds": 0.33291430003009737,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L1/4002",
+      "scenario_id": "short_ramp_L1",
+      "family": "control_short_ramp",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "4958b077826c619a",
+      "fit_seconds": 0.21002110000699759,
+      "predict_seconds": 0.00043349998304620385,
+      "latency_seconds": 0.2104545999900438,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L2/4000",
+      "scenario_id": "short_ramp_L2",
+      "family": "control_short_ramp",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "3bad6e5062ba8121",
+      "fit_seconds": 0.21859180001774803,
+      "predict_seconds": 0.000514300016220659,
+      "latency_seconds": 0.2191061000339687,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L2/4001",
+      "scenario_id": "short_ramp_L2",
+      "family": "control_short_ramp",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "17a9e54ab0ee0c4a",
+      "fit_seconds": 0.23306440003216267,
+      "predict_seconds": 0.0005445000133477151,
+      "latency_seconds": 0.23360890004551038,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L2/4002",
+      "scenario_id": "short_ramp_L2",
+      "family": "control_short_ramp",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "7455c4c90a60b088",
+      "fit_seconds": 0.2555306000285782,
+      "predict_seconds": 0.000582000007852912,
+      "latency_seconds": 0.2561126000364311,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L3/4000",
+      "scenario_id": "short_ramp_L3",
+      "family": "control_short_ramp",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "f89105cf7f91f1cc",
+      "fit_seconds": 0.19301380001707003,
+      "predict_seconds": 0.0005352000007405877,
+      "latency_seconds": 0.1935490000178106,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L3/4001",
+      "scenario_id": "short_ramp_L3",
+      "family": "control_short_ramp",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "f14af59906514620",
+      "fit_seconds": 0.2647175000165589,
+      "predict_seconds": 0.0006902000168338418,
+      "latency_seconds": 0.26540770003339276,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "short_ramp_L3/4002",
+      "scenario_id": "short_ramp_L3",
+      "family": "control_short_ramp",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "5dd330b581a8edfe",
+      "fit_seconds": 0.2347177999909036,
+      "predict_seconds": 0.0008542999858036637,
+      "latency_seconds": 0.23557209997670725,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L1/4000",
+      "scenario_id": "regime_L1",
+      "family": "control_regime_change",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "1bbe8340c09b597f",
+      "fit_seconds": 0.3737855000072159,
+      "predict_seconds": 0.0005181000451557338,
+      "latency_seconds": 0.3743036000523716,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L1/4001",
+      "scenario_id": "regime_L1",
+      "family": "control_regime_change",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "a27e67785d0b2e0f",
+      "fit_seconds": 0.19870199996512383,
+      "predict_seconds": 0.0006542999763041735,
+      "latency_seconds": 0.199356299941428,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L1/4002",
+      "scenario_id": "regime_L1",
+      "family": "control_regime_change",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "dd2ddd3a888b15b6",
+      "fit_seconds": 0.22094289999222383,
+      "predict_seconds": 0.0006822000141255558,
+      "latency_seconds": 0.22162510000634938,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L2/4000",
+      "scenario_id": "regime_L2",
+      "family": "control_regime_change",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "9f3cee31c1754ba0",
+      "fit_seconds": 0.23413040000014007,
+      "predict_seconds": 0.0003837000112980604,
+      "latency_seconds": 0.23451410001143813,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L2/4001",
+      "scenario_id": "regime_L2",
+      "family": "control_regime_change",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "bd1ce5758460f1ad",
+      "fit_seconds": 0.19780049996916205,
+      "predict_seconds": 0.0005048000020906329,
+      "latency_seconds": 0.19830529997125268,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L2/4002",
+      "scenario_id": "regime_L2",
+      "family": "control_regime_change",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "1bf9e4113d91e3a6",
+      "fit_seconds": 0.2252483000047505,
+      "predict_seconds": 0.0004938999773003161,
+      "latency_seconds": 0.2257421999820508,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L3/4000",
+      "scenario_id": "regime_L3",
+      "family": "control_regime_change",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "5ffebf2453b1983e",
+      "fit_seconds": 0.23449519998393953,
+      "predict_seconds": 0.0004194999928586185,
+      "latency_seconds": 0.23491469997679815,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L3/4001",
+      "scenario_id": "regime_L3",
+      "family": "control_regime_change",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "5bba306b42a70940",
+      "fit_seconds": 0.1894552000449039,
+      "predict_seconds": 0.000499800022225827,
+      "latency_seconds": 0.18995500006712973,
+      "cache_hit": false
+    },
+    {
+      "trajectory_id": "regime_L3/4002",
+      "scenario_id": "regime_L3",
+      "family": "control_regime_change",
+      "split": "test_out_of_prior",
+      "n_windows": 305,
+      "context_size": 200,
+      "context_hash": "5459e6126d332b30",
+      "fit_seconds": 0.3698386999894865,
+      "predict_seconds": 0.0005379000212997198,
+      "latency_seconds": 0.3703766000107862,
+      "cache_hit": false
+    }
+  ],
+  "trace_file": "results/traces/tabpfn_local-family_matched-controls-20261027T161538Z-cf1e16b8.jsonl",
+  "false_alarms": {
+    "rule": "threshold from validation controls only, then applied unchanged to the rest",
+    "target_window_false_alarm_rate": 0.05,
+    "thresholds": {
+      "neg_median": -0.9999999999999999,
+      "p_critical": 5e-324
+    },
+    "scores": {
+      "neg_median": {
+        "splits": {
+          "test_in_prior": {
+            "all_controls": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 8235,
+              "n_trajectories": 27
+            },
+            "control_ou": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_regime_change": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_short_ramp": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            }
+          },
+          "test_out_of_prior": {
+            "all_controls": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 8235,
+              "n_trajectories": 27
+            },
+            "control_ou": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_regime_change": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_short_ramp": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            }
+          },
+          "validation": {
+            "all_controls": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 8235,
+              "n_trajectories": 27
+            },
+            "control_ou": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_regime_change": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_short_ramp": {
+              "threshold": -0.9999999999999999,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            }
+          }
+        },
+        "held_out_pooled": {
+          "all_controls": {
+            "threshold": -0.9999999999999999,
+            "window_rate": 0.0,
+            "trajectory_rate": 0.0,
+            "n_windows": 16470,
+            "n_trajectories": 54
+          },
+          "control_ou": {
+            "threshold": -0.9999999999999999,
+            "window_rate": 0.0,
+            "trajectory_rate": 0.0,
+            "n_windows": 5490,
+            "n_trajectories": 18
+          },
+          "control_regime_change": {
+            "threshold": -0.9999999999999999,
+            "window_rate": 0.0,
+            "trajectory_rate": 0.0,
+            "n_windows": 5490,
+            "n_trajectories": 18
+          },
+          "control_short_ramp": {
+            "threshold": -0.9999999999999999,
+            "window_rate": 0.0,
+            "trajectory_rate": 0.0,
+            "n_windows": 5490,
+            "n_trajectories": 18
+          }
+        }
+      },
+      "p_critical": {
+        "splits": {
+          "test_in_prior": {
+            "all_controls": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 8235,
+              "n_trajectories": 27
+            },
+            "control_ou": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_regime_change": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_short_ramp": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            }
+          },
+          "test_out_of_prior": {
+            "all_controls": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 8235,
+              "n_trajectories": 27
+            },
+            "control_ou": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_regime_change": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_short_ramp": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            }
+          },
+          "validation": {
+            "all_controls": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 8235,
+              "n_trajectories": 27
+            },
+            "control_ou": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_regime_change": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            },
+            "control_short_ramp": {
+              "threshold": 5e-324,
+              "window_rate": 0.0,
+              "trajectory_rate": 0.0,
+              "n_windows": 2745,
+              "n_trajectories": 9
+            }
+          }
+        },
+        "held_out_pooled": {
+          "all_controls": {
+            "threshold": 5e-324,
+            "window_rate": 0.0,
+            "trajectory_rate": 0.0,
+            "n_windows": 16470,
+            "n_trajectories": 54
+          },
+          "control_ou": {
+            "threshold": 5e-324,
+            "window_rate": 0.0,
+            "trajectory_rate": 0.0,
+            "n_windows": 5490,
+            "n_trajectories": 18
+          },
+          "control_regime_change": {
+            "threshold": 5e-324,
+            "window_rate": 0.0,
+            "trajectory_rate": 0.0,
+            "n_windows": 5490,
+            "n_trajectories": 18
+          },
+          "control_short_ramp": {
+            "threshold": 5e-324,
+            "window_rate": 0.0,
+            "trajectory_rate": 0.0,
+            "n_windows": 5490,
+            "n_trajectories": 18
+          }
+        }
+      }
+    }
+  }
+}

@@ -333,5 +333,132 @@
       "n_windows": 26100,
       "n_trajectories": 90
     }
+  },
+  "false_alarms_at_validation_threshold": {
+    "rule": "threshold from validation controls only, then applied unchanged to the rest",
+    "target_window_false_alarm_rate": 0.05,
+    "threshold": 0.6416666666666667,
+    "splits": {
+      "validation": {
+        "all_controls": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.04931034482758621,
+          "trajectory_rate": 0.9888888888888889,
+          "n_windows": 26100,
+          "n_trajectories": 90
+        },
+        "control_ou": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.04091954022988506,
+          "trajectory_rate": 1.0,
+          "n_windows": 8700,
+          "n_trajectories": 30
+        },
+        "control_regime_change": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.0703448275862069,
+          "trajectory_rate": 1.0,
+          "n_windows": 8700,
+          "n_trajectories": 30
+        },
+        "control_short_ramp": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.03666666666666667,
+          "trajectory_rate": 0.9666666666666667,
+          "n_windows": 8700,
+          "n_trajectories": 30
+        }
+      },
+      "test_in_prior": {
+        "all_controls": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.04452107279693487,
+          "trajectory_rate": 0.9888888888888889,
+          "n_windows": 26100,
+          "n_trajectories": 90
+        },
+        "control_ou": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.036551724137931035,
+          "trajectory_rate": 1.0,
+          "n_windows": 8700,
+          "n_trajectories": 30
+        },
+        "control_regime_change": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.0628735632183908,
+          "trajectory_rate": 1.0,
+          "n_windows": 8700,
+          "n_trajectories": 30
+        },
+        "control_short_ramp": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.03413793103448276,
+          "trajectory_rate": 0.9666666666666667,
+          "n_windows": 8700,
+          "n_trajectories": 30
+        }
+      },
+      "test_out_of_prior": {
+        "all_controls": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.045172413793103446,
+          "trajectory_rate": 0.9555555555555556,
+          "n_windows": 26100,
+          "n_trajectories": 90
+        },
+        "control_ou": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.04494252873563218,
+          "trajectory_rate": 1.0,
+          "n_windows": 8700,
+          "n_trajectories": 30
+        },
+        "control_regime_change": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.057011494252873565,
+          "trajectory_rate": 0.9666666666666667,
+          "n_windows": 8700,
+          "n_trajectories": 30
+        },
+        "control_short_ramp": {
+          "threshold": 0.6416666666666667,
+          "window_rate": 0.033563218390804596,
+          "trajectory_rate": 0.9,
+          "n_windows": 8700,
+          "n_trajectories": 30
+        }
+      }
+    },
+    "held_out_pooled": {
+      "all_controls": {
+        "threshold": 0.6416666666666667,
+        "window_rate": 0.044846743295019156,
+        "trajectory_rate": 0.9722222222222222,
+        "n_windows": 52200,
+        "n_trajectories": 180
+      },
+      "control_ou": {
+        "threshold": 0.6416666666666667,
+        "window_rate": 0.04074712643678161,
+        "trajectory_rate": 1.0,
+        "n_windows": 17400,
+        "n_trajectories": 60
+      },
+      "control_regime_change": {
+        "threshold": 0.6416666666666667,
+        "window_rate": 0.05994252873563218,
+        "trajectory_rate": 0.9833333333333333,
+        "n_windows": 17400,
+        "n_trajectories": 60
+      },
+      "control_short_ramp": {
+        "threshold": 0.6416666666666667,
+        "window_rate": 0.03385057471264368,
+        "trajectory_rate": 0.9333333333333333,
+        "n_windows": 17400,
+        "n_trajectories": 60
+      }
+    }
   }
 }
