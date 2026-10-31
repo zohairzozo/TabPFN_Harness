@@ -7,7 +7,7 @@ Stages, in order:
      and the family-matched oracle, on val, test, ood, real (the Daphnia populations) and
      real_control (the grid frequency). The controls are inside each split. LLM stages use
      --llm-mode replay when the cache answers every request, and record otherwise,
-  4. scripts/make_summary.py (and scripts/agent_checks.py),
+  4. scripts/make_summary.py, scripts/agent_checks.py and scripts/find_failures.py,
   5. results/run_manifest.json.
 
 Profiles (how much of each split is run):
@@ -436,6 +436,11 @@ def main() -> int:
         run,
         "agent_checks",
         [PYTHON, "scripts/agent_checks.py", "--results-dir", str(run.results_dir)],
+    )
+    run_command(
+        run,
+        "find_failures",
+        [PYTHON, "scripts/find_failures.py", "--results-dir", str(run.results_dir)],
     )
 
     print("5. manifest")

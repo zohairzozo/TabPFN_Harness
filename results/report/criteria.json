@@ -1,0 +1,102 @@
+{
+  "verdict": "NO-GO",
+  "stand_in": "TabPFN behind the harness (LLM agent + frozen gate)",
+  "variant": "agent",
+  "required_met": 2,
+  "required_total": 4,
+  "criteria_file": "configs/release_criteria.yaml",
+  "outcomes": [
+    {
+      "key": "coverage_accepted_in_prior",
+      "label": "90% interval coverage on accepted in-prior runs",
+      "comparison": ">=",
+      "threshold": 0.85,
+      "required": true,
+      "value": 0.9435978406687391,
+      "numerator": null,
+      "denominator": 16,
+      "unit": "accepted runs",
+      "sources": [
+        "agent_test.json"
+      ],
+      "passed": true
+    },
+    {
+      "key": "false_alarms_simulated_controls",
+      "label": "False alarms on simulated controls (share of control runs that end in an alert)",
+      "comparison": "<=",
+      "threshold": 0.1,
+      "required": true,
+      "value": 0.05555555555555555,
+      "numerator": 1,
+      "denominator": 18,
+      "unit": "control runs that alerted",
+      "sources": [
+        "agent_test.json",
+        "agent_ood.json"
+      ],
+      "passed": true
+    },
+    {
+      "key": "false_alarms_real_controls",
+      "label": "False alarms on real controls (grid days and persisting Daphnia populations)",
+      "comparison": "<=",
+      "threshold": 0.1,
+      "required": true,
+      "value": 0.3333333333333333,
+      "numerator": 2,
+      "denominator": 6,
+      "unit": "control runs that alerted",
+      "sources": [
+        "agent_real.json",
+        "agent_real_control.json"
+      ],
+      "passed": false
+    },
+    {
+      "key": "gate_recall_bad_in_prior",
+      "label": "Gate recall on bad in-prior runs (share of bad runs blocked)",
+      "comparison": ">=",
+      "threshold": 0.5,
+      "required": true,
+      "value": 0.0,
+      "numerator": 0,
+      "denominator": 2,
+      "unit": "bad runs blocked",
+      "sources": [
+        "agent_test.json"
+      ],
+      "passed": false
+    },
+    {
+      "key": "coverage_accepted_out_of_prior",
+      "label": "90% interval coverage on accepted out-of-prior runs",
+      "comparison": ">=",
+      "threshold": 0.85,
+      "required": false,
+      "value": 0.8657524043429515,
+      "numerator": null,
+      "denominator": 12,
+      "unit": "accepted runs",
+      "sources": [
+        "agent_ood.json"
+      ],
+      "passed": true
+    },
+    {
+      "key": "gate_recall_bad_out_of_prior",
+      "label": "Gate recall on bad out-of-prior runs (share of bad runs blocked)",
+      "comparison": ">=",
+      "threshold": 0.5,
+      "required": false,
+      "value": 0.3333333333333333,
+      "numerator": 1,
+      "denominator": 3,
+      "unit": "bad runs blocked",
+      "sources": [
+        "agent_ood.json"
+      ],
+      "passed": false
+    }
+  ]
+}

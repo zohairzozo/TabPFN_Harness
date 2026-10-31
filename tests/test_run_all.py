@@ -173,3 +173,24 @@ def test_a_replay_miss_that_record_filled_is_not_a_failure() -> None:
     assert RA.any_stage_failed([ok, miss])
     assert RA.any_stage_failed([{"stage": "b", "exit_code": 1, "seconds": 0.0}])
     assert RA.seconds_by_stage([miss, ok]) == {"a": 3.0}
+
+
+def test_the_summary_stage_runs_the_summary_the_checks_and_the_failure_list(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    named: list[str] = []
+
+    def record(run: Any, name: str, cmd: list[str], *, mode: str | None = None) -> Any:
+        named.append(name)
+        run.stages.append({"stage": name, "exit_code": 0, "llm_mode": mode, "seconds": 0.0})
+        return subprocess.CompletedProcess(cmd, 0, stdout="", stderr="")
+
+    monkeypatch.setattr(RA, "run_command", record)
+    monkeypatch.setattr(RA, "check_stage", lambda run: None)
+    monkeypatch.setattr(RA, "gate_stage", lambda run: {"frozen": True})
+    monkeypatch.setattr(RA, "prepare_results_dir", lambda run: None)
+    monkeypatch.setattr(RA, "run_variant", lambda run, variant, split: None)
+    monkeypatch.setattr(RA, "write_manifest", lambda run, gate, failed: tmp_path / "m.json")
+    monkeypatch.setattr("sys.argv", ["run_all", "--skip-checks"])
+    assert RA.main() == 0
+    assert named == ["make_summary", "agent_checks", "find_failures"]

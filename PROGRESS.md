@@ -369,6 +369,37 @@ You chose to keep claude-sonnet-5-5 and claude-haiku-5-5 even though temperature
 - **Run:** the first full run recorded the missing val, real and real_control responses live; the second run replayed everything. Numbers: `results/summary.md` and `results/run_manifest.json`. Not typed here.
 - **Caveats:** the manifest's wall-clock is from the replay run; latencies are the recorded live ones. The default profile has 3 scenarios x 3 seeds (18 runs per split), `--fast` has 10. Cost is 0 because the models are free-tier. Nothing is committed; `results/cache/llm/` and the per-population extinction days in `results/datasets/real_tipping_summary.json` should be looked at before a commit.
 
+### 2026-10-31 (ranked failures for the gallery)
+
+- **`scripts/find_failures.py`** reads `results/*.json` and the trace files they name, and writes `results/failures.json`: the top 5 examples in four categories, plus an overview paragraph with counts for each (also printed). It ranks and links; it gives no causes. Counts and examples are in the file, not copied here.
+  - (a) false alarms on negative controls, simulated or real (an alert on a control run);
+  - (b) bad runs the gate let through (BAD run, gate accepted);
+  - (c) good runs the gate blocked (not BAD, gate blocked);
+  - (d) agent recommendation differed from the final gated decision (full harness).
+- Each example has severity and what it measures, variant, split, scenario id, seed, trace file, trace line ranges (1-based) and the numbers involved. Ties are broken by variant, split and trajectory id, so the file is the same on every run.
+- **Choices:** held-out splits only by default (`--include-val` adds validation), because the gate and alarm thresholds were set on validation. Severity scales differ by variant (stated in each example). (b) and (c) cover the full harness and the PFN random and knn runs with the gate; variants without a gate are not in them. (d) counts any difference, including a recommendation followed by a gate abstain. Daphnia persisting populations count as controls in (a).
+- Wired into `scripts/run_all.py` as the last summary stage. Tests: `tests/test_find_failures.py`, and one in `tests/test_run_all.py`.
+
+### 2026-10-31 (go/no-go report: `make report`)
+
+- **`src/pfngate/report/`** builds `results/report/index.html`, one self-contained page (inline CSS, figures embedded as data URIs, no network assets, plain Python templating). `make report` runs `python -m pfngate.report`. Sections in order: 1 Verdict, 2 Before and after, 3 Figures, 4 Failure gallery, 5 Method and limits, 6 Provenance.
+- **Verdict:** `configs/release_criteria.yaml` holds the criteria, and says in its header that the thresholds are illustrative and were written after the experiments. `criteria.py` checks them on the full harness (agent + gate) and writes `results/report/criteria.json`. Any required criterion that fails, or cannot be computed, gives NO-GO. Out-of-prior criteria are reported only. The page prints the verdict that the code computes (it is NO-GO on the present results; see the page for the values).
+- **Tables and figures:** the before-and-after table, the real-data table and the context-strategy table are read from `results/summary.md`; the figures from `results/figs/`. There is no separate context ablation; the page says so and shows the strategy comparison instead.
+- **Gallery:** the top two examples per category of `results/failures.json`, each with a scenario plot redrawn from the simulator (or the raw real data, after `assert_frozen()`), the numbers, the gate checks, the agent rationale when the variant has one, and a trace excerpt.
+- **Number check:** `check.py` parses the page back to text and fails the build if a number is in no file of `results/` (JSON, JSONL, summary.md) or `data/SOURCES.md`. Identifiers, dates, versions, section numbers and years are set aside. A number matches at any rounding from zero to six decimals or as a percentage, so the check catches typed numbers but can miss one that happens to equal some result. The method text holds no digits (tested).
+- Tests: `tests/test_report.py` (criteria, text parsing, number check, six sections and the gallery on made-up results, and the real results when present).
+- **Not done:** the offline demo under three minutes and the README (the goal named them; this entry covers the report only). `make report` is not part of `run_all.py`. Nothing is committed; decide whether `results/report/index.html` (about two megabytes) is committed or ignored.
+
+### 2026-10-31 (offline demo: `make demo`)
+
+- **`scripts/demo.py`** (`make demo`) walks through two held-out runs of the full harness. It picks them by rule from `results/agent_{test,ood}.json`, runs the agent on them again with `--llm-mode replay` (no network, no key; PFN output from `results/cache/pfn`), and prints each step in plain language: scenario and family, what the agent asked (from the trace), the context it picked and its own reason, the PFN's last-window interval and p_critical, every gate check with value and threshold, and the final decision. It ends with the report path and the headline row of the variants table, and checks that the rerun matches the recorded run.
+- **Rules (printed by the demo):** the first run the gate accepted that ended in an alert while the series really was near tipping; and the first run whose PFN interval was bad and that the gate blocked. Each is searched in the in-prior test split first, then the out-of-prior test split. In the present results no in-prior run satisfies the second rule, so that run comes from the out-of-prior split, and the demo says so.
+- **Transcript:** everything printed is saved to `results/demo_transcript.txt`, replaced only when a run succeeds. A run that fails its own checks is saved as `.failed` and the last good transcript stays.
+- **Change to production code:** `run_agent.evaluate` gained two optional arguments, `trajectory_ids` (keep only those trajectories of the sample) and `store` (so the demo can read the contexts and PFN outputs of a run). Defaults leave behaviour as it was.
+- **Needs** what `make full` leaves behind: the two result files, `summary.md`, and the caches `results/cache/llm` and `results/cache/pfn` (the PFN cache is not committed). It stops with a clear message if a cache is empty.
+- Tests: `tests/test_demo.py` (the rules, the fallback search, failing safely, and the whole demo run with every non-loopback socket call blocked and recorded: none are made, and `evaluate` is called with `llm_mode="replay"`). Time budget is 180 s and checked by the demo.
+- Not done: the README. Nothing is committed.
+
 ## Decisions
 
 - Model version: v3.5. Keep the model version in the results JSON for every run. Never redistribute the weights.

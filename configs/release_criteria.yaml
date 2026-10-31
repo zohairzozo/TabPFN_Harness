@@ -1,0 +1,55 @@
+# Release criteria for the go/no-go report (src/pfngate/report/).
+#
+# THESE THRESHOLDS ARE ILLUSTRATIVE. They were written on 2026-10-31, AFTER the experiments
+# had been run and the results had been seen, so they are for demonstration only. They are
+# not a pre-registered standard and they are not tuned to give a particular verdict. A real
+# release would fix them before the first held-out run, like configs/gate.yaml.
+#
+# The criteria are checked against the full harness (agent + frozen gate) on held-out splits.
+# The stand-in model behind it is TabPFN (the version is in results/run_manifest.json).
+# TipPFN is not public, so nothing here says anything about TipPFN.
+#
+# A criterion with "required: true" must pass for GO. One criterion that fails, or cannot be
+# computed (for example because there were no bad runs to test the gate on), gives NO-GO.
+# A criterion with "required: false" is reported on the page and never changes the verdict.
+
+variant: agent
+stand_in: "TabPFN behind the harness (LLM agent + frozen gate)"
+
+criteria:
+  - key: coverage_accepted_in_prior
+    label: "90% interval coverage on accepted in-prior runs"
+    comparison: ">="
+    threshold: 0.85
+    required: true
+
+  - key: false_alarms_simulated_controls
+    label: "False alarms on simulated controls (share of control runs that end in an alert)"
+    comparison: "<="
+    threshold: 0.10
+    required: true
+
+  - key: false_alarms_real_controls
+    label: "False alarms on real controls (grid days and persisting Daphnia populations)"
+    comparison: "<="
+    threshold: 0.10
+    required: true
+
+  - key: gate_recall_bad_in_prior
+    label: "Gate recall on bad in-prior runs (share of bad runs blocked)"
+    comparison: ">="
+    threshold: 0.50
+    required: true
+
+  # Out of prior: reported, never a pass condition.
+  - key: coverage_accepted_out_of_prior
+    label: "90% interval coverage on accepted out-of-prior runs"
+    comparison: ">="
+    threshold: 0.85
+    required: false
+
+  - key: gate_recall_bad_out_of_prior
+    label: "Gate recall on bad out-of-prior runs (share of bad runs blocked)"
+    comparison: ">="
+    threshold: 0.50
+    required: false

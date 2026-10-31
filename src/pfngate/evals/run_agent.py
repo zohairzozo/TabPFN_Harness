@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 import time
 from collections import Counter
+from collections.abc import Collection
 from pathlib import Path
 from typing import Any
 
@@ -98,6 +99,8 @@ def evaluate(
     seeds_per_scenario: int | None = None,
     pool_seeds_per_scenario: int | None = None,
     limit: int | None = None,
+    trajectory_ids: Collection[str] | None = None,
+    store: RunStore | None = None,
     results_dir: Path = DEFAULT_RESULTS_DIR,
     cache_dir: Path | None = None,
     trace_dir: Path | None = None,
@@ -108,7 +111,11 @@ def evaluate(
     debug: bool = False,
     progress: bool = True,
 ) -> dict[str, Any]:
-    """Run a variant on every trajectory of a split, write the result JSON, return it."""
+    """Run a variant on every trajectory of a split, write the result JSON, return it.
+
+    trajectory_ids keeps only those trajectories of the (limited) sample, as the demo does.
+    store lets the caller keep the run data (contexts and PFN outputs) after each run.
+    """
     if variant not in VARIANTS or split not in LLM_SPLITS:
         raise ValueError(
             f"variant must be one of {list(VARIANTS)}, split one of {list(LLM_SPLITS)}"
@@ -153,9 +160,14 @@ def evaluate(
 
     name = VARIANTS[variant]
     queries = load_split_queries(split, fc, seeds_per_scenario, limit)
+    if trajectory_ids is not None:
+        wanted = set(trajectory_ids)
+        queries = [q for q in queries if str(q["trajectory_id"].iloc[0]) in wanted]
+        if len(queries) != len(wanted):
+            raise ValueError(f"trajectories not found in the {split} sample: {sorted(wanted)}")
     tracer = Tracer(f"{name}-{split}", trace_dir=trace_dir or results_dir / "traces")
     agent = build_agent(acfg) if variant == "agent" else build_naive_agent(acfg)
-    store = RunStore()
+    store = store if store is not None else RunStore()
     runs: list[dict[str, Any]] = []
     outcomes: dict[str, list[RunOutcome]] = {}
     t_start = time.perf_counter()

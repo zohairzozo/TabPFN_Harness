@@ -1,0 +1,132 @@
+pfngate demo: two held-out runs of the full harness (agent + gate)
+Mode: --llm-mode replay. No network, no API key. The PFN output comes from the cache.
+
+Rule for the run the gate passed: the first run, in the order of results/agent_<split>.json, that the gate accepted and that ended in an alert while the series really was near tipping (a correct alert).
+   Picked: fold_L1_slow/3000, from the in-prior test split (results/agent_test.json).
+Rule for the run the gate blocked: the first run whose PFN interval was bad (its 90% coverage was below the line of docs/GATE.md) and that the gate blocked.
+   Picked: rate_L1_slow/4002, from the out-of-prior test split (results/agent_ood.json).
+   No run in the in-prior test split satisfies the rule, so the search went on to
+   the out-of-prior test split.
+
+------------------------------------------------------------------------
+RUN 1: the first run the gate passed (test split)
+------------------------------------------------------------------------
+1. The scenario: fold_L1_slow, seed 3000, from the in-prior test split.
+   Family: fold, a fold bifurcation: the stable state disappears as a parameter drifts.
+   Truth, for scoring only: the series ends near tipping (label positive).
+
+2. What the agent asked:
+   The agent made 5 model calls and, in this order:
+     1. asked for a description of the query series
+     2. asked what the context pool holds
+     3. asked for a description of the query series
+     4. asked what the context pool holds
+     5. asked for a context to be built (knn, 200 rows)
+     6. asked the PFN to predict from a context (context 6618ba71)
+     7. it asked for one more thing, and the harness refused (tool cap)
+   It stopped because: tool call cap of 6 reached, 'choose_context' was refused.
+
+3. The context strategy it picked, and why:
+   The agent gave no recommendation, so there is no reason to quote.
+   Why: tool call cap of 6 reached, 'choose_context' was refused. The harness gates the last context the agent built.
+   The context that was gated: knn, 200 rows.
+
+4. The PFN's output for that context:
+   The PFN predicts how far the system is from tipping: 0 means at the tipping
+   point, 1 means far from it. For the last window of the series it says:
+     median prediction        0.762
+     0.90 central interval  [-0.164, 1.004]
+     p_critical               0.258   (chance the target is at or
+                              below the critical level)
+   The true target at the last window is 0.000 (read by the
+   evaluation only; neither the agent nor the gate sees it).
+
+5. The gate:
+   The gate checks the context and the output, without seeing the truth:
+     min_context_size         value 200  >=  threshold 100  -> passed
+         200 context rows, need at least 100
+     ood_share                value 0.012  <=  threshold 0.300  -> passed
+         0.012 of query windows are far from the pool, limit 0.3
+     context_calibration      value 0.950  within  threshold [0.700, 1]  -> passed
+         held-out context coverage 0.950, allowed [0.7, 1.0]
+     context_not_degenerate   value 10  >=  threshold 10  -> passed
+         10 context rows with target <= 0.2 and 160 with target >= 0.6, need 10 of each
+     output_integrity         value 0.000  == and <=  threshold 0.010  -> passed
+         0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution
+     interval_width_cap       value 0.784  <=  threshold 0.600  -> over the advisory line (reported, never blocks)
+     near_tipping_support     value 0.928  <=  threshold 0.500  -> over the advisory line (reported, never blocks)
+   Gate result: PASSED.
+
+6. The final decision:
+   ALERT: the gate passed, so the decision is that of the last window (alert).
+   Afterwards, with the truth: the 90% interval covered 0.861 of the window targets (not bad, line 0.80).
+   Same decision, context and gate result as the recorded run: yes.
+
+------------------------------------------------------------------------
+RUN 2: the first run the gate blocked (ood split)
+------------------------------------------------------------------------
+1. The scenario: rate_L1_slow, seed 4002, from the out-of-prior test split.
+   Family: rate_tipping, rate-induced tipping: the parameter moves too fast to follow (out of prior).
+   Truth, for scoring only: the series ends near tipping (label positive).
+
+2. What the agent asked:
+   The agent made 4 model calls and, in this order:
+     1. asked for a description of the query series
+     2. asked what the context pool holds
+     3. asked for a context to be built (knn, 100 rows)
+     4. asked the PFN to predict from a context (context 956749f6)
+
+3. The context strategy it picked, and why:
+   It picked knn with 100 rows and recommended alert (confidence 0.750).
+   Its own reason: PFN predictions decline steadily from first third (0.40) to last third (0.20), with the last window at 0.27 (close to 0 = tipping). p_critical averages 0.60 in the last third, indicating the model judges the system more likely than not near tipping. Query features show rising autocorrelation and low-frequency power — classic early-warning signals. The knn context mixes 35 near-tipping and 31 far examples, providing balanced coverage.
+   The context that was gated: knn, 100 rows (it matches the recommendation: True).
+
+4. The PFN's output for that context:
+   The PFN predicts how far the system is from tipping: 0 means at the tipping
+   point, 1 means far from it. For the last window of the series it says:
+     median prediction        0.267
+     0.90 central interval  [0.002, 1.000]
+     p_critical               0.444   (chance the target is at or
+                              below the critical level)
+   The true target at the last window is 0.015 (read by the
+   evaluation only; neither the agent nor the gate sees it).
+
+5. The gate:
+   The gate checks the context and the output, without seeing the truth:
+     min_context_size         value 100  >=  threshold 100  -> passed
+         100 context rows, need at least 100
+     ood_share                value 0.325  <=  threshold 0.300  -> FAILED
+         0.325 of query windows are far from the pool, limit 0.3
+     context_calibration      value 0.880  within  threshold [0.700, 1]  -> passed
+         held-out context coverage 0.880, allowed [0.7, 1.0]
+     context_not_degenerate   value 31  >=  threshold 10  -> passed
+         35 context rows with target <= 0.2 and 31 with target >= 0.6, need 10 of each
+     output_integrity         value 0.000  == and <=  threshold 0.010  -> passed
+         0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution
+     interval_width_cap       value 0.917  <=  threshold 0.600  -> over the advisory line (reported, never blocks)
+     near_tipping_support     value 0.996  <=  threshold 0.500  -> over the advisory line (reported, never blocks)
+   Gate result: BLOCKED.
+
+6. The final decision:
+   ABSTAIN: the gate failed: ood_share: 0.325 of query windows are far from the pool, limit 0.3.
+   The agent recommended alert: different from the final decision.
+   Afterwards, with the truth: the 90% interval covered 0.449 of the window targets (BAD, line 0.80).
+   Same decision, context and gate result as the recorded run: yes.
+
+------------------------------------------------------------------------
+The report: C:\Users\donzo\Desktop\TabPFN_Harness\results\report\index.html
+   Verdict in the report: NO-GO (2 of 4 required criteria met).
+
+Headline row of the results table (results/summary.md, 'Variants, run level'):
+   Variant: Full harness (agent + gate)
+   In-prior AUROC: 0.98 [0.91, 1.00] (n=16)
+   Out-of-prior AUROC: 0.91 [0.69, 1.00] (n=12)
+   90% coverage (in-prior / out-of-prior): 0.95 / 0.87 (accepted runs: 0.94 / 0.87)
+   Calibration error (in-prior / out-of-prior): 0.225 / 0.209
+   False alarms on controls (in-prior / out-of-prior): 0.11 (n=9) / 0.00 (n=9)
+   Share of BAD runs blocked (in-prior / out-of-prior): 0.00 (0/2) / 0.33 (1/3)
+   p95 latency: 187 s
+   Tool calls per verdict: 5.72
+   pass^3: seeds that agree: 0.25 (3/12)
+
+Finished in 1.4 s.
