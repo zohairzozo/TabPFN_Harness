@@ -1,0 +1,77 @@
+{
+  "key": "1e3fbdfaa47475c4d48636949e0e934b656014d71010b99ecf91e4678b7b2b8f",
+  "latency_s": 5.0698224999941885,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T16:04:08+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the results:\n\n- Median prediction mean: 0.3553 (closer to 0 = near tipping, closer to 1 = far)\n- First third mean: 0.3206\n- Last third mean: 0.6362\n- Last window: 0.9269 (very far from tipping according to median prediction)\n- p_critical mean: 0.4555\n- p_critical max: 0.802\n- p_critical last_window: 0.1108 (low probability of being critical at the last window)\n- p_critical last_third_mean: 0.2241\n- Share of windows above half: 0.5\n\nThe interval width is quite large (mean 0.8418, max 0.9799), indicating high uncertainty.\n\nThe predictions show an interesting pattern: the model predicts the system starts near tipping (low values ~0.32) and moves away from tipping (higher values ~0.64 in last third, 0.93 at last window). But p_critical is high in the middle (max 0.802) and low at the end (0.1108).\n\nWait, this is confusing. The median prediction says the last window is 0.9269 (far from tipping), but p_critical last_window is 0.1108 (low probability of critical). These seem consistent - if the prediction is far from tipping, p_critical should be low.\n\nBut the trend in the query shows variance_log_ratio strongly increasing (trend 2.2288), which is typically a sign of approaching tipping. However, the model predicts moving away from tipping.\n\nThe query is very far from the pool (all windows beyond p99 reference distance). This means the model is extrapolating far outside its training distribution, which is concerning.\n\nThe interval widths are very large (mean 0.8418), indicating high uncertainty.\n\nLet me think about what decision to make:\n- The median prediction for the last window is 0.9269 (far from tipping) → would suggest no_alert\n- But p_critical max is 0.802 (some windows have high probability of being critical)\n- The uncertainty is very high\n- The query is far outside the pool distribution\n\nGiven the high uncertainty and the query being far from the pool, I should be cautious. But let me also try a random context to see if the results are consistent.\n\nActually, I have 2 contexts left and 4 tool calls left (used 4 so far: describe_query, describe_context_pool, choose_context, run_pfn). Let me try a random context to compare.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":150}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-cbda5f3d-5d9b-45d3-b959-6d4f1ddf75dc",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T16:04:02Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793462642-F1vU7OuNATAvFtVWX68M",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T16:04:08.011499Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 601
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3643,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 601,
+      "output_tokens": 645
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

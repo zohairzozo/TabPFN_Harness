@@ -1,0 +1,1602 @@
+{
+  "method": "agent",
+  "split": "real",
+  "dataset_splits": [
+    "real_tipping"
+  ],
+  "held_out": true,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "llm_mode": "replay",
+  "debug_model": false,
+  "settings": {
+    "backend": "tabpfn_local",
+    "model_version": "v3.5",
+    "package_version": "9.2.0",
+    "max_context": 200,
+    "data_version": "7537845ee16feb9f"
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "seeds_per_scenario": 3,
+  "limit": 3,
+  "n_runs": 9,
+  "usage": {
+    "n_runs": 9,
+    "model_requests": 47,
+    "replayed_requests": 47,
+    "tokens_in": 153990,
+    "tokens_out": 28129,
+    "llm_seconds": 458.5474945008755,
+    "cost_usd_approx": 0.0,
+    "cost_note": "approximate: prices in configs/agent.yaml, as recorded",
+    "temperature_applied_runs": 9,
+    "stop_reasons": {
+      "completed": 8,
+      "tool_cap": 1,
+      "request_cap": 0,
+      "bad_output": 0
+    }
+  },
+  "metrics": {
+    "agent_final": {
+      "n_runs": 9,
+      "n_positive_end": 6,
+      "n_negative_end": 3,
+      "n_middle_end": 0,
+      "n_control_runs": 3,
+      "decisions": {
+        "alert": 0,
+        "no_alert": 0,
+        "abstain": 9
+      },
+      "abstention": {
+        "value": 1.0,
+        "n": 9,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "recall_end": {
+        "value": 0.0,
+        "n": 6,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.0,
+        "n": 3,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.0,
+        "n": 3,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "precision_end": {
+        "value": null,
+        "n": 0,
+        "ci": null
+      },
+      "n_scored": 0,
+      "auroc_end": null
+    },
+    "agent_recommendation": {
+      "n_runs": 9,
+      "n_positive_end": 6,
+      "n_negative_end": 3,
+      "n_middle_end": 0,
+      "n_control_runs": 3,
+      "decisions": {
+        "alert": 1,
+        "no_alert": 7,
+        "abstain": 1
+      },
+      "abstention": {
+        "value": 0.1111111111111111,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.3333333333333333
+        ]
+      },
+      "recall_end": {
+        "value": 0.16666666666666666,
+        "n": 6,
+        "ci": [
+          0.0,
+          0.5
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.0,
+        "n": 3,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.0,
+        "n": 3,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "precision_end": {
+        "value": 1.0,
+        "n": 1,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "n_scored": 8,
+      "auroc_end": {
+        "auroc": 0.625,
+        "ci_low": 0.07142857142857144,
+        "ci_high": 1.0
+      }
+    }
+  },
+  "gate": {
+    "n_runs": 9,
+    "n_gate_passed": 0,
+    "n_gate_blocked": 9,
+    "n_no_context": 0,
+    "blocked_by_check": {
+      "ood_share": 9,
+      "context_not_degenerate": 2
+    },
+    "agent_alerts_blocked_by_gate": 1,
+    "agent_agrees_with_final": 0,
+    "agent_disagrees_with_final": 8,
+    "no_verdict": 1,
+    "verdict_named_a_built_context": 8,
+    "final_strategy": {
+      "knn": 7,
+      "random": 2
+    }
+  },
+  "summary": {
+    "n_runs": 9,
+    "latency_seconds": {
+      "n": 9,
+      "mean": 70.49948621132515,
+      "p50": 58.01708630041685,
+      "p95": 121.65068664019927,
+      "max": 122.63561100000516
+    },
+    "llm_seconds_mean": 50.94972161120839,
+    "pfn_seconds_mean": 19.54976460011676,
+    "tool_calls": {
+      "n": 9,
+      "mean": 5.777777777777778,
+      "max": 6
+    },
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 1,
+      "n_agree": 1,
+      "share": 1.0,
+      "n_incomplete": 1,
+      "decisions": {
+        "daphnia_deteriorating": [
+          "abstain",
+          "abstain",
+          "abstain"
+        ]
+      }
+    },
+    "pfn": {
+      "n_runs": 9,
+      "n_without_pfn_output": 0,
+      "gated": true,
+      "coverage_90_mean_all": 0.843568160234827,
+      "coverage_90_mean_accepted": null,
+      "n_accepted": 0,
+      "calibration_error_mean": 0.20712108878775543,
+      "n_bad": 3,
+      "n_bad_blocked": 3,
+      "bad_blocked_share": 1.0
+    }
+  },
+  "trace": "agent-real-20261031T163558Z-5df6c013.jsonl",
+  "wall_seconds": 5.315813899971545,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "run_id": "agent-real-20261031T163558Z-5df6c013.0000",
+        "trajectory_id": "daphnia_constant/0",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 5,
+        "n_replayed_requests": 5,
+        "llm_seconds": 98.91797150031198,
+        "tokens_in": 15555,
+        "tokens_out": 3945,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 150,
+          "rationale": "Both knn and random contexts consistently predict the system is far from tipping (median ~0.97-0.99 for last windows, p_critical ~0.15). Despite wide prediction intervals indicating uncertainty, directional agreement across two context strategies supports no_alert.",
+          "confidence": 0.6
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: ood_share: 0.769 of query windows are far from the pool, limit 0.3",
+          "gate_passed": false,
+          "gate_failed": [
+            "ood_share"
+          ],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 13,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.1531031151142893,
+          "context_strategy": "knn",
+          "context_size": 150,
+          "context_hash": "41f0df44a9f3bd51",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-real-20261031T163558Z-5df6c013",
+          "trajectory_id": "daphnia_constant/0",
+          "strategy": "knn",
+          "context_hash": "41f0df44a9f3bd51",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 150.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "150 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.7692307692307693,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.769 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.9266666666666666,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.927, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 38.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "38 context rows with target <= 0.2 and 68 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.9765396149180614,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.977, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.9230769230769231,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.923 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "ood_share: 0.769 of query windows are far from the pool, limit 0.3"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "control",
+        "family": "real_persisting",
+        "split": "real_tipping",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 0.8461538461538461,
+        "bad": false,
+        "calibration_error": 0.2846153846153846,
+        "coverage_90_positive_windows": null,
+        "n_windows": 13,
+        "last_window_p_critical": 0.1531031151142893
+      },
+      "timing": {
+        "llm_seconds": 98.91797150031198,
+        "pfn_seconds": 21.255328600178473,
+        "total_seconds": 120.17330010049045
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-real-20261031T163558Z-5df6c013.0001",
+        "trajectory_id": "daphnia_deteriorating/1",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 28.99771390017122,
+        "tokens_in": 20031,
+        "tokens_out": 3950,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 150,
+          "rationale": "The knn context (150 rows, 65 near-tipping, 43 far-from-tipping) gives a balanced training set. The PFN predicts the last query window at 0.9269 (far from tipping on the 0\u20131 scale) with p_critical of 0.1108 at the end. Both knn and random contexts agree the system is moving away from tipping. Intervals are wide and the query is distant from the pool, so confidence is moderate.",
+          "confidence": 0.6
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: ood_share: 1.000 of query windows are far from the pool, limit 0.3",
+          "gate_passed": false,
+          "gate_failed": [
+            "ood_share"
+          ],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 10,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.1107647513809539,
+          "context_strategy": "knn",
+          "context_size": 150,
+          "context_hash": "8781e99a87739cef",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-real-20261031T163558Z-5df6c013",
+          "trajectory_id": "daphnia_deteriorating/1",
+          "strategy": "knn",
+          "context_hash": "8781e99a87739cef",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 150.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "150 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 1.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.9,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.900, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 43.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "65 context rows with target <= 0.2 and 43 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.9527061867053881,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.953, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.8,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.800 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "ood_share: 1.000 of query windows are far from the pool, limit 0.3"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_deteriorating",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.07,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 0.4,
+        "bad": true,
+        "calibration_error": 0.27999999999999997,
+        "coverage_90_positive_windows": 0.0,
+        "n_windows": 10,
+        "last_window_p_critical": 0.1107647513809539
+      },
+      "timing": {
+        "llm_seconds": 28.99771390017122,
+        "pfn_seconds": 22.01328150019981,
+        "total_seconds": 51.01099540037103
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-real-20261031T163558Z-5df6c013.0002",
+        "trajectory_id": "daphnia_constant/2",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 21.89944390009623,
+        "tokens_in": 20054,
+        "tokens_out": 2707,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 100,
+          "rationale": "Both KNN (size 100) and random (size 100) contexts consistently predict the query series is far from tipping: median predictions near 1.0 (KNN mean 0.87, last window 0.997; random mean 0.96, last window 0.80), p_critical well below 0.5 (KNN mean 0.08, random mean 0.10), and zero windows above p_critical=0.5. Results agree across strategies despite query being somewhat out-of-distribution.",
+          "confidence": 0.85
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: ood_share: 0.462 of query windows are far from the pool, limit 0.3; context_not_degenerate: 7 context rows with target <= 0.2 and 77 with target >= 0.6, need 10 of each",
+          "gate_passed": false,
+          "gate_failed": [
+            "ood_share",
+            "context_not_degenerate"
+          ],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 13,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.04514780422671342,
+          "context_strategy": "knn",
+          "context_size": 100,
+          "context_hash": "24368493b8bb188f",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-real-20261031T163558Z-5df6c013",
+          "trajectory_id": "daphnia_constant/2",
+          "strategy": "knn",
+          "context_hash": "24368493b8bb188f",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 100.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "100 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.46153846153846156,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.462 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.95,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.950, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 7.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": false,
+              "reason": "7 context rows with target <= 0.2 and 77 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7885079428409014,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.789, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "ood_share: 0.462 of query windows are far from the pool, limit 0.3",
+            "context_not_degenerate: 7 context rows with target <= 0.2 and 77 with target >= 0.6, need 10 of each"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "control",
+        "family": "real_persisting",
+        "split": "real_tipping",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.27384615384615385,
+        "coverage_90_positive_windows": null,
+        "n_windows": 13,
+        "last_window_p_critical": 0.04514780422671342
+      },
+      "timing": {
+        "llm_seconds": 21.89944390009623,
+        "pfn_seconds": 13.927214700262994,
+        "total_seconds": 35.826658600359224
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-real-20261031T163558Z-5df6c013.0003",
+        "trajectory_id": "daphnia_constant/3",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "tool_cap",
+        "stop_detail": "tool call cap of 6 reached, 'choose_context' was refused",
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 72.88512420002371,
+        "tokens_in": 19598,
+        "tokens_out": 2593,
+        "cost_usd_approx": 0.0,
+        "verdict": null,
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: ood_share: 0.769 of query windows are far from the pool, limit 0.3",
+          "gate_passed": false,
+          "gate_failed": [
+            "ood_share"
+          ],
+          "alert_threshold": 0.18987940152847654,
+          "window_decisions": {
+            "abstain": 13,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.6408476670707546,
+          "context_strategy": "random",
+          "context_size": 100,
+          "context_hash": "944d4258a3288320",
+          "followed_verdict_context": null
+        },
+        "agent_agrees": null,
+        "gate_result": {
+          "run_id": "agent-real-20261031T163558Z-5df6c013",
+          "trajectory_id": "daphnia_constant/3",
+          "strategy": "random",
+          "context_hash": "944d4258a3288320",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 100.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "100 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.7692307692307693,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.769 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.93,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.930, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 11.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "11 context rows with target <= 0.2 and 68 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 1.025279784293494,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 1.025, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "ood_share: 0.769 of query windows are far from the pool, limit 0.3"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "control",
+        "family": "real_persisting",
+        "split": "real_tipping",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.27384615384615385,
+        "coverage_90_positive_windows": null,
+        "n_windows": 13,
+        "last_window_p_critical": 0.6408476670707546
+      },
+      "timing": {
+        "llm_seconds": 72.88512420002371,
+        "pfn_seconds": 16.40717590006534,
+        "total_seconds": 89.29230010008905
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-real-20261031T163558Z-5df6c013.0004",
+        "trajectory_id": "daphnia_deteriorating/6",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 4,
+        "n_model_requests": 4,
+        "n_replayed_requests": 4,
+        "llm_seconds": 36.51161490008235,
+        "tokens_in": 11732,
+        "tokens_out": 2352,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "context_strategy": "knn",
+          "context_size": 200,
+          "rationale": "KNN context (200 rows, 78 near/74 far tipping) shows clear deterioration: median prediction drops from 0.718 (first third) to 0.1191 (last third), last window at 0.1128 with p_critical 0.8387. Strong trend toward tipping point despite query being distant from pool.",
+          "confidence": 0.78
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: ood_share: 1.000 of query windows are far from the pool, limit 0.3",
+          "gate_passed": false,
+          "gate_failed": [
+            "ood_share"
+          ],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 7,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.8387160895211037,
+          "context_strategy": "knn",
+          "context_size": 200,
+          "context_hash": "3331fac6f24494d2",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-real-20261031T163558Z-5df6c013",
+          "trajectory_id": "daphnia_deteriorating/6",
+          "strategy": "knn",
+          "context_hash": "3331fac6f24494d2",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 1.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.895,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.895, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 74.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "78 context rows with target <= 0.2 and 74 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 1.0022716905987736,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 1.002, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.8571428571428571,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.857 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "ood_share: 1.000 of query windows are far from the pool, limit 0.3"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_deteriorating",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.14,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.2914285714285715,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 7,
+        "last_window_p_critical": 0.8387160895211037
+      },
+      "timing": {
+        "llm_seconds": 36.51161490008235,
+        "pfn_seconds": 21.5054714003345,
+        "total_seconds": 58.01708630041685
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-real-20261031T163558Z-5df6c013.0005",
+        "trajectory_id": "daphnia_deteriorating/7",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 4,
+        "n_replayed_requests": 4,
+        "llm_seconds": 35.884945500059985,
+        "tokens_in": 12234,
+        "tokens_out": 3473,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 200,
+          "rationale": "Both KNN and random contexts consistently predict the system is far from tipping at the series end (median 0.86-1.0, p_critical 0.10-0.14 for last window). KNN context is better balanced (57 near, 79 far). High interval uncertainty and query distance from pool warrant moderate confidence, but model agreement across contexts supports no_alert.",
+          "confidence": 0.65
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: ood_share: 0.875 of query windows are far from the pool, limit 0.3",
+          "gate_passed": false,
+          "gate_failed": [
+            "ood_share"
+          ],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 8,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.1371642608476384,
+          "context_strategy": "knn",
+          "context_size": 200,
+          "context_hash": "66a2e95c9aa2cc6b",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-real-20261031T163558Z-5df6c013",
+          "trajectory_id": "daphnia_deteriorating/7",
+          "strategy": "knn",
+          "context_hash": "66a2e95c9aa2cc6b",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.875,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.875 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.915,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.915, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 57.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "57 context rows with target <= 0.2 and 79 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.9546491974755411,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.955, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.75,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.750 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "ood_share: 0.875 of query windows are far from the pool, limit 0.3"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_deteriorating",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.07,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 0.75,
+        "bad": true,
+        "calibration_error": 0.175,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 8,
+        "last_window_p_critical": 0.1371642608476384
+      },
+      "timing": {
+        "llm_seconds": 35.884945500059985,
+        "pfn_seconds": 26.287060900125653,
+        "total_seconds": 62.17200640018564
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-real-20261031T163558Z-5df6c013.0006",
+        "trajectory_id": "daphnia_constant/20",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 4,
+        "n_replayed_requests": 4,
+        "llm_seconds": 95.95045330002904,
+        "tokens_in": 12459,
+        "tokens_out": 2645,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 200,
+          "rationale": "Both knn and random contexts (size 200) consistently predict the system is far from tipping: median predictions ~0.87-0.88, last window ~0.998-0.999, with very low p_critical (~0.03-0.04) for the final window. Only 1 of 9 windows exceeds p_critical=0.5 in knn, none in random. Results agree across strategies despite wide prediction intervals.",
+          "confidence": 0.8
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: ood_share: 0.444 of query windows are far from the pool, limit 0.3",
+          "gate_passed": false,
+          "gate_failed": [
+            "ood_share"
+          ],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 9,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.037350029047744794,
+          "context_strategy": "knn",
+          "context_size": 200,
+          "context_hash": "5a0e63d2e99c134b",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-real-20261031T163558Z-5df6c013",
+          "trajectory_id": "daphnia_constant/20",
+          "strategy": "knn",
+          "context_hash": "5a0e63d2e99c134b",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.4444444444444444,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.444 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.95,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.950, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 23.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "23 context rows with target <= 0.2 and 146 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7873960919365631,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.787, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.8888888888888888,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.889 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "ood_share: 0.444 of query windows are far from the pool, limit 0.3"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.17,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 0.7777777777777778,
+        "bad": true,
+        "calibration_error": 0.09111111111111111,
+        "coverage_90_positive_windows": 0.0,
+        "n_windows": 9,
+        "last_window_p_critical": 0.037350029047744794
+      },
+      "timing": {
+        "llm_seconds": 95.95045330002904,
+        "pfn_seconds": 26.685157699976116,
+        "total_seconds": 122.63561100000516
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-real-20261031T163558Z-5df6c013.0007",
+        "trajectory_id": "daphnia_constant/32",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 33.908988600131124,
+        "tokens_in": 21123,
+        "tokens_out": 3345,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 100,
+          "rationale": "Both knn and random contexts (size 100) consistently predict the system is far from tipping: median predictions ~0.86, last-window predictions 0.9992 (knn) and 0.9239 (random), p_critical well below 0.5 for all windows. Although the query is somewhat out-of-distribution and interval widths are wide, agreement across strategies supports low tipping risk at series end.",
+          "confidence": 0.7
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: ood_share: 0.545 of query windows are far from the pool, limit 0.3",
+          "gate_passed": false,
+          "gate_failed": [
+            "ood_share"
+          ],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 11,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.02095899344526061,
+          "context_strategy": "knn",
+          "context_size": 100,
+          "context_hash": "01c0906532d16699",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-real-20261031T163558Z-5df6c013",
+          "trajectory_id": "daphnia_constant/32",
+          "strategy": "knn",
+          "context_hash": "01c0906532d16699",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 100.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "100 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.5454545454545454,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.545 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.96,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.960, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 10.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "10 context rows with target <= 0.2 and 76 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7438007109739343,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.744, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "ood_share: 0.545 of query windows are far from the pool, limit 0.3"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 0.8181818181818182,
+        "bad": false,
+        "calibration_error": 0.09090909090909091,
+        "coverage_90_positive_windows": 0.0,
+        "n_windows": 11,
+        "last_window_p_critical": 0.02095899344526061
+      },
+      "timing": {
+        "llm_seconds": 33.908988600131124,
+        "pfn_seconds": 14.111688699922524,
+        "total_seconds": 48.02067730005365
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-real-20261031T163558Z-5df6c013.0008",
+        "trajectory_id": "daphnia_constant/35",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 33.591238699969836,
+        "tokens_in": 21204,
+        "tokens_out": 3119,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "random",
+          "context_size": 100,
+          "rationale": "Both knn and random contexts consistently predict the system is far from tipping (median ~0.97-1.0, p_critical < 0.1, no windows above 0.5). Despite wide prediction intervals indicating uncertainty, agreement across two context strategies supports no_alert.",
+          "confidence": 0.65
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: ood_share: 0.667 of query windows are far from the pool, limit 0.3; context_not_degenerate: 8 context rows with target <= 0.2 and 68 with target >= 0.6, need 10 of each",
+          "gate_passed": false,
+          "gate_failed": [
+            "ood_share",
+            "context_not_degenerate"
+          ],
+          "alert_threshold": 0.18987940152847654,
+          "window_decisions": {
+            "abstain": 12,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.08296687490316863,
+          "context_strategy": "random",
+          "context_size": 100,
+          "context_hash": "c6a41e8e779cc52b",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-real-20261031T163558Z-5df6c013",
+          "trajectory_id": "daphnia_constant/35",
+          "strategy": "random",
+          "context_hash": "c6a41e8e779cc52b",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 100.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "100 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.6666666666666666,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.667 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.96,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.960, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 8.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": false,
+              "reason": "8 context rows with target <= 0.2 and 68 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.9049566161469627,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.905, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "ood_share: 0.667 of query windows are far from the pool, limit 0.3",
+            "context_not_degenerate: 8 context rows with target <= 0.2 and 68 with target >= 0.6, need 10 of each"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.14,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.10333333333333335,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 12,
+        "last_window_p_critical": 0.08296687490316863
+      },
+      "timing": {
+        "llm_seconds": 33.591238699969836,
+        "pfn_seconds": 13.755501999985427,
+        "total_seconds": 47.34674069995526
+      }
+    }
+  ]
+}

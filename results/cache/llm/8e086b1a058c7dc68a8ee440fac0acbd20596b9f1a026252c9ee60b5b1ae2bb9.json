@@ -1,0 +1,77 @@
+{
+  "key": "8e086b1a058c7dc68a8ee440fac0acbd20596b9f1a026252c9ee60b5b1ae2bb9",
+  "latency_s": 9.295433999970555,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:17:18+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the results:\n\n- Median prediction mean: 0.8213 (relatively high, meaning far from tipping on average)\n- First third mean: 0.9396 (very far from tipping at the start)\n- Last third mean: 0.6402 (decreasing, getting closer to tipping)\n- Last window: 0.9409 (wait, this is high again? That's interesting - the last window prediction is 0.9409, which is far from tipping)\n\nWait, let me re-read. The last_window is 0.9409 but the last_third_mean is 0.6402. So the last window specifically is high (far from tipping), but the last third on average is lower (closer to tipping). This could mean there's variability in the last third.\n\n- p_critical mean: 0.1269 (low probability of being near tipping)\n- p_critical max: 0.4434 (max probability, still below 0.5)\n- p_critical last_window: 0.1085 (low for the last window)\n- p_critical last_third_mean: 0.2133 (somewhat elevated in the last third)\n- share_of_windows_above_half: 0.0 (no windows have p_critical > 0.5)\n\nThe interval width is quite large (mean 0.8843, max 1.0302), suggesting high uncertainty.\n\nSo the model predictions suggest:\n- Overall, the system is far from tipping (median prediction ~0.82)\n- There's a declining trend toward the end (last third mean 0.64 vs first third 0.94)\n- But the last window specifically is 0.9409, which is high\n- p_critical is low overall (max 0.4434, no windows above 0.5)\n- High uncertainty (wide intervals)\n\nThe query features showed strong early warning signs (increasing ac1 and low_freq_power), but the model predictions don't strongly indicate imminent tipping. The last window prediction is actually high (0.9409), suggesting far from tipping.\n\nHowever, I should consider whether I need another context. The knn context was skewed toward far-from-tipping examples (153 far vs 16 near). The rules say a mix is more useful. Let me try a random context to see if it gives a different/more balanced perspective.\n\nActually, let me think about this more carefully. The model predictions show:\n- Median prediction declining from 0.94 (first third) to 0.64 (last third) - this suggests the model thinks the system is getting closer to tipping\n- But the last window is 0.9409, which is high again\n- p_critical is low overall\n\nThe declining trend in predictions is concerning - it suggests the model sees the system approaching a tipping point. But the last window being high is confusing.\n\nLet me try a random context to get a different perspective and see if the results are consistent.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-71794d5e-9c84-4372-b6e6-4d661c098697",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:17:08Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793441828-mKkM2cXpbvvdtHkI6odj",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:17:18.116840Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 683
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3657,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 683,
+      "output_tokens": 726
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

@@ -1,0 +1,77 @@
+{
+  "key": "3703c9df4566b086e14373bd7b59e6a826caba400af9341c671b3e21b10c3c3f",
+  "latency_s": 1.4187299000332132,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:18:33+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Good, the knn context of size 100 has 35 rows near tipping and 31 rows far from tipping. That's a good mix - both near and far examples, which is more useful per the rules.\n\nNow let me run the PFN on this context.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"reason\":\"Get model predictions on query using knn context with mixed near/far examples\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-be0c38d0-9577-4727-844e-c16d7bd49a97",
+        "tool_kind": null,
+        "tool_name": "run_pfn"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:18:31Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793441911-EB1AhVLAMpce1Lep1PZc",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:18:33.071902Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 61
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3226,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 61,
+      "output_tokens": 103
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

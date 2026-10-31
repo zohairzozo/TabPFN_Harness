@@ -1,8 +1,10 @@
 """Write results/summary.md from the result files in results/.
 
 Every number in the summary is read from results/baseline_ews.json, results/pfn_*.json,
-results/gate_tuning.json or results/timing_tabpfn.json. The text around the numbers does not
-state any result: sentences that depend on a number are chosen by code from that number.
+results/gate_tuning.json, results/timing_tabpfn.json or the results of the variants
+(results/{classic_ews,llm_only,naive_agent,agent,oracle}_{test,ood}.json). The text around
+the numbers does not state any result: sentences that depend on a number are chosen by code
+from that number.
 
 Usage: python scripts/make_summary.py [--results-dir results]
 """
@@ -39,6 +41,19 @@ LEAKAGE_AUROC = 0.98  # an AUROC above this usually means leakage
 DEGENERATE_THRESHOLD = 1e-12  # a p_critical alarm threshold below this means scores of 0
 RATE_TOLERANCE = 1.5  # held-out false-alarm rate above this times the target is flagged
 GATE_STRATEGIES = ("random", "knn")
+# The variants of the comparison table: (row title, result file prefix, metrics source in the file).
+VARIANTS: list[tuple[str, str, str]] = [
+    ("Classic EWS baseline", "classic_ews", "classic_ews"),
+    ("LLM only", "llm_only", "llm_only"),
+    ("Naive agent (random context, no gate)", "naive_agent", "naive_agent"),
+    ("Full harness (agent + gate)", "agent", "agent_final"),
+    ("Family-matched oracle (ORACLE)", "oracle", "oracle"),
+]
+VARIANT_SPLITS = ("test", "ood")  # in-prior test, out-of-prior
+REAL_VARIANT_SPLITS = (
+    "real",
+    "real_control",
+)  # real data, test only (docs/DAPHNIA.md, docs/GRID.md)
 GATE_SPLITS = [
     ("in-prior val", "val"),
     ("in-prior test", "test"),
@@ -58,6 +73,12 @@ class Results:
         self.baseline = load(results_dir / "baseline_ews.json")
         self.timing = load(results_dir / "timing_tabpfn.json")
         self.tuning = load(results_dir / "gate_tuning.json")
+        self.variants: dict[tuple[str, str], dict[str, Any]] = {}
+        for _, method, _ in VARIANTS:
+            for split in (*VARIANT_SPLITS, *REAL_VARIANT_SPLITS):
+                data = load(results_dir / f"{method}_{split}.json")
+                if data is not None:
+                    self.variants[(method, split)] = data
         self.pfn: dict[tuple[str, str], dict[str, Any]] = {}
         for strategy in STRATEGIES:
             for flag in ("val", "test", "ood", "controls"):
@@ -565,6 +586,301 @@ def gate_finding_lines(res: Results) -> list[str]:
     return out or ["- No gated run to compare yet."]
 
 
+def per_split(res: Results, method: str, fn: Any) -> str:
+    """One cell with a value for in-prior test and one for out-of-prior, "a / b".
+
+    If both are the same "n/a (reason)" or "not run", the cell says it once.
+    """
+    parts = []
+    for split in VARIANT_SPLITS:
+        d = res.variants.get((method, split))
+        parts.append("not run" if d is None else fn(d))
+    if len(set(parts)) == 1 and parts[0].startswith(("n/a", "not run")):
+        return parts[0]
+    return " / ".join(parts)
+
+
+def has_result(res: Results, method: str) -> bool:
+    return any((method, split) in res.variants for split in VARIANT_SPLITS)
+
+
+def pfn_of(res: Results, method: str, split: str) -> dict[str, Any] | None:
+    """The PFN block of a variant's summary for one split, or None."""
+    d = res.variants.get((method, split))
+    return None if d is None else (d["summary"] or {}).get("pfn")
+
+
+def variant_auroc(res: Results, method: str, source: str, split: str) -> str:
+    d = res.variants.get((method, split))
+    if d is None:
+        return "not run"
+    m = d["metrics"].get(source) or {}
+    a = m.get("auroc_end")
+    if a:
+        text = f"{a['auroc']:.2f} [{a['ci_low']:.2f}, {a['ci_high']:.2f}]"
+        scorable = m["n_positive_end"] + m["n_negative_end"]
+        return text + (f" (n={m['n_scored']})" if m["n_scored"] < scorable else "")
+    if m.get("n_positive_end", 0) == 0:
+        skipped = "tipping runs skipped: family not in the pool"
+        return f"n/a ({skipped if d.get('skipped') else 'no tipping run'})"
+    return "n/a (no run had a score)" if m.get("n_scored", 0) == 0 else "n/a (one class only)"
+
+
+def variant_coverage(res: Results, method: str) -> str:
+    """Coverage of all runs, in-prior / out-of-prior, and of the accepted runs if a gate ruled."""
+    blocks = [pfn_of(res, method, split) for split in VARIANT_SPLITS]
+    present = [b for b in blocks if b is not None]
+    if not present:
+        return "n/a (no intervals)" if has_result(res, method) else "not run"
+    text = " / ".join("not run" if b is None else num(b["coverage_90_mean_all"]) for b in blocks)
+    if not any(b["gated"] for b in present):
+        return text
+    accepted = " / ".join(
+        "not run" if b is None else num(b["coverage_90_mean_accepted"], "none accepted")
+        for b in blocks
+    )
+    return f"{text} (accepted runs: {accepted})"
+
+
+def variant_calibration(res: Results, method: str) -> str:
+    def one(d: dict[str, Any]) -> str:
+        p = (d["summary"] or {}).get("pfn")
+        return "n/a (no intervals)" if p is None else num(p["calibration_error_mean"], digits=3)
+
+    return per_split(res, method, one)
+
+
+def variant_false_alarms(res: Results, method: str, source: str) -> str:
+    def one(d: dict[str, Any]) -> str:
+        m = (d["metrics"].get(source) or {}).get("control_alert") or {}
+        if m.get("value") is None:
+            return "n/a (no control run)"
+        return f"{m['value']:.2f} (n={m['n']})"
+
+    return per_split(res, method, one)
+
+
+def variant_bad_blocked(res: Results, method: str) -> str:
+    def one(d: dict[str, Any]) -> str:
+        p = (d["summary"] or {}).get("pfn")
+        if p is None or not p["gated"]:
+            return "n/a (no gate)"
+        if p["n_bad"] == 0:
+            return "n/a (no BAD run)"
+        return f"{p['bad_blocked_share']:.2f} ({p['n_bad_blocked']}/{p['n_bad']})"
+
+    return per_split(res, method, one)
+
+
+def variant_latency(res: Results, method: str) -> str:
+    """The p95 of the run latencies of both splits together."""
+    seconds = [
+        r["timing"]["total_seconds"]
+        for split in VARIANT_SPLITS
+        for r in (res.variants.get((method, split)) or {}).get("runs", [])
+    ]
+    return f"{float(np.percentile(seconds, 95)):.3g} s" if seconds else "not run"
+
+
+def variant_tool_calls(res: Results, method: str) -> str:
+    n = total = 0.0
+    for split in VARIANT_SPLITS:
+        t = ((res.variants.get((method, split)) or {}).get("summary") or {}).get("tool_calls")
+        if t:
+            n += t["n"]
+            total += t["mean"] * t["n"]
+    if n == 0:
+        return "n/a (no tools)" if has_result(res, method) else "not run"
+    return f"{total / n:.2f}"
+
+
+def variant_pass_k(res: Results, method: str) -> str:
+    """Scenarios where the 3 seeds agree, over both splits together."""
+    agree = scenarios = 0
+    for split in VARIANT_SPLITS:
+        pk = ((res.variants.get((method, split)) or {}).get("summary") or {}).get("pass_k")
+        if pk:
+            agree, scenarios = agree + pk["n_agree"], scenarios + pk["n_scenarios"]
+    if scenarios == 0:
+        return "n/a" if has_result(res, method) else "not run"
+    return f"{agree / scenarios:.2f} ({agree}/{scenarios})"
+
+
+def variant_table(res: Results) -> list[str]:
+    head = [
+        "Variant", "In-prior AUROC", "Out-of-prior AUROC",
+        "90% coverage (in-prior / out-of-prior)", "Calibration error (in-prior / out-of-prior)",
+        "False alarms on controls (in-prior / out-of-prior)",
+        "Share of BAD runs blocked (in-prior / out-of-prior)", "p95 latency",
+        "Tool calls per verdict", "pass^3: seeds that agree",
+    ]  # fmt: skip
+    lines = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
+    for title, method, source in VARIANTS:
+        cells = [
+            title,
+            variant_auroc(res, method, source, "test"),
+            variant_auroc(res, method, source, "ood"),
+            variant_coverage(res, method),
+            variant_calibration(res, method),
+            variant_false_alarms(res, method, source),
+            variant_bad_blocked(res, method),
+            variant_latency(res, method),
+            variant_tool_calls(res, method),
+            variant_pass_k(res, method),
+        ]
+        lines.append("| " + " | ".join(cells) + " |")
+    return lines
+
+
+def sample_line(limit: int | None, seeds: int | None) -> str:
+    if limit is None:
+        kinds = "all scenarios"
+    else:
+        kinds = f"{limit} scenarios of each kind (tipping and control)"
+    trial = " (a trial run)" if limit is not None else ""
+    return f"- Sample: {kinds}, {'all' if seeds is None else seeds} seeds per scenario{trial}."
+
+
+def variant_notes(res: Results) -> list[str]:
+    """What was run, read from the result files."""
+    if not res.variants:
+        return ["- No variant has been run yet (results/<variant>_{test,ood}.json)."]
+    samples = {(d.get("limit"), d.get("seeds_per_scenario")) for d in res.variants.values()}
+    lines = [sample_line(limit, seeds) for limit, seeds in sorted(samples, key=str)]
+    counts = []
+    for title, method, _ in VARIANTS:
+        found = [res.variants.get((method, split)) for split in VARIANT_SPLITS]
+        ran = " / ".join("not run" if d is None else str(d["n_runs"]) for d in found)
+        skipped = sum(len((d or {}).get("skipped") or []) for d in found)
+        note = f" ({skipped} skipped: family not in the pool)" if skipped else ""
+        counts.append(f"{title.split(' (')[0]}: {ran}{note}")
+    lines.append("- Runs per variant, in-prior test / out-of-prior: " + "; ".join(counts) + ".")
+    llm = [d for d in res.variants.values() if d.get("model")]
+    if llm:
+        models = ", ".join(sorted({d["model"] for d in llm}))
+        modes = ", ".join(sorted({str(d["llm_mode"]) for d in llm}))
+        runs = sum(d["n_runs"] for d in llm)
+        applied = sum(d["usage"]["temperature_applied_runs"] for d in llm)
+        lines.append(
+            f"- LLM: {models}; --llm-mode {modes}. Temperature 0 was applied in {applied} of "
+            f"{runs} runs."
+        )
+    if res.degenerate_controls("family_matched"):
+        lines.append(
+            "- The oracle's context for a control run holds a constant target, so its output "
+            "there is a constant (see ‡ above): its control rows say nothing about the method."
+        )
+    return lines
+
+
+VARIANT_DEFINITIONS = [
+    "A run is one trajectory. Every number in this table is run level: one verdict at the end of "
+    "the series, scored against the label of the last window (near tipping, far from it, or "
+    "the middle band, which is left out). The per-window AUROC and false-alarm rates above are "
+    "different quantities and must not be compared with these.",
+    "**AUROC**: of the run's score for the end of the series, over the tipping runs (positive) and "
+    "the control runs (negative) of the split. The score is p_critical at the last window "
+    "(oracle, and the full harness), the baseline score of the last window (classic), the "
+    "language model's own probability (LLM only) or its confidence (naive agent). The full harness "
+    "is scored on the runs the gate accepted, and (n=) says how many. CIs are a bootstrap over "
+    "runs.",
+    "**90% coverage** and **calibration error**: for variants that use the PFN, the mean over runs "
+    "of the share of window targets inside the 90% interval of the PFN's output on the run's "
+    "final context, and of the mean absolute gap between the five quantile levels and the "
+    "frequencies observed. The truth is read by the evaluation only. The classic baseline and the "
+    "LLM-only baseline give no intervals.",
+    "**False alarms on controls**: the share of control runs whose decision is alert. An "
+    "abstention is not an alert.",
+    "**Share of BAD runs blocked**: a run is BAD if its 90% interval covers less than 0.80 of its "
+    "windows (docs/GATE.md). Blocked means the gate failed. Only the full harness has a gate.",
+    "**p95 latency**: the 95th percentile of the run latency over both splits. A run's latency is "
+    "its model calls (as recorded, so a replay reports the live latency) plus the PFN fit and "
+    "predict time (as first measured, gate refits included).",
+    "**Tool calls per verdict**: the mean number of tool calls of a run (cap 6).",
+    "**pass^3**: the share of scenarios, with all 3 seeds present, where the 3 seeds give the same "
+    "final decision (abstain counts as a decision). It measures consistency, not correctness.",
+]
+
+
+def real_rate(res: Results, method: str, source: str, split: str, key: str) -> str:
+    """One rate from a real-split result file, "value (n=...)"."""
+    d = res.variants.get((method, split))
+    if d is None:
+        return "not run"
+    m = (d["metrics"].get(source) or {}).get(key) or {}
+    if m.get("value") is None:
+        return "n/a (no such run)"
+    return f"{m['value']:.2f} (n={m['n']})"
+
+
+def real_table(res: Results) -> list[str]:
+    head = [
+        "Variant",
+        "Daphnia (surrogate labels): AUROC",
+        "Daphnia: alert on extinct populations",
+        "Daphnia: alert on persisting populations",
+        "Grid (normal operation): false-alarm rate",
+    ]
+    lines = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
+    for title, method, source in VARIANTS:
+        cells = [
+            variant_auroc(res, method, source, "real"),
+            real_rate(res, method, source, "real", "recall_end"),
+            real_rate(res, method, source, "real", "control_alert"),
+            real_rate(res, method, source, "real_control", "control_alert"),
+        ]
+        lines.append("| " + " | ".join([title, *cells]) + " |")
+    return lines
+
+
+def real_section(res: Results) -> list[str]:
+    if not any(split in REAL_VARIANT_SPLITS for (_, split) in res.variants):
+        return []
+    return [
+        "## Real data (test only)",
+        "",
+        "Two real datasets, never in the context pool and never used to tune the gate. "
+        "The Daphnia labels are surrogates (time to extinction over a fixed horizon): they are "
+        "not the distance to a bifurcation (docs/DAPHNIA.md). The grid data is normal operation, "
+        "not a pre-blackout run, and every window is negative, so it measures false alarms only "
+        "and has no AUROC (docs/GRID.md).",
+        "",
+        *real_table(res),
+        "",
+        *real_sample_lines(res),
+        "",
+    ]
+
+
+def real_sample_lines(res: Results) -> list[str]:
+    lines = []
+    for split, label in (("real", "Daphnia"), ("real_control", "grid")):
+        parts = []
+        for title, method, _ in VARIANTS:
+            d = res.variants.get((method, split))
+            if d is not None:
+                parts.append(f"{title.split(' (')[0]}: {d['n_runs']}")
+        if parts:
+            lines.append(f"- Runs per variant on the {label} split: " + "; ".join(parts) + ".")
+    return lines
+
+
+def variants_section(res: Results) -> list[str]:
+    return [
+        "## Variants, run level",
+        "",
+        "One row per variant, on the same trajectories. The test and out-of-prior splits are "
+        "held out: the gate was tuned and frozen before they were run.",
+        "",
+        *variant_table(res),
+        "",
+        *variant_notes(res),
+        "",
+        *[f"- {text}" for text in VARIANT_DEFINITIONS],
+        "",
+    ]
+
+
 def build_summary(res: Results) -> str:
     lines = [
         "# Results summary",
@@ -646,6 +962,8 @@ def build_summary(res: Results) -> str:
         *gate_finding_lines(res),
         "",
     ]
+    lines += variants_section(res)
+    lines += real_section(res)
     lines += ["## Run settings", "", *settings_table(res), ""]
     lines += ["## Checks computed from the results", "", *check_lines(res), ""]
     lines += [

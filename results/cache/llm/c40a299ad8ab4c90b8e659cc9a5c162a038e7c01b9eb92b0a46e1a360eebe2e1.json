@@ -1,0 +1,77 @@
+{
+  "key": "c40a299ad8ab4c90b8e659cc9a5c162a038e7c01b9eb92b0a46e1a360eebe2e1",
+  "latency_s": 1.4924302999861538,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:25:17+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The knn context has 150 rows: 6 near tipping, 122 far from tipping. That's quite imbalanced - only 6 near tipping. The rule says a context with both near and far is more useful. Let me run the PFN on this context first, then consider if I need another context.\n\nActually, 6 near and 122 far is quite imbalanced. Let me run the model and see what happens.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"reason\":\"Run PFN on knn context to get predictions for query windows\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-7b421d4f-dae6-4cea-8adc-f5c782455f08",
+        "tool_kind": null,
+        "tool_name": "run_pfn"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:25:15Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793442315-k5s4AR3LwuIPfRhVucZi",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:25:17.047618Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 98
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3301,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 98,
+      "output_tokens": 138
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

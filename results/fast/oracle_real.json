@@ -1,0 +1,71 @@
+{
+  "method": "oracle",
+  "split": "real",
+  "dataset_splits": [
+    "real_tipping"
+  ],
+  "held_out": true,
+  "model": null,
+  "llm_mode": null,
+  "oracle": true,
+  "settings": {
+    "backend": "tabpfn_local",
+    "model_version": "v3.5",
+    "package_version": "9.2.0",
+    "max_context": 2000,
+    "data_version": "7537845ee16feb9f",
+    "strategy": "family_matched",
+    "alert_threshold": 5e-324
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "seeds_per_scenario": 1,
+  "limit": 5,
+  "n_runs": 0,
+  "skipped": [
+    {
+      "trajectory_id": "daphnia_constant/0",
+      "reason": "no pool rows in family 'real_persisting' for daphnia_constant/0"
+    },
+    {
+      "trajectory_id": "daphnia_deteriorating/1",
+      "reason": "no pool rows in family 'real_extinction' for daphnia_deteriorating/1"
+    },
+    {
+      "trajectory_id": "daphnia_constant/20",
+      "reason": "no pool rows in family 'real_extinction' for daphnia_constant/20"
+    }
+  ],
+  "usage": null,
+  "summary": {
+    "n_runs": 0,
+    "latency_seconds": {
+      "n": 0,
+      "mean": null,
+      "p50": null,
+      "p95": null,
+      "max": null
+    },
+    "llm_seconds_mean": null,
+    "pfn_seconds_mean": null,
+    "tool_calls": null,
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 0,
+      "n_agree": 0,
+      "share": null,
+      "n_incomplete": 0,
+      "decisions": {}
+    },
+    "pfn": null
+  },
+  "metrics": {
+    "oracle": {
+      "n_runs": 0
+    }
+  },
+  "trace": "oracle-real-20261031T152332Z-aec528fb.jsonl",
+  "wall_seconds": 0.30849269998725504,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": []
+}

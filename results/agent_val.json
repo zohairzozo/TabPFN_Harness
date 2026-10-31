@@ -1,0 +1,2959 @@
+{
+  "method": "agent",
+  "split": "val",
+  "dataset_splits": [
+    "validation"
+  ],
+  "held_out": false,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "llm_mode": "replay",
+  "debug_model": false,
+  "settings": {
+    "backend": "tabpfn_local",
+    "model_version": "v3.5",
+    "package_version": "9.2.0",
+    "max_context": 200,
+    "data_version": "7537845ee16feb9f"
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": null,
+  "seeds_per_scenario": 3,
+  "limit": 3,
+  "n_runs": 18,
+  "usage": {
+    "n_runs": 18,
+    "model_requests": 100,
+    "replayed_requests": 100,
+    "tokens_in": 320469,
+    "tokens_out": 55699,
+    "llm_seconds": 652.3420047005638,
+    "cost_usd_approx": 0.0,
+    "cost_note": "approximate: prices in configs/agent.yaml, as recorded",
+    "temperature_applied_runs": 18,
+    "stop_reasons": {
+      "completed": 17,
+      "tool_cap": 1,
+      "request_cap": 0,
+      "bad_output": 0
+    }
+  },
+  "metrics": {
+    "agent_final": {
+      "n_runs": 18,
+      "n_positive_end": 9,
+      "n_negative_end": 9,
+      "n_middle_end": 0,
+      "n_control_runs": 9,
+      "decisions": {
+        "alert": 9,
+        "no_alert": 5,
+        "abstain": 4
+      },
+      "abstention": {
+        "value": 0.2222222222222222,
+        "n": 18,
+        "ci": [
+          0.05555555555555555,
+          0.4444444444444444
+        ]
+      },
+      "recall_end": {
+        "value": 0.8888888888888888,
+        "n": 9,
+        "ci": [
+          0.6666666666666666,
+          1.0
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.1111111111111111,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.375
+        ]
+      },
+      "control_alert": {
+        "value": 0.1111111111111111,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.375
+        ]
+      },
+      "precision_end": {
+        "value": 0.8888888888888888,
+        "n": 9,
+        "ci": [
+          0.6666666666666666,
+          1.0
+        ]
+      },
+      "n_scored": 14,
+      "auroc_end": {
+        "auroc": 0.9583333333333333,
+        "ci_low": 0.8162308673469388,
+        "ci_high": 1.0
+      }
+    },
+    "agent_recommendation": {
+      "n_runs": 18,
+      "n_positive_end": 9,
+      "n_negative_end": 9,
+      "n_middle_end": 0,
+      "n_control_runs": 9,
+      "decisions": {
+        "alert": 6,
+        "no_alert": 10,
+        "abstain": 2
+      },
+      "abstention": {
+        "value": 0.1111111111111111,
+        "n": 18,
+        "ci": [
+          0.0,
+          0.2777777777777778
+        ]
+      },
+      "recall_end": {
+        "value": 0.6666666666666666,
+        "n": 9,
+        "ci": [
+          0.3333333333333333,
+          1.0
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "precision_end": {
+        "value": 1.0,
+        "n": 6,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "n_scored": 17,
+      "auroc_end": {
+        "auroc": 0.875,
+        "ci_low": 0.6713095238095238,
+        "ci_high": 1.0
+      }
+    }
+  },
+  "gate": {
+    "n_runs": 18,
+    "n_gate_passed": 14,
+    "n_gate_blocked": 4,
+    "n_no_context": 0,
+    "blocked_by_check": {
+      "context_not_degenerate": 4
+    },
+    "agent_alerts_blocked_by_gate": 0,
+    "agent_agrees_with_final": 11,
+    "agent_disagrees_with_final": 6,
+    "no_verdict": 1,
+    "verdict_named_a_built_context": 17,
+    "final_strategy": {
+      "random": 8,
+      "knn": 10
+    }
+  },
+  "summary": {
+    "n_runs": 18,
+    "latency_seconds": {
+      "n": 18,
+      "mean": 65.39573262225086,
+      "p50": 59.24939780001296,
+      "p95": 92.10880379999286,
+      "max": 115.15723040018929
+    },
+    "llm_seconds_mean": 36.24122248336466,
+    "pfn_seconds_mean": 29.154510138886206,
+    "tool_calls": {
+      "n": 18,
+      "mean": 5.777777777777778,
+      "max": 6
+    },
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 6,
+      "n_agree": 2,
+      "share": 0.3333333333333333,
+      "n_incomplete": 0,
+      "decisions": {
+        "fold_L1_slow": [
+          "alert",
+          "alert",
+          "alert"
+        ],
+        "hopf_L2_slow": [
+          "alert",
+          "alert",
+          "alert"
+        ],
+        "ou_L1": [
+          "no_alert",
+          "no_alert",
+          "abstain"
+        ],
+        "regime_L3": [
+          "no_alert",
+          "alert",
+          "no_alert"
+        ],
+        "short_ramp_L2": [
+          "abstain",
+          "no_alert",
+          "abstain"
+        ],
+        "transcritical_L3_fast": [
+          "alert",
+          "alert",
+          "abstain"
+        ]
+      }
+    },
+    "pfn": {
+      "n_runs": 18,
+      "n_without_pfn_output": 0,
+      "gated": true,
+      "coverage_90_mean_all": 0.9569812918583089,
+      "coverage_90_mean_accepted": 0.9550798427788646,
+      "n_accepted": 14,
+      "calibration_error_mean": 0.21552648497751825,
+      "n_bad": 0,
+      "n_bad_blocked": 0,
+      "bad_blocked_share": null
+    }
+  },
+  "trace": "agent-val-20261031T163508Z-4054ffe4.jsonl",
+  "wall_seconds": 12.884032399975695,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0000",
+        "trajectory_id": "fold_L1_slow/2000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 27.596889400156215,
+        "tokens_in": 20380,
+        "tokens_out": 3233,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "context_strategy": "random",
+          "context_size": 200,
+          "rationale": "The random context (20 near-tipping, 144 far-from-tipping rows) gives a balanced training set. The model predicts a clear decline from far-from-tipping (first third mean 0.9991) to near-tipping (last window 0.014), with p_critical of 0.8043 at the end. Query features show classic early warning signals: rising autocorrelation, variance, trend slope, and low-frequency power. The knn context was poorly balanced (6 near, 163 far) and missed this trend.",
+          "confidence": 0.75
+        },
+        "final": {
+          "decision": "alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.18987940152847654,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 21,
+            "no_alert": 231
+          },
+          "last_window_decision": "alert",
+          "last_window_p_critical": 0.8043421699416273,
+          "context_strategy": "random",
+          "context_size": 200,
+          "context_hash": "362476d49ed2cf9e",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "fold_L1_slow/2000",
+          "strategy": "random",
+          "context_hash": "362476d49ed2cf9e",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.01984126984126984,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.020 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.935,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.935, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 20.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "20 context rows with target <= 0.2 and 144 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7886206645688597,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.789, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "validation",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 0.8650793650793651,
+        "bad": false,
+        "calibration_error": 0.2865079365079365,
+        "coverage_90_positive_windows": 0.5084745762711864,
+        "n_windows": 252,
+        "last_window_p_critical": 0.8043421699416273
+      },
+      "timing": {
+        "llm_seconds": 27.596889400156215,
+        "pfn_seconds": 31.271396600059234,
+        "total_seconds": 58.86828600021545
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0001",
+        "trajectory_id": "fold_L1_slow/2001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 43.265442600124516,
+        "tokens_in": 20106,
+        "tokens_out": 3928,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "context_strategy": "random",
+          "context_size": 200,
+          "rationale": "Query features show strong early warning signals: rising autocorrelation (trend 0.218), variance (0.0523), and low-frequency power (0.2249). The random context (17 near / 140 far, better balanced than knn's 6/166) predicts the last window at 0.3157 with p_critical 0.4078, and predictions trend downward across the series (0.9957 \u2192 0.9198 \u2192 0.3157), indicating movement toward the tipping point.",
+          "confidence": 0.65
+        },
+        "final": {
+          "decision": "alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.18987940152847654,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 12,
+            "no_alert": 237
+          },
+          "last_window_decision": "alert",
+          "last_window_p_critical": 0.40784781457165203,
+          "context_strategy": "random",
+          "context_size": 200,
+          "context_hash": "c167be72c98be9b4",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "fold_L1_slow/2001",
+          "strategy": "random",
+          "context_hash": "c167be72c98be9b4",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.04417670682730924,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.044 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.94,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.940, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 17.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "17 context rows with target <= 0.2 and 140 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7210616423243549,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.721, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "validation",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 0.8393574297188755,
+        "bad": false,
+        "calibration_error": 0.3016064257028112,
+        "coverage_90_positive_windows": 0.5357142857142857,
+        "n_windows": 249,
+        "last_window_p_critical": 0.40784781457165203
+      },
+      "timing": {
+        "llm_seconds": 43.265442600124516,
+        "pfn_seconds": 32.68454880005447,
+        "total_seconds": 75.94999140017899
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0002",
+        "trajectory_id": "fold_L1_slow/2002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 51.19157400005497,
+        "tokens_in": 20940,
+        "tokens_out": 3545,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "context_strategy": "random",
+          "context_size": 200,
+          "rationale": "The random context model shows a sharp decline in predictions toward the end of the series (last window median 0.024, p_critical 0.849), indicating the system is nearing the tipping point. This aligns with the query's strong early warning signals: rising autocorrelation (trend 0.242) and low-frequency power (trend 0.216), classic critical slowing-down indicators. The KNN context gave conflicting results, but the random context's uniform sampling better captures the pool's near/far mix and its trend matches the query's feature dynamics.",
+          "confidence": 0.65
+        },
+        "final": {
+          "decision": "alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.18987940152847654,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 32,
+            "no_alert": 222
+          },
+          "last_window_decision": "alert",
+          "last_window_p_critical": 0.8486048230068706,
+          "context_strategy": "random",
+          "context_size": 200,
+          "context_hash": "341d2b868c37ffe5",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "fold_L1_slow/2002",
+          "strategy": "random",
+          "context_hash": "341d2b868c37ffe5",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.007874015748031496,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.008 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.94,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.940, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 12.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "12 context rows with target <= 0.2 and 140 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.8235547200752957,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.824, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "validation",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 0.8740157480314961,
+        "bad": false,
+        "calibration_error": 0.2763779527559055,
+        "coverage_90_positive_windows": 0.5409836065573771,
+        "n_windows": 254,
+        "last_window_p_critical": 0.8486048230068706
+      },
+      "timing": {
+        "llm_seconds": 51.19157400005497,
+        "pfn_seconds": 34.28077869996196,
+        "total_seconds": 85.47235270001693
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0003",
+        "trajectory_id": "hopf_L2_slow/2000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 4,
+        "n_model_requests": 4,
+        "n_replayed_requests": 4,
+        "llm_seconds": 37.77503939997405,
+        "tokens_in": 12477,
+        "tokens_out": 2980,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "context_strategy": "knn",
+          "context_size": 200,
+          "rationale": "Query features show strong early-warning signals (rising ac1 trend 0.2242, variance_log_ratio trend 0.1164, low_freq_power trend 0.2548), consistent with critical slowing down. PFN predictions decline sharply across the series: first-third mean 0.8908 \u2192 last-third mean 0.3947 \u2192 last window 0.1594 (near 0 = tipping point). p_critical for the last window is 0.6856, above 0.5. The knn context provides a mix of near-tipping (17) and far (119) examples, and the model's end-of-series prediction clearly indicates proximity to tipping.",
+          "confidence": 0.75
+        },
+        "final": {
+          "decision": "alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 56,
+            "no_alert": 174
+          },
+          "last_window_decision": "alert",
+          "last_window_p_critical": 0.6855503262125536,
+          "context_strategy": "knn",
+          "context_size": 200,
+          "context_hash": "86dedcf38db6e7b8",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "hopf_L2_slow/2000",
+          "strategy": "knn",
+          "context_hash": "86dedcf38db6e7b8",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.915,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.915, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 17.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "17 context rows with target <= 0.2 and 119 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7721648197665127,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.772, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.7086956521739131,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.709 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "validation",
+        "end_target": 0.05224999999999991,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 0.9782608695652174,
+        "bad": false,
+        "calibration_error": 0.15565217391304348,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 230,
+        "last_window_p_critical": 0.6855503262125536
+      },
+      "timing": {
+        "llm_seconds": 37.77503939997405,
+        "pfn_seconds": 24.786025299923494,
+        "total_seconds": 62.56106469989754
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0004",
+        "trajectory_id": "hopf_L2_slow/2001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 4,
+        "n_model_requests": 4,
+        "n_replayed_requests": 4,
+        "llm_seconds": 18.860393699957058,
+        "tokens_in": 11019,
+        "tokens_out": 2199,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "context_strategy": "knn",
+          "context_size": 200,
+          "rationale": "Query shows classic early warning signals (rising AC1 and low-frequency power). PFN predictions on the knn context show a clear downward trend toward the tipping point: last window predicted at 0.1392 (close to 0 = tipping) with p_critical of 0.6925. The system appears close to tipping.",
+          "confidence": 0.75
+        },
+        "final": {
+          "decision": "alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 78,
+            "no_alert": 155
+          },
+          "last_window_decision": "alert",
+          "last_window_p_critical": 0.6924949344037071,
+          "context_strategy": "knn",
+          "context_size": 200,
+          "context_hash": "2303e54ce9bb71f2",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "hopf_L2_slow/2001",
+          "strategy": "knn",
+          "context_hash": "2303e54ce9bb71f2",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.93,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.930, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 24.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "24 context rows with target <= 0.2 and 113 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.8164001444695324,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.816, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.4248927038626609,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.425 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "validation",
+        "end_target": 0.0402499999999999,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 0.9914163090128756,
+        "bad": false,
+        "calibration_error": 0.09768240343347641,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 233,
+        "last_window_p_critical": 0.6924949344037071
+      },
+      "timing": {
+        "llm_seconds": 18.860393699957058,
+        "pfn_seconds": 22.342344099946786,
+        "total_seconds": 41.20273779990384
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0005",
+        "trajectory_id": "hopf_L2_slow/2002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 48.703325799899176,
+        "tokens_in": 19322,
+        "tokens_out": 3205,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "context_strategy": "knn",
+          "context_size": 200,
+          "rationale": "The knn context (most relevant to this query) shows predictions declining toward the tipping point: last window median 0.17 with p_critical 0.5987 (>0.5). Query features independently show strong early warning signals\u2014rising autocorrelation (trend 0.297) and low-frequency power (trend 0.299). The random context had very wide prediction intervals (last window width 0.971), indicating low reliability for this query, which sits at median distance 0.688 from the pool.",
+          "confidence": 0.75
+        },
+        "final": {
+          "decision": "alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 114,
+            "no_alert": 126
+          },
+          "last_window_decision": "alert",
+          "last_window_p_critical": 0.5986532292434995,
+          "context_strategy": "knn",
+          "context_size": 200,
+          "context_hash": "8dc04d306911a7db",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "hopf_L2_slow/2002",
+          "strategy": "knn",
+          "context_hash": "8dc04d306911a7db",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.91,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.910, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 28.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "28 context rows with target <= 0.2 and 106 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7002180707340412,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.700, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.5208333333333334,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.521 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "validation",
+        "end_target": 0.012249999999999983,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 0.975,
+        "bad": false,
+        "calibration_error": 0.05500000000000001,
+        "coverage_90_positive_windows": 0.8723404255319149,
+        "n_windows": 240,
+        "last_window_p_critical": 0.5986532292434995
+      },
+      "timing": {
+        "llm_seconds": 48.703325799899176,
+        "pfn_seconds": 31.4762435000157,
+        "total_seconds": 80.17956929991487
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0006",
+        "trajectory_id": "transcritical_L3_fast/2000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 4,
+        "n_replayed_requests": 4,
+        "llm_seconds": 26.579930000123568,
+        "tokens_in": 11906,
+        "tokens_out": 3672,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 200,
+          "rationale": "The knn context (200 rows, 21 near-tipping, 121 far) is most relevant to the query in feature space. Model predictions show median distance from tipping around 0.8, with the last window at 0.58\u2014still on the \"far\" side. p_critical peaks at 0.20 and no window exceeds 0.5, so the model does not indicate criticality. Despite concerning feature trends (rising ac1, skewness, low-frequency power), the model's probabilistic output does not support an alert.",
+          "confidence": 0.65
+        },
+        "final": {
+          "decision": "alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 10,
+            "no_alert": 45
+          },
+          "last_window_decision": "alert",
+          "last_window_p_critical": 0.19491502754992118,
+          "context_strategy": "knn",
+          "context_size": 200,
+          "context_hash": "5ec0397d61ef2adc",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "transcritical_L3_fast/2000",
+          "strategy": "knn",
+          "context_hash": "5ec0397d61ef2adc",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.03636363636363636,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.036 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.93,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.930, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 21.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "21 context rows with target <= 0.2 and 121 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.8974632723721899,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.897, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "validation",
+        "end_target": 0.008999999999999897,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 0.8545454545454545,
+        "bad": false,
+        "calibration_error": 0.20909090909090908,
+        "coverage_90_positive_windows": 0.3333333333333333,
+        "n_windows": 55,
+        "last_window_p_critical": 0.19491502754992118
+      },
+      "timing": {
+        "llm_seconds": 26.579930000123568,
+        "pfn_seconds": 26.056745399953797,
+        "total_seconds": 52.636675400077365
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0007",
+        "trajectory_id": "transcritical_L3_fast/2001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 41.15655740001239,
+        "tokens_in": 20000,
+        "tokens_out": 3704,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 100,
+          "rationale": "Both knn and random contexts show low p_critical (means 0.17-0.21, max 0.35-0.55), with 0-2% of windows above 0.5. Predictions stay well above 0 (0.61-0.96), indicating the system is not close to tipping. Although query features show early warning signals and predictions trend downward, the model does not confidently indicate imminent tipping, and interval widths are very high (~0.93-0.99), reflecting substantial uncertainty.",
+          "confidence": 0.65
+        },
+        "final": {
+          "decision": "alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 33,
+            "no_alert": 16
+          },
+          "last_window_decision": "alert",
+          "last_window_p_critical": 0.1491353888212212,
+          "context_strategy": "knn",
+          "context_size": 100,
+          "context_hash": "76b86632b8728ccf",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "transcritical_L3_fast/2001",
+          "strategy": "knn",
+          "context_hash": "76b86632b8728ccf",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 100.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "100 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.94,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.940, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 21.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "21 context rows with target <= 0.2 and 53 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.9282763693329465,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.928, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.8979591836734694,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.898 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "validation",
+        "end_target": 0.10499999999999998,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.14653061224489794,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 49,
+        "last_window_p_critical": 0.1491353888212212
+      },
+      "timing": {
+        "llm_seconds": 41.15655740001239,
+        "pfn_seconds": 17.88399279990699,
+        "total_seconds": 59.04055019991938
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0008",
+        "trajectory_id": "transcritical_L3_fast/2002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 27.211239699972793,
+        "tokens_in": 19835,
+        "tokens_out": 2894,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 100,
+          "rationale": "Both knn and random contexts (size 100) consistently predict the system is far from tipping: median predictions ~0.91-0.96, p_critical means 0.086-0.133, and no meaningful share of windows above p_critical=0.5. The last window predictions are 0.92 (knn) and 0.958 (random), indicating the end of the series is far from tipping. Cross-strategy agreement increases confidence despite wide prediction intervals.",
+          "confidence": 0.75
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: context_not_degenerate: 7 context rows with target <= 0.2 and 70 with target >= 0.6, need 10 of each",
+          "gate_passed": false,
+          "gate_failed": [
+            "context_not_degenerate"
+          ],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 55,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.08362111662004572,
+          "context_strategy": "knn",
+          "context_size": 100,
+          "context_hash": "3b7256c651224158",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "transcritical_L3_fast/2002",
+          "strategy": "knn",
+          "context_hash": "3b7256c651224158",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 100.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "100 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.01818181818181818,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.018 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.97,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.970, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 7.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": false,
+              "reason": "7 context rows with target <= 0.2 and 70 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.8686615255729848,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.869, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.9818181818181818,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.982 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "context_not_degenerate: 7 context rows with target <= 0.2 and 70 with target >= 0.6, need 10 of each"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "validation",
+        "end_target": 0.008999999999999897,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 0.8545454545454545,
+        "bad": false,
+        "calibration_error": 0.24545454545454545,
+        "coverage_90_positive_windows": 0.3333333333333333,
+        "n_windows": 55,
+        "last_window_p_critical": 0.08362111662004572
+      },
+      "timing": {
+        "llm_seconds": 27.211239699972793,
+        "pfn_seconds": 15.674918200005777,
+        "total_seconds": 42.88615789997857
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0009",
+        "trajectory_id": "ou_L1/2000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 18.931853599846363,
+        "tokens_in": 17939,
+        "tokens_out": 2181,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "random",
+          "context_size": 200,
+          "rationale": "Both knn and random contexts consistently predict the system is far from tipping: median predictions near 0.97-0.99, p_critical below 0.05, and zero windows above p_critical=0.5. The random context has better near/far balance (18/153 vs 6/158), making it more reliable. Despite wide prediction intervals, the consistent direction across two strategies supports no_alert.",
+          "confidence": 0.8
+        },
+        "final": {
+          "decision": "no_alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (no_alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.18987940152847654,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 1,
+            "no_alert": 304
+          },
+          "last_window_decision": "no_alert",
+          "last_window_p_critical": 0.03365473858346417,
+          "context_strategy": "random",
+          "context_size": 200,
+          "context_hash": "ef8702715bbedaff",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "ou_L1/2000",
+          "strategy": "random",
+          "context_hash": "ef8702715bbedaff",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.003278688524590164,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.003 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.95,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.950, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 18.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "18 context rows with target <= 0.2 and 153 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7151386300428353,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.715, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.31278688524590165,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.03365473858346417
+      },
+      "timing": {
+        "llm_seconds": 18.931853599846363,
+        "pfn_seconds": 37.90248819999397,
+        "total_seconds": 56.83434179984033
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0010",
+        "trajectory_id": "ou_L1/2001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 23.70236390014179,
+        "tokens_in": 19305,
+        "tokens_out": 2466,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "random",
+          "context_size": 200,
+          "rationale": "Both knn and random contexts (size 200) consistently predict the system is far from tipping: median predictions ~0.97-0.98, p_critical ~0.02-0.04, zero windows above 0.5, and last window essentially 1.0. Two independent strategies agree, so the result is trustworthy.",
+          "confidence": 0.85
+        },
+        "final": {
+          "decision": "no_alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (no_alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.18987940152847654,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 1,
+            "no_alert": 304
+          },
+          "last_window_decision": "no_alert",
+          "last_window_p_critical": 0.02827677460444947,
+          "context_strategy": "random",
+          "context_size": 200,
+          "context_hash": "a4a25322db8bd4dc",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "ou_L1/2001",
+          "strategy": "random",
+          "context_hash": "a4a25322db8bd4dc",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.935,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.935, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 10.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "10 context rows with target <= 0.2 and 142 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.6996182574416141,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.700, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.1852459016393443,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.02827677460444947
+      },
+      "timing": {
+        "llm_seconds": 23.70236390014179,
+        "pfn_seconds": 35.37949670001399,
+        "total_seconds": 59.08186060015578
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0011",
+        "trajectory_id": "ou_L1/2002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 53.346547499881126,
+        "tokens_in": 19145,
+        "tokens_out": 3188,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 200,
+          "rationale": "The PFN on the knn context (200 rows, 8 near-tipping, 143 far) predicts query windows are far from tipping: median prediction ~0.91, last window 0.98, p_critical mean 0.05 and last window 0.06. No window exceeds p_critical = 0.5. Although the query shows early-warning trends (rising variance and autocorrelation), the nearest-neighbor context does not indicate imminent tipping.",
+          "confidence": 0.7
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: context_not_degenerate: 8 context rows with target <= 0.2 and 143 with target >= 0.6, need 10 of each",
+          "gate_passed": false,
+          "gate_failed": [
+            "context_not_degenerate"
+          ],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 305,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.06163785855400989,
+          "context_strategy": "knn",
+          "context_size": 200,
+          "context_hash": "370dd6b5eb1b9719",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "ou_L1/2002",
+          "strategy": "knn",
+          "context_hash": "370dd6b5eb1b9719",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.003278688524590164,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.003 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.95,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.950, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 8.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": false,
+              "reason": "8 context rows with target <= 0.2 and 143 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7858377965399651,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.786, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "context_not_degenerate: 8 context rows with target <= 0.2 and 143 with target >= 0.6, need 10 of each"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.2557377049180328,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.06163785855400989
+      },
+      "timing": {
+        "llm_seconds": 53.346547499881126,
+        "pfn_seconds": 34.69488690007711,
+        "total_seconds": 88.04143439995823
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0012",
+        "trajectory_id": "short_ramp_L2/2000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 27.335156099987216,
+        "tokens_in": 17744,
+        "tokens_out": 2583,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 200,
+          "rationale": "Both knn and random contexts consistently predict the system is far from tipping (median ~0.99-1.0, p_critical ~0.01-0.03, zero windows above 0.5). Despite a positive ac1 trend, the model's consensus across two context strategies indicates the system is not near a tipping point.",
+          "confidence": 0.75
+        },
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: context_not_degenerate: 4 context rows with target <= 0.2 and 170 with target >= 0.6, need 10 of each",
+          "gate_passed": false,
+          "gate_failed": [
+            "context_not_degenerate"
+          ],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 305,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.0286298815548057,
+          "context_strategy": "knn",
+          "context_size": 200,
+          "context_hash": "d83b21459f9eaea1",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "short_ramp_L2/2000",
+          "strategy": "knn",
+          "context_hash": "d83b21459f9eaea1",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.94,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.940, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 4.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": false,
+              "reason": "4 context rows with target <= 0.2 and 170 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7305111592828746,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.731, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": null,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "only 4 near-tipping context rows, need 5",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "context_not_degenerate: 4 context rows with target <= 0.2 and 170 with target >= 0.6, need 10 of each"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.1957377049180328,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0286298815548057
+      },
+      "timing": {
+        "llm_seconds": 27.335156099987216,
+        "pfn_seconds": 32.08177889988292,
+        "total_seconds": 59.416934999870136
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0013",
+        "trajectory_id": "short_ramp_L2/2001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 4,
+        "n_replayed_requests": 4,
+        "llm_seconds": 16.79976219998207,
+        "tokens_in": 11360,
+        "tokens_out": 2077,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "random",
+          "context_size": 150,
+          "rationale": "Both knn and random contexts consistently predict the system is far from tipping (median predictions ~0.99-1.0, p_critical ~0.02, zero windows above 0.5). Although query trends show some early warning signals (rising ac1, low_freq_power), the model's agreement across two context strategies indicates the system is not close to tipping. Random context (19 near, 111 far) is more balanced than knn (1 near, 125 far).",
+          "confidence": 0.75
+        },
+        "final": {
+          "decision": "no_alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (no_alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.18987940152847654,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 0,
+            "no_alert": 305
+          },
+          "last_window_decision": "no_alert",
+          "last_window_p_critical": 0.0295521354347641,
+          "context_strategy": "random",
+          "context_size": 150,
+          "context_hash": "94966010d0eb411d",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "short_ramp_L2/2001",
+          "strategy": "random",
+          "context_hash": "94966010d0eb411d",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 150.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "150 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.9266666666666666,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.927, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 19.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "19 context rows with target <= 0.2 and 111 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.4877394461791106,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "median 90% interval width 0.488, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.18918032786885247,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0295521354347641
+      },
+      "timing": {
+        "llm_seconds": 16.79976219998207,
+        "pfn_seconds": 29.408341300440952,
+        "total_seconds": 46.20810350042302
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0014",
+        "trajectory_id": "short_ramp_L2/2002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "tool_cap",
+        "stop_detail": "tool call cap of 6 reached, 'choose_context' was refused",
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 18.42758820008021,
+        "tokens_in": 18741,
+        "tokens_out": 2060,
+        "cost_usd_approx": 0.0,
+        "verdict": null,
+        "final": {
+          "decision": "abstain",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate failed: context_not_degenerate: 5 context rows with target <= 0.2 and 77 with target >= 0.6, need 10 of each",
+          "gate_passed": false,
+          "gate_failed": [
+            "context_not_degenerate"
+          ],
+          "alert_threshold": 0.18987940152847654,
+          "window_decisions": {
+            "abstain": 305,
+            "alert": 0,
+            "no_alert": 0
+          },
+          "last_window_decision": "abstain",
+          "last_window_p_critical": 0.01232365034718072,
+          "context_strategy": "random",
+          "context_size": 100,
+          "context_hash": "f63b620e3b689363",
+          "followed_verdict_context": null
+        },
+        "agent_agrees": null,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "short_ramp_L2/2002",
+          "strategy": "random",
+          "context_hash": "f63b620e3b689363",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 100.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "100 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.94,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.940, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 5.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": false,
+              "reason": "5 context rows with target <= 0.2 and 77 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.6241719642184915,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.624, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": false,
+          "reasons": [
+            "context_not_degenerate: 5 context rows with target <= 0.2 and 77 with target >= 0.6, need 10 of each"
+          ],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "abstain",
+      "accepted": false,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.19049180327868853,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.01232365034718072
+      },
+      "timing": {
+        "llm_seconds": 18.42758820008021,
+        "pfn_seconds": 21.412390399957076,
+        "total_seconds": 39.839978600037284
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0015",
+        "trajectory_id": "regime_L3/2000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 53.21146390005015,
+        "tokens_in": 20038,
+        "tokens_out": 5339,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "random",
+          "context_size": 200,
+          "rationale": "Random context gives a better near/far mix (16 near, 143 far). Model predictions show median values mostly above 0.78 (far from tipping) with p_critical below 0.15 for all windows. No window exceeds p_critical 0.5. While query features show early warning trends (rising ac1, low_freq_power), the model does not confidently predict imminent tipping. Wide intervals indicate uncertainty but do not override the consistent far-from-tipping signal.",
+          "confidence": 0.6
+        },
+        "final": {
+          "decision": "no_alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (no_alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.18987940152847654,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 30,
+            "no_alert": 275
+          },
+          "last_window_decision": "no_alert",
+          "last_window_p_critical": 0.11808416358400696,
+          "context_strategy": "random",
+          "context_size": 200,
+          "context_hash": "8c4c94924356394c",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "regime_L3/2000",
+          "strategy": "random",
+          "context_hash": "8c4c94924356394c",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.935,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.935, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 16.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "16 context rows with target <= 0.2 and 143 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.7918575061353946,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.792, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 0.9967213114754099,
+        "bad": false,
+        "calibration_error": 0.2150819672131148,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.11808416358400696
+      },
+      "timing": {
+        "llm_seconds": 53.21146390005015,
+        "pfn_seconds": 32.51564799976768,
+        "total_seconds": 85.72711189981783
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0016",
+        "trajectory_id": "regime_L3/2001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 78.90024700015783,
+        "tokens_in": 19910,
+        "tokens_out": 3230,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "abstain",
+          "context_strategy": "knn",
+          "context_size": 200,
+          "rationale": "Both knn and random contexts show last-window median predictions near 0.5 (knn: 0.5375, random: 0.4859) with p_critical below 0.5 (0.2789 and 0.2133) and very high 90% interval width (~1.0) at the end. Early warning features are rising, but model uncertainty is too high to trust a clear alert or no_alert call.",
+          "confidence": 0.6
+        },
+        "final": {
+          "decision": "alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 62,
+            "no_alert": 243
+          },
+          "last_window_decision": "alert",
+          "last_window_p_critical": 0.27889096688768095,
+          "context_strategy": "knn",
+          "context_size": 200,
+          "context_hash": "c67f5a01527976d3",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": false,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "regime_L3/2001",
+          "strategy": "knn",
+          "context_hash": "c67f5a01527976d3",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 200.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "200 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.003278688524590164,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.003 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.955,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.955, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 10.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "10 context rows with target <= 0.2 and 148 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.821793093352338,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.822, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 1.0,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "1.000 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 0.9967213114754099,
+        "bad": false,
+        "calibration_error": 0.25901639344262295,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.27889096688768095
+      },
+      "timing": {
+        "llm_seconds": 78.90024700015783,
+        "pfn_seconds": 36.25698340003146,
+        "total_seconds": 115.15723040018929
+      }
+    },
+    {
+      "record": {
+        "run_id": "agent-val-20261031T163508Z-4054ffe4.0017",
+        "trajectory_id": "regime_L3/2002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 6,
+        "n_model_requests": 6,
+        "n_replayed_requests": 6,
+        "llm_seconds": 39.34663030016236,
+        "tokens_in": 20302,
+        "tokens_out": 3215,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "context_strategy": "knn",
+          "context_size": 150,
+          "rationale": "Both knn and random contexts yield median predictions near 1.0 (far from tipping) and p_critical well below 0.5 across all query windows. The knn context is feature-space matched to the query, making it more relevant. No windows exceed p_critical > 0.5. Recommend no_alert.",
+          "confidence": 0.7
+        },
+        "final": {
+          "decision": "no_alert",
+          "decided_by": "gate_and_decision_mapping",
+          "reason": "the gate passed, so the decision is that of the last window (no_alert)",
+          "gate_passed": true,
+          "gate_failed": [],
+          "alert_threshold": 0.14265158151044804,
+          "window_decisions": {
+            "abstain": 0,
+            "alert": 5,
+            "no_alert": 300
+          },
+          "last_window_decision": "no_alert",
+          "last_window_p_critical": 0.11672329187703051,
+          "context_strategy": "knn",
+          "context_size": 150,
+          "context_hash": "322aea1ca9df7f0f",
+          "followed_verdict_context": true
+        },
+        "agent_agrees": true,
+        "gate_result": {
+          "run_id": "agent-val-20261031T163508Z-4054ffe4",
+          "trajectory_id": "regime_L3/2002",
+          "strategy": "knn",
+          "context_hash": "322aea1ca9df7f0f",
+          "checks": [
+            {
+              "name": "min_context_size",
+              "value": 150.0,
+              "threshold": 100.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "150 context rows, need at least 100",
+              "source": "fixed"
+            },
+            {
+              "name": "ood_share",
+              "value": 0.0,
+              "threshold": 0.3,
+              "comparison": "<=",
+              "passed": true,
+              "reason": "0.000 of query windows are far from the pool, limit 0.3",
+              "source": "tuned"
+            },
+            {
+              "name": "context_calibration",
+              "value": 0.96,
+              "threshold": [
+                0.7,
+                1.0
+              ],
+              "comparison": "within",
+              "passed": true,
+              "reason": "held-out context coverage 0.960, allowed [0.7, 1.0]",
+              "source": "tuned"
+            },
+            {
+              "name": "context_not_degenerate",
+              "value": 11.0,
+              "threshold": 10.0,
+              "comparison": ">=",
+              "passed": true,
+              "reason": "11 context rows with target <= 0.2 and 116 with target >= 0.6, need 10 of each",
+              "source": "fixed"
+            },
+            {
+              "name": "output_integrity",
+              "value": 0.0,
+              "threshold": 0.01,
+              "comparison": "== and <=",
+              "passed": true,
+              "reason": "0.000 of rows had repaired quantiles (limit 0.01); p_critical method full_distribution",
+              "source": "fixed"
+            }
+          ],
+          "advisories": [
+            {
+              "name": "interval_width_cap",
+              "value": 0.8798776964314022,
+              "threshold": 0.6,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "median 90% interval width 0.880, cap 0.6",
+              "source": "fixed"
+            },
+            {
+              "name": "near_tipping_support",
+              "value": 0.9114754098360656,
+              "threshold": 0.5,
+              "comparison": "<=",
+              "passed": false,
+              "reason": "0.911 of query windows have no near-tipping context row within the cut",
+              "source": "fixed"
+            }
+          ],
+          "passed": true,
+          "reasons": [],
+          "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+          "gate_config_status": "tuned",
+          "gate_code_version": "0.1.0"
+        }
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": true,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.3022950819672131,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.11672329187703051
+      },
+      "timing": {
+        "llm_seconds": 39.34663030016236,
+        "pfn_seconds": 28.672175299958326,
+        "total_seconds": 68.01880560012069
+      }
+    }
+  ]
+}

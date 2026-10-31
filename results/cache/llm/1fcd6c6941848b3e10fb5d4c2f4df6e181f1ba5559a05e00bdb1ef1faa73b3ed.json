@@ -1,0 +1,87 @@
+{
+  "key": "1fcd6c6941848b3e10fb5d4c2f4df6e181f1ba5559a05e00bdb1ef1faa73b3ed",
+  "latency_s": 5.186243800097145,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:52:19+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the results:\n\n**Context:** knn, size 200, 21 rows near tipping, 121 rows far from tipping. Good mix of both near and far examples.\n\n**Predictions:**\n- Median prediction mean: 0.8003 (fairly high, meaning far from tipping)\n- First third mean: 0.8267\n- Last third mean: 0.7345 (decreasing toward tipping)\n- Last window: 0.5823 (getting closer to tipping)\n- Interval 90 width: mean 0.8917, max 0.9671, last window 0.9671 (very wide intervals - high uncertainty)\n- p_critical: mean 0.1145, max 0.2078, last window 0.1949, last third mean 0.1372, share above half: 0.0\n\nSo the model predicts the system is far from tipping (median ~0.8), but the last window is at 0.5823, showing a trend toward tipping. The p_critical is low (max 0.2078, last window 0.1949), and no windows are above 0.5 p_critical.\n\nHowever, the intervals are very wide (0.89-0.97), suggesting high uncertainty. The last window's interval width is 0.9671, which is very wide.\n\nThe query trends showed classic early warning signals (increasing ac1, skewness, low_freq_power, decreasing trend_slope), but the model predictions don't strongly indicate criticality.\n\nLet me think about whether to try another context. I have 2 contexts left and 4 tool calls left (used 2 so far).\n\nThe predictions show:\n- Median prediction decreasing from 0.8267 to 0.7345 to 0.5823 - trending toward tipping\n- p_critical increasing toward the end (last window 0.1949)\n- But still well below 0.5 threshold\n- Very wide uncertainty intervals\n\nThe wide intervals suggest the model is uncertain. The query is somewhat distant from the pool (median distance 0.8881), which could explain the uncertainty.\n\nLet me try a random context to compare, and see if the predictions are consistent.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-ede911ff-13e6-4651-b9f9-f9de89eab40d",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      },
+      {
+        "args": "{\"reason\":\"Run PFN on random context to compare with knn results\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-0f1ae784-5c61-4a07-b015-a394fcd2523f",
+        "tool_kind": null,
+        "tool_name": "run_pfn"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:52:14Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793461934-hZ05uUrcNZCYtTdY7c6q",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:52:19.842535Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 531
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3505,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 531,
+      "output_tokens": 606
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

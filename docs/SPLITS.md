@@ -84,6 +84,10 @@ These become unit tests once the code exists:
 - Every context row comes from set A, and no context row shares a trajectory key with its query.
 - `configs/gate.yaml` exists and is committed before any C, D or real-data evaluation runs.
 
+## Real data
+
+The one real dataset is the split `real_tipping` (Daphnia populations). It is test only, with surrogate labels. It is never context and never used for tuning, and reading it calls `assert_frozen()` first. See `docs/DAPHNIA.md`.
+
 ## What each test measures
 
 - **In-prior test (C):** same families, noise levels and ramp speeds as the context, new noise paths. It measures generalisation across seeds, not across families.

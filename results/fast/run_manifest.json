@@ -1,0 +1,191 @@
+{
+  "generated_utc": "2026-10-31T15:24:19+00:00",
+  "started_utc": "2026-10-31T15:24:11+00:00",
+  "profile": "fast",
+  "complete": true,
+  "llm_daily_cap_reached": false,
+  "git": {
+    "commit": "118f5e8b02035b1186999ecce9a646c36e216367",
+    "branch": "main",
+    "uncommitted_files": 102
+  },
+  "python": "3.12.10",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "packages": {
+    "tabpfn": "9.2.0",
+    "pydantic-ai-slim": "2.63.0",
+    "pydantic": "2.14.1",
+    "numpy": "2.5.4",
+    "pandas": "3.0.6",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1",
+    "pyyaml": "6.0.3",
+    "ruff": "0.17.2",
+    "pytest": "9.1.1"
+  },
+  "models": {
+    "llm_agent": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+    "llm_debug": "openrouter:nvidia/nemotron-3.5-lightning:free",
+    "pfn_backend": "see variants[*].models and results settings"
+  },
+  "seeds": {
+    "pfn_seed": 0,
+    "bootstrap": null,
+    "scenario_seed_sets": {
+      "A": {
+        "start": 1000,
+        "count": 20,
+        "split": "context"
+      },
+      "B": {
+        "start": 2000,
+        "count": 10,
+        "split": "validation"
+      },
+      "C": {
+        "start": 3000,
+        "count": 10,
+        "split": "test_in_prior"
+      },
+      "D": {
+        "start": 4000,
+        "count": 10,
+        "split": "test_out_of_prior"
+      }
+    },
+    "seeds_per_scenario": 1,
+    "limit": 5,
+    "llm_temperature": 0.0
+  },
+  "gate": {
+    "frozen": true,
+    "status": "tuned",
+    "sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc"
+  },
+  "wall_clock_seconds_total": 7.9,
+  "wall_clock_seconds_by_stage": {
+    "ruff_check": 0.0,
+    "ruff_format": 0.0,
+    "pytest": 0.0,
+    "gate_frozen": 0.006,
+    "classic_real": 3.26,
+    "classic_real_control": 4.05,
+    "make_summary": 0.26,
+    "agent_checks": 0.11
+  },
+  "stages": [
+    {
+      "stage": "ruff_check",
+      "skipped": "--skip-checks",
+      "exit_code": null,
+      "seconds": 0.0,
+      "llm_mode": null
+    },
+    {
+      "stage": "ruff_format",
+      "skipped": "--skip-checks",
+      "exit_code": null,
+      "seconds": 0.0,
+      "llm_mode": null
+    },
+    {
+      "stage": "pytest",
+      "skipped": "--skip-checks",
+      "exit_code": null,
+      "seconds": 0.0,
+      "llm_mode": null
+    },
+    {
+      "stage": "gate_frozen",
+      "exit_code": 0,
+      "seconds": 0.006,
+      "llm_mode": null
+    },
+    {
+      "stage": "classic_real",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split real --variant classic --limit 5 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 3.26
+    },
+    {
+      "stage": "classic_real_control",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split real_control --variant classic --limit 5 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 4.05
+    },
+    {
+      "stage": "make_summary",
+      "command": "scripts/make_summary.py --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 0.26
+    },
+    {
+      "stage": "agent_checks",
+      "command": "scripts/agent_checks.py --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 0.11
+    }
+  ],
+  "totals": {
+    "tokens_in": 0,
+    "tokens_out": 0,
+    "cost_usd_approx": 0.0,
+    "cost_note": "approximate: the price table in configs/agent.yaml, where the models used cost 0 (free tier)"
+  },
+  "variants": {
+    "classic": {
+      "splits_run": {
+        "real": {
+          "n_runs": 3,
+          "wall_seconds": 0.1
+        },
+        "real_control": {
+          "n_runs": 1,
+          "wall_seconds": 0.5
+        }
+      },
+      "models": [],
+      "llm_modes": [],
+      "latency_seconds_overall": {
+        "n": 4,
+        "p50": 0.003,
+        "p95": 0.004
+      },
+      "latency_seconds_by_scenario": {
+        "daphnia_constant": {
+          "n": 2,
+          "p50": 0.003,
+          "p95": 0.004
+        },
+        "daphnia_deteriorating": {
+          "n": 1,
+          "p50": 0.003,
+          "p95": 0.003
+        },
+        "grid_fingrid": {
+          "n": 1,
+          "p50": 0.004,
+          "p95": 0.004
+        }
+      },
+      "tokens": {
+        "tokens_in": 0,
+        "tokens_out": 0
+      },
+      "llm_requests": {
+        "model_requests": 0,
+        "replayed_requests": 0
+      },
+      "cost_usd_approx": 0.0,
+      "pfn_calls_per_verdict": {
+        "agent_run_pfn_tool_calls": 0.0,
+        "all_pfn_steps": 0.0,
+        "n_verdicts": 4
+      }
+    }
+  }
+}

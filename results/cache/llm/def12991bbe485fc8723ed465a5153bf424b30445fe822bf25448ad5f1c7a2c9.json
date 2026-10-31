@@ -1,0 +1,77 @@
+{
+  "key": "def12991bbe485fc8723ed465a5153bf424b30445fe822bf25448ad5f1c7a2c9",
+  "latency_s": 3.163738299976103,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:14:13+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The results from the knn context size 100:\n- Median prediction mean: 0.9838 (very high, far from tipping)\n- Last third mean: 0.9951 (even higher, suggesting moving away from tipping)\n- Last window: 0.9992 (essentially 1, far from tipping)\n- p_critical mean: 0.0724 (low probability of being near tipping)\n- p_critical last window: 0.0551\n- Share of windows above half: 0.0 (no windows predicted to be near tipping)\n- Interval 90 width mean: 0.8265 (quite wide, suggesting uncertainty)\n\nThis suggests the model predicts the system is far from tipping. But the query trends showed negative trends (moving toward lower values, which could mean toward tipping point). However, the model predictions are very high (close to 1 = far from tipping).\n\nThe interval width is quite wide (0.8265 mean), which suggests uncertainty. But p_critical is low (0.0724 mean, 0.0551 last window).\n\nLet me think about whether I should try another context. The rules say a context with both near and far examples is more useful. This knn context has 7 near and 78 far - it has both but skewed. Let me try a random context to see if it gives different results, or try a larger knn context.\n\nActually, I have 2 contexts left and 4 tool calls left. Let me try a random context of size 100 to compare, and maybe a larger knn context.\n\nWait, let me think about what the gate might check. The gate checks \"your final context and the model's predictions against fixed rules.\" I need to provide a context that I built. Let me try one more context to see if results are consistent.\n\nLet me try a random context of size 100.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":100}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-a721844a-9339-49e0-93b8-d49459e843be",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:14:10Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793441650-pKZsVqgTtP1snfVPsPaH",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:14:13.487528Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 428
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3382,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 428,
+      "output_tokens": 468
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

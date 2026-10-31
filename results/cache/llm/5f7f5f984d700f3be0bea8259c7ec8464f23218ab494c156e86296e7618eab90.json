@@ -1,0 +1,77 @@
+{
+  "key": "5f7f5f984d700f3be0bea8259c7ec8464f23218ab494c156e86296e7618eab90",
+  "latency_s": 15.541686900076456,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:58:01+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the PFN results:\n\n- Median prediction mean: 0.9334 (high, meaning far from tipping)\n- First third mean: 0.9352\n- Last third mean: 0.8819 (decreasing toward the end, which could indicate approaching tipping)\n- Last window: 0.8464 (still relatively high but trending down)\n- Interval 90 width mean: 0.7157 (quite wide, indicating uncertainty)\n- Last window interval width: 0.8169 (very wide)\n- p_critical mean: 0.0437 (low probability of being near tipping)\n- p_critical max: 0.227\n- p_critical last window: 0.057\n- p_critical last third mean: 0.0606\n- Share of windows above half: 0.0 (no windows predicted as likely near tipping)\n\nThe predictions show the model thinks the system is far from tipping (median ~0.9), but there's a downward trend in the last third (0.9352 → 0.8819), and the last window is 0.8464. The p_critical is low but the last third mean is 0.0606.\n\nHowever, the context is heavily skewed: only 5 near-tipping rows out of 200. The rules say a context with both near and far is more useful. The interval widths are quite wide (0.7157 mean, 0.8169 for last window), suggesting high uncertainty.\n\nLet me think about whether to try another context. I have 2 contexts left and 3 calls left. I could try:\n1. A random context of size 200 - might get a better mix of near/far\n2. A knn context of smaller size - might get more near-tipping rows if the query is near tipping\n\nActually, the query shows strong early warning signals (increasing ac1, low_freq_power, variance). The knn context found mostly far-from-tipping rows, which might mean the query isn't actually close to the near-tipping examples in the pool, or the knn is matching on features that don't correlate well with tipping status.\n\nLet me try a random context to see if we get a better mix and different predictions. Size 200 to maximize data.\n\nActually, wait - let me reconsider. The query distance to pool shows median 0.7604, p90 1.0887, and share beyond reference is 0.0. So the query is within the pool's range. The knn found mostly far-from-tipping rows, which could mean the query's features are more similar to far-from-tipping states.\n\nBut the query trends (increasing ac1, low_freq_power) suggest approaching tipping. This is a bit contradictory.\n\nLet me try a random context to get a different perspective.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-01878493-64f9-4b36-b92b-5180f4ca53a2",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:57:46Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793462266-9gYBZKbGvWL9s10Lps74",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:58:01.941493Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 648
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3646,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 648,
+      "output_tokens": 693
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

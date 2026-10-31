@@ -1,0 +1,192 @@
+{
+  "method": "classic_ews",
+  "split": "real_control",
+  "dataset_splits": [
+    "real_control"
+  ],
+  "held_out": true,
+  "model": null,
+  "llm_mode": null,
+  "oracle": false,
+  "settings": {
+    "alarm_threshold": 0.5,
+    "k_windows": 16
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "seeds_per_scenario": 3,
+  "limit": 3,
+  "n_runs": 3,
+  "skipped": [],
+  "usage": null,
+  "summary": {
+    "n_runs": 3,
+    "latency_seconds": {
+      "n": 3,
+      "mean": 0.004792266680548589,
+      "p50": 0.0043990000849589705,
+      "p95": 0.005575029924511909,
+      "max": 0.005705699906684458
+    },
+    "llm_seconds_mean": 0.0,
+    "pfn_seconds_mean": 0.004792266680548589,
+    "tool_calls": null,
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 1,
+      "n_agree": 0,
+      "share": 0.0,
+      "n_incomplete": 0,
+      "decisions": {
+        "grid_fingrid": [
+          "alert",
+          "no_alert",
+          "alert"
+        ]
+      }
+    },
+    "pfn": null
+  },
+  "metrics": {
+    "classic_ews": {
+      "n_runs": 3,
+      "n_positive_end": 0,
+      "n_negative_end": 3,
+      "n_middle_end": 0,
+      "n_control_runs": 3,
+      "decisions": {
+        "alert": 2,
+        "no_alert": 1,
+        "abstain": 0
+      },
+      "abstention": {
+        "value": 0.0,
+        "n": 3,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "recall_end": {
+        "value": null,
+        "n": 0,
+        "ci": null
+      },
+      "false_alarm_end": {
+        "value": 0.6666666666666666,
+        "n": 3,
+        "ci": [
+          0.0,
+          1.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.6666666666666666,
+        "n": 3,
+        "ci": [
+          0.0,
+          1.0
+        ]
+      },
+      "precision_end": {
+        "value": 0.0,
+        "n": 2,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "n_scored": 3,
+      "auroc_end": null
+    }
+  },
+  "trace": "classic_ews-real_control-20261031T163401Z-07f6ceb2.jsonl",
+  "wall_seconds": 0.5291132000274956,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "trajectory_id": "grid_fingrid/0",
+        "n_windows": 83,
+        "score": 0.925,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "alert",
+        "seconds": 0.005705699906684458
+      },
+      "ground_truth": {
+        "scenario_id": "grid_fingrid",
+        "role": "control",
+        "family": "real_grid_normal",
+        "split": "real_control",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005705699906684458,
+        "total_seconds": 0.005705699906684458
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "grid_fingrid/1",
+        "n_windows": 83,
+        "score": 0.48333333333333334,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.0043990000849589705
+      },
+      "ground_truth": {
+        "scenario_id": "grid_fingrid",
+        "role": "control",
+        "family": "real_grid_normal",
+        "split": "real_control",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0043990000849589705,
+        "total_seconds": 0.0043990000849589705
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "grid_fingrid/2",
+        "n_windows": 83,
+        "score": 0.8666666666666667,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "alert",
+        "seconds": 0.0042721000500023365
+      },
+      "ground_truth": {
+        "scenario_id": "grid_fingrid",
+        "role": "control",
+        "family": "real_grid_normal",
+        "split": "real_control",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0042721000500023365,
+        "total_seconds": 0.0042721000500023365
+      }
+    }
+  ]
+}

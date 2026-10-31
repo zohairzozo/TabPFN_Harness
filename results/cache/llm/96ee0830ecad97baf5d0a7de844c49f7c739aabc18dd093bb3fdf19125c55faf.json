@@ -1,0 +1,77 @@
+{
+  "key": "96ee0830ecad97baf5d0a7de844c49f7c739aabc18dd093bb3fdf19125c55faf",
+  "latency_s": 44.01120529999025,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T16:06:07+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the results:\n\n- Median prediction mean: 0.7573 (fairly high, meaning far from tipping on average)\n- First third mean: 0.4985 (around middle)\n- Last third mean: 0.7147 (higher, meaning further from tipping)\n- Last window: 0.3077 (lower, closer to tipping)\n- Interval 90 width mean: 0.9263 (quite wide, indicating uncertainty)\n- Last window interval width: 1.014 (very wide)\n- p_critical mean: 0.2222 (low probability of being near tipping)\n- p_critical max: 0.5018\n- p_critical last window: 0.4645 (close to 0.5)\n- p_critical last third mean: 0.2975\n- Share of windows above 0.5: 0.0769 (only 1 out of 13 windows)\n\nSo the model predictions show:\n- Overall, predictions are relatively high (far from tipping) with mean 0.76\n- But the last window has a lower prediction (0.31) and high p_critical (0.46)\n- The interval widths are very wide, especially for the last window (1.01), indicating high uncertainty\n- Only 1 out of 13 windows has p_critical > 0.5\n\nThe query shows strong early warning signals in the features (increasing variance, skewness, kurtosis), but the model predictions are mixed. The last window is concerning (prediction 0.31, p_critical 0.46), but the uncertainty is very high.\n\nLet me think about whether I should try another context. I have 2 contexts left and 2 tool calls left (I've used 4 so far: describe_query, describe_context_pool, choose_context, run_pfn).\n\nActually wait - I have 4 calls left out of 6, and 2 contexts left out of 3. Let me try a random context to compare, or a larger knn context.\n\nActually, the results are somewhat mixed. The model says the system is mostly far from tipping (mean prediction 0.76), but the last window is closer (0.31) with high uncertainty. The p_critical for the last window is 0.46, which is close to 0.5 but not above.\n\nGiven the strong early warning signals in the query features and the concerning last window, but also the high uncertainty and mostly high predictions, I'm not sure what to decide yet.\n\nLet me try a random context to see if the results are consistent. If both contexts give similar results, I can be more confident.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":100}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-f6050f97-1679-4e5a-bfdc-3b36b2728ace",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T16:05:23Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793462723-7rYjP43I8f5VNCnhYSUG",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T16:06:07.937363Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 603
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3534,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 603,
+      "output_tokens": 644
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

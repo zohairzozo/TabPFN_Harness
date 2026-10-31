@@ -1,0 +1,25 @@
+{
+  "split": "real_control",
+  "test_only": true,
+  "purpose": "false alarms only: every window is negative. Normal operation, not a pre-blackout run. See docs/GRID.md.",
+  "file": "fingrid_2019-01-01_5d.csv",
+  "sha256": "473d8b29605d92f0c63aaba8c8d2cc78e0842916aa8953574a5753c0536e9707",
+  "sha256_recorded_in_data_sources_md": true,
+  "resample_seconds": 60,
+  "window_length": 128,
+  "stride": 16,
+  "n_trajectories": 5,
+  "trajectory_ids": [
+    "grid_fingrid/0",
+    "grid_fingrid/1",
+    "grid_fingrid/2",
+    "grid_fingrid/3",
+    "grid_fingrid/4"
+  ],
+  "points_per_trajectory": 1440,
+  "n_windows": 415,
+  "windows_by_label": {
+    "0": 415
+  },
+  "n_seconds_interpolated": 33
+}

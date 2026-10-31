@@ -1,0 +1,77 @@
+{
+  "key": "b53e126101834c84e1afdb4256f9f90e717c3ca3bc3c99d6e8470c249089aafc",
+  "latency_s": 2.7524572999682277,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:57:16+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The PFN predictions on the knn context show:\n- Median prediction mean: 0.9992 (very close to 1, meaning far from tipping)\n- Last window: 0.9996 (very far from tipping)\n- p_critical mean: 0.0267 (very low probability of being near tipping)\n- Last window p_critical: 0.0182\n- Share of windows above 0.5: 0.0\n\nThis suggests the model predicts the system is far from tipping. But the context was heavily imbalanced (only 2 near tipping, 85 far). The query shows early warning signs (increasing AC1, etc.), so this prediction might not be trustworthy.\n\nLet me try a random context to see if we get a more balanced set, or try a larger knn context. Actually, let me try random with size 100 to see if we get more near-tipping examples.\n\nWait, the pool share near tipping is only 8.71%, so even random would likely have few near-tipping examples. But let me try it.\n\nActually, let me think about this differently. The query shows clear early warning signals (increasing AC1, skewness, kurtosis, low_freq_power). The model with the knn context predicts far from tipping with very high confidence. But the context is imbalanced.\n\nLet me try a random context to compare.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":100}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-21d32624-b3a8-4fbc-9466-bf5abbb4a412",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:57:13Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793462233-HmdkHdROCBWFPYIQu0H9",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:57:16.074095Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 310
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3478,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 310,
+      "output_tokens": 350
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

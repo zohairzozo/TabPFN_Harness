@@ -1,0 +1,644 @@
+{
+  "method": "classic_ews",
+  "split": "ood",
+  "dataset_splits": [
+    "test_out_of_prior"
+  ],
+  "held_out": true,
+  "model": null,
+  "llm_mode": null,
+  "oracle": false,
+  "settings": {
+    "alarm_threshold": 0.5,
+    "k_windows": 16
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "seeds_per_scenario": 3,
+  "limit": 3,
+  "n_runs": 18,
+  "skipped": [],
+  "usage": null,
+  "summary": {
+    "n_runs": 18,
+    "latency_seconds": {
+      "n": 18,
+      "mean": 0.005637522237116678,
+      "p50": 0.005854399991221726,
+      "p95": 0.0064774150319863106,
+      "max": 0.0066763999639078975
+    },
+    "llm_seconds_mean": 0.0,
+    "pfn_seconds_mean": 0.005637522237116678,
+    "tool_calls": null,
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 6,
+      "n_agree": 3,
+      "share": 0.5,
+      "n_incomplete": 0,
+      "decisions": {
+        "noise_N1_slow": [
+          "no_alert",
+          "alert",
+          "alert"
+        ],
+        "noise_N3_fast": [
+          "alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "ou_L1": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "rate_L1_slow": [
+          "no_alert",
+          "no_alert",
+          "alert"
+        ],
+        "regime_L3": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "short_ramp_L2": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ]
+      }
+    },
+    "pfn": null
+  },
+  "metrics": {
+    "classic_ews": {
+      "n_runs": 18,
+      "n_positive_end": 9,
+      "n_negative_end": 9,
+      "n_middle_end": 0,
+      "n_control_runs": 9,
+      "decisions": {
+        "alert": 4,
+        "no_alert": 14,
+        "abstain": 0
+      },
+      "abstention": {
+        "value": 0.0,
+        "n": 18,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "recall_end": {
+        "value": 0.4444444444444444,
+        "n": 9,
+        "ci": [
+          0.1111111111111111,
+          0.7777777777777778
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "precision_end": {
+        "value": 1.0,
+        "n": 4,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "n_scored": 18,
+      "auroc_end": {
+        "auroc": 0.7777777777777778,
+        "ci_low": 0.5277083333333334,
+        "ci_high": 0.9875
+      }
+    }
+  },
+  "trace": "classic_ews-ood-20261031T163351Z-8f493842.jsonl",
+  "wall_seconds": 3.515577599988319,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "trajectory_id": "rate_L1_slow/4000",
+        "n_windows": 269,
+        "score": 0.1,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.0066763999639078975
+      },
+      "ground_truth": {
+        "scenario_id": "rate_L1_slow",
+        "role": "out_of_prior",
+        "family": "rate_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.011499999999999773,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0066763999639078975,
+        "total_seconds": 0.0066763999639078975
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "rate_L1_slow/4001",
+        "n_windows": 271,
+        "score": 0.11666666666666667,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005639500101096928
+      },
+      "ground_truth": {
+        "scenario_id": "rate_L1_slow",
+        "role": "out_of_prior",
+        "family": "rate_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005639500101096928,
+        "total_seconds": 0.005639500101096928
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "rate_L1_slow/4002",
+        "n_windows": 265,
+        "score": 0.65,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "alert",
+        "seconds": 0.005488900002092123
+      },
+      "ground_truth": {
+        "scenario_id": "rate_L1_slow",
+        "role": "out_of_prior",
+        "family": "rate_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.015099999999999909,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005488900002092123,
+        "total_seconds": 0.005488900002092123
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "noise_N1_slow/4000",
+        "n_windows": 336,
+        "score": 0.43333333333333335,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.006442300044000149
+      },
+      "ground_truth": {
+        "scenario_id": "noise_N1_slow",
+        "role": "out_of_prior",
+        "family": "noise_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.014799999999999045,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.006442300044000149,
+        "total_seconds": 0.006442300044000149
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "noise_N1_slow/4001",
+        "n_windows": 265,
+        "score": 0.7333333333333334,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "alert",
+        "seconds": 0.005251500057056546
+      },
+      "ground_truth": {
+        "scenario_id": "noise_N1_slow",
+        "role": "out_of_prior",
+        "family": "noise_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.005099999999999909,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005251500057056546,
+        "total_seconds": 0.005251500057056546
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "noise_N1_slow/4002",
+        "n_windows": 230,
+        "score": 0.6416666666666667,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "alert",
+        "seconds": 0.0059671999188140035
+      },
+      "ground_truth": {
+        "scenario_id": "noise_N1_slow",
+        "role": "out_of_prior",
+        "family": "noise_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.004499999999999886,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0059671999188140035,
+        "total_seconds": 0.0059671999188140035
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "noise_N3_fast/4000",
+        "n_windows": 191,
+        "score": 0.675,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "alert",
+        "seconds": 0.00461090006865561
+      },
+      "ground_truth": {
+        "scenario_id": "noise_N3_fast",
+        "role": "out_of_prior",
+        "family": "noise_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.005699999999999932,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.00461090006865561,
+        "total_seconds": 0.00461090006865561
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "noise_N3_fast/4001",
+        "n_windows": 92,
+        "score": -0.5,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.003475199919193983
+      },
+      "ground_truth": {
+        "scenario_id": "noise_N3_fast",
+        "role": "out_of_prior",
+        "family": "noise_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.00589999999999975,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.003475199919193983,
+        "total_seconds": 0.003475199919193983
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "noise_N3_fast/4002",
+        "n_windows": 206,
+        "score": -0.3833333333333333,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.00486389989964664
+      },
+      "ground_truth": {
+        "scenario_id": "noise_N3_fast",
+        "role": "out_of_prior",
+        "family": "noise_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.0025999999999999092,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.00486389989964664,
+        "total_seconds": 0.00486389989964664
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L1/4000",
+        "n_windows": 305,
+        "score": -0.7833333333333333,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.0059374000411480665
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0059374000411480665,
+        "total_seconds": 0.0059374000411480665
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L1/4001",
+        "n_windows": 305,
+        "score": 0.23333333333333334,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005868999985978007
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005868999985978007,
+        "total_seconds": 0.005868999985978007
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L1/4002",
+        "n_windows": 305,
+        "score": -0.1,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.0057990000350400805
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0057990000350400805,
+        "total_seconds": 0.0057990000350400805
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "short_ramp_L2/4000",
+        "n_windows": 305,
+        "score": 0.04999999999999999,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005731099983677268
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005731099983677268,
+        "total_seconds": 0.005731099983677268
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "short_ramp_L2/4001",
+        "n_windows": 305,
+        "score": -0.25,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.0058397999964654446
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0058397999964654446,
+        "total_seconds": 0.0058397999964654446
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "short_ramp_L2/4002",
+        "n_windows": 305,
+        "score": -0.575,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005908600054681301
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005908600054681301,
+        "total_seconds": 0.005908600054681301
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L3/4000",
+        "n_windows": 305,
+        "score": -0.15,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.006001200061291456
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.006001200061291456,
+        "total_seconds": 0.006001200061291456
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L3/4001",
+        "n_windows": 305,
+        "score": 0.31666666666666665,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.00600510009098798
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.00600510009098798,
+        "total_seconds": 0.00600510009098798
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L3/4002",
+        "n_windows": 305,
+        "score": -0.18333333333333335,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005968400044366717
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005968400044366717,
+        "total_seconds": 0.005968400044366717
+      }
+    }
+  ]
+}

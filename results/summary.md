@@ -171,6 +171,47 @@ AUROC on accepted runs and on all runs are computed on different sets of traject
 - TabPFN knn, in-prior test: accepting only gated runs raised mean 90% coverage (0.88 on all runs, 0.92 on accepted runs).
 - TabPFN knn, out-of-prior: accepting only gated runs raised mean 90% coverage (0.74 on all runs, 0.75 on accepted runs).
 
+## Variants, run level
+
+One row per variant, on the same trajectories. The test and out-of-prior splits are held out: the gate was tuned and frozen before they were run.
+
+| Variant | In-prior AUROC | Out-of-prior AUROC | 90% coverage (in-prior / out-of-prior) | Calibration error (in-prior / out-of-prior) | False alarms on controls (in-prior / out-of-prior) | Share of BAD runs blocked (in-prior / out-of-prior) | p95 latency | Tool calls per verdict | pass^3: seeds that agree |
+|---|---|---|---|---|---|---|---|---|---|
+| Classic EWS baseline | 0.79 [0.52, 1.00] | 0.78 [0.53, 0.99] | n/a (no intervals) | n/a (no intervals) | 0.00 (n=9) / 0.00 (n=9) | n/a (no gate) | 0.00784 s | n/a (no tools) | 0.67 (8/12) |
+| LLM only | 0.87 [0.65, 1.00] | 0.72 [0.43, 0.94] | n/a (no intervals) | n/a (no intervals) | 0.33 (n=9) / 0.22 (n=9) | n/a (no gate) | 43.2 s | 0.00 | 0.83 (10/12) |
+| Naive agent (random context, no gate) | 0.99 [0.94, 1.00] | 0.99 [0.93, 1.00] | 0.94 / 0.96 | 0.230 / 0.216 | 0.00 (n=9) / 0.00 (n=9) | n/a (no gate) | 92.6 s | 2.00 | 0.83 (10/12) |
+| Full harness (agent + gate) | 0.98 [0.91, 1.00] (n=16) | 0.91 [0.69, 1.00] (n=12) | 0.95 / 0.87 (accepted runs: 0.94 / 0.87) | 0.225 / 0.209 | 0.11 (n=9) / 0.00 (n=9) | 0.00 (0/2) / 0.33 (1/3) | 187 s | 5.72 | 0.25 (3/12) |
+| Family-matched oracle (ORACLE) | 1.00 [1.00, 1.00] | n/a (tipping runs skipped: family not in the pool) | 0.96 / 1.00 | 0.280 / 0.500 | 0.00 (n=9) / 0.00 (n=9) | n/a (no gate) | 47.2 s | n/a (no tools) | 1.00 (9/9) |
+
+- Sample: 3 scenarios of each kind (tipping and control), 3 seeds per scenario (a trial run).
+- Runs per variant, in-prior test / out-of-prior: Classic EWS baseline: 18 / 18; LLM only: 18 / 18; Naive agent: 18 / 18; Full harness: 18 / 18; Family-matched oracle: 18 / 9 (9 skipped: family not in the pool).
+- LLM: openrouter:nvidia/nemotron-3.5-super-vl:free; --llm-mode replay. Temperature 0 was applied in 144 of 144 runs.
+- The oracle's context for a control run holds a constant target, so its output there is a constant (see ‡ above): its control rows say nothing about the method.
+
+- A run is one trajectory. Every number in this table is run level: one verdict at the end of the series, scored against the label of the last window (near tipping, far from it, or the middle band, which is left out). The per-window AUROC and false-alarm rates above are different quantities and must not be compared with these.
+- **AUROC**: of the run's score for the end of the series, over the tipping runs (positive) and the control runs (negative) of the split. The score is p_critical at the last window (oracle, and the full harness), the baseline score of the last window (classic), the language model's own probability (LLM only) or its confidence (naive agent). The full harness is scored on the runs the gate accepted, and (n=) says how many. CIs are a bootstrap over runs.
+- **90% coverage** and **calibration error**: for variants that use the PFN, the mean over runs of the share of window targets inside the 90% interval of the PFN's output on the run's final context, and of the mean absolute gap between the five quantile levels and the frequencies observed. The truth is read by the evaluation only. The classic baseline and the LLM-only baseline give no intervals.
+- **False alarms on controls**: the share of control runs whose decision is alert. An abstention is not an alert.
+- **Share of BAD runs blocked**: a run is BAD if its 90% interval covers less than 0.80 of its windows (docs/GATE.md). Blocked means the gate failed. Only the full harness has a gate.
+- **p95 latency**: the 95th percentile of the run latency over both splits. A run's latency is its model calls (as recorded, so a replay reports the live latency) plus the PFN fit and predict time (as first measured, gate refits included).
+- **Tool calls per verdict**: the mean number of tool calls of a run (cap 6).
+- **pass^3**: the share of scenarios, with all 3 seeds present, where the 3 seeds give the same final decision (abstain counts as a decision). It measures consistency, not correctness.
+
+## Real data (test only)
+
+Two real datasets, never in the context pool and never used to tune the gate. The Daphnia labels are surrogates (time to extinction over a fixed horizon): they are not the distance to a bifurcation (docs/DAPHNIA.md). The grid data is normal operation, not a pre-blackout run, and every window is negative, so it measures false alarms only and has no AUROC (docs/GRID.md).
+
+| Variant | Daphnia (surrogate labels): AUROC | Daphnia: alert on extinct populations | Daphnia: alert on persisting populations | Grid (normal operation): false-alarm rate |
+|---|---|---|---|---|
+| Classic EWS baseline | n/a (no run had a score) | 0.00 (n=6) | 0.00 (n=3) | 0.67 (n=3) |
+| LLM only | 0.78 [0.42, 1.00] | 0.67 (n=6) | 0.00 (n=3) | 0.00 (n=3) |
+| Naive agent (random context, no gate) | 0.06 [0.00, 0.25] | 0.00 (n=6) | 0.00 (n=3) | 0.67 (n=3) |
+| Full harness (agent + gate) | n/a (no run had a score) | 0.00 (n=6) | 0.00 (n=3) | 0.67 (n=3) |
+| Family-matched oracle (ORACLE) | n/a (tipping runs skipped: family not in the pool) | n/a (no such run) | n/a (no such run) | n/a (no such run) |
+
+- Runs per variant on the Daphnia split: Classic EWS baseline: 9; LLM only: 9; Naive agent: 9; Full harness: 9; Family-matched oracle: 0.
+- Runs per variant on the grid split: Classic EWS baseline: 3; LLM only: 3; Naive agent: 3; Full harness: 3; Family-matched oracle: 0.
+
 ## Run settings
 
 | Run | max_context (config default) | Seeds per scenario | Trajectories | Windows | Cache hits | Skipped | Wall time (min) | Model | Backend package |

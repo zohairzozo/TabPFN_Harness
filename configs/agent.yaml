@@ -1,0 +1,30 @@
+# LLM agent settings, read by src/pfngate/agent/. Model names live here, not in code.
+
+# The models run through OpenRouter. A PydanticAI model string is "provider:model" (format
+# checked in pydantic-ai-slim 2.63.0, see pydantic_ai.models.infer_model): the provider is
+# "openrouter" and the model is OpenRouter's own id, for example
+# "openrouter:nvidia/nemotron-3.5-super-vl:free". The key is OPENROUTER_API_KEY, read from the
+# environment or from .env. It is never printed or committed.
+#
+# The model must be a chat model that supports tool calling. A model that is called through
+# OpenRouter's /embeddings endpoint, such as nvidia/nemotron-3.5-embed-1b:free, returns vectors
+# and cannot answer, call a tool or fill in a verdict. OpenRouter lists chat models at
+# https://openrouter.ai/api/v1/models (look for "tools" in supported_parameters).
+model: openrouter:nvidia/nemotron-3.5-super-vl:free
+debug_model: openrouter:nvidia/nemotron-3.5-lightning:free   # a lighter model for trial runs
+temperature: 0.0                          # CLAUDE.md: LLM calls use temperature 0
+
+limits:
+  max_tool_calls: 6        # per run, enforced in code (the code ceiling is 6)
+  max_contexts: 3          # contexts the agent may build per run (the code ceiling is 3)
+  max_model_requests: 12   # backstop against a model that never answers
+
+# USD per million tokens, by the model id OpenRouter uses. APPROXIMATE: read from OpenRouter's
+# public model list on 2026-10-28, where these models cost 0. OpenRouter can change a price or
+# end a free tier, and free models are rate limited. Costs in the traces are estimates from
+# these numbers. A model that is not listed here has no cost estimate (null in the trace).
+prices:
+  approximate: true
+  models:
+    "nvidia/nemotron-3.5-super-vl:free": {input: 0.0, output: 0.0}
+    "nvidia/nemotron-3.5-lightning:free": {input: 0.0, output: 0.0}

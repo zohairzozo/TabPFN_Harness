@@ -1,0 +1,87 @@
+{
+  "key": "7134cf29cf414e7add9187e7f81c13aa39e212281bb03975ff7342632d53fa00",
+  "latency_s": 5.5191595000214875,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:26:23+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The results from the knn context:\n- Median prediction mean: 0.9835 (very high, meaning far from tipping)\n- Last window: 0.9996 (essentially 1, very far from tipping)\n- p_critical mean: 0.0384 (low probability of being near tipping)\n- p_critical last window: 0.027 (very low)\n- Share of windows above 0.5: 0.0 (no windows predicted as near tipping)\n- Interval width mean: 0.729 (quite wide, indicating uncertainty)\n\nThe model is predicting the system is very far from tipping (predictions near 1.0). But the interval width is quite wide (0.729 mean), suggesting uncertainty.\n\nHowever, the context is heavily skewed: only 7 near tipping out of 200. The rule says a context with both near and far is more useful. Let me try a random context to see if it gives a different/more balanced picture, or try knn with a different size.\n\nActually, let me think about this. The query trends show:\n- ac1 decreasing (negative trend) - this is NOT typical of approaching tipping (usually ac1 increases due to critical slowing down)\n- trend_slope increasing\n- tau_variance and tau_ac1 increasing\n\nThe model with knn context predicts far from tipping with high confidence (predictions ~0.98-1.0). But the context only has 7 near-tipping examples.\n\nLet me try a random context to see if it gives a more balanced view. Random sampling from the pool would give about 8.71% near tipping, so with size 200, we'd expect about 17 near-tipping rows. That's still not a lot but better than 7.\n\nActually, wait - let me reconsider. The knn context found the 200 closest rows to the query, and only 7 of them are near tipping. This suggests that the query's feature space is more similar to far-from-tipping regions of the pool. That's informative in itself.\n\nBut the interval width is wide (0.729), which suggests the model is uncertain. Let me try a random context to compare.\n\nActually, I have 2 contexts left and 4 tool calls left (I've used 3 calls so far: describe_query, describe_context_pool, choose_context, run_pfn - that's 4 calls). Wait, let me recount:\n1. describe_query\n2. describe_context_pool\n3. choose_context (knn)\n4. run_pfn\n\nSo I've used 4 calls, have 2 left (max 6). And I have 2 contexts left (max 3).\n\nLet me try a random context to get a more balanced view, then run PFN on it.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-c1dfae07-2184-4015-b3ea-370d500f821a",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      },
+      {
+        "args": "{\"reason\":\"Run PFN on random context to compare with knn results\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-b3dee438-2f45-4795-b253-0005f7bf8b66",
+        "tool_kind": null,
+        "tool_name": "run_pfn"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:26:17Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793442377-Im7YQhcfwWzZvucrMFUl",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:26:23.921725Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 613
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3516,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 613,
+      "output_tokens": 689
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

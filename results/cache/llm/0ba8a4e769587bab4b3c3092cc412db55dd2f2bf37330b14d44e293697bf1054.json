@@ -1,0 +1,77 @@
+{
+  "key": "0ba8a4e769587bab4b3c3092cc412db55dd2f2bf37330b14d44e293697bf1054",
+  "latency_s": 18.564605599967763,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T16:06:30+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Interesting! The random context gives very different results:\n\n- Median prediction mean: 0.6444 (lower than knn's 0.7573)\n- First third mean: 0.6018\n- Last third mean: 0.5287 (decreasing toward tipping)\n- Last window: 0.0247 (VERY close to tipping!)\n- Interval 90 width mean: 0.99 (very wide)\n- Last window interval width: 1.0668 (very wide)\n- p_critical mean: 0.3011\n- p_critical max: 0.6408\n- p_critical last window: 0.6408 (above 0.5!)\n- p_critical last third mean: 0.3598\n- Share of windows above 0.5: 0.1538 (2 out of 13)\n\nSo with the random context:\n- The last window prediction is 0.0247 (essentially at tipping point)\n- p_critical for last window is 0.6408 (above 0.5)\n- But interval widths are very wide (1.07 for last window), indicating high uncertainty\n\nWith the knn context:\n- Last window prediction: 0.3077\n- p_critical last window: 0.4645 (below 0.5)\n- Interval width last window: 1.014\n\nThe two contexts give quite different results for the last window. The random context suggests the system is very close to tipping (prediction 0.02, p_critical 0.64), while knn suggests it's moderately close (prediction 0.31, p_critical 0.46).\n\nThe query features show strong early warning signals (increasing variance, skewness, kurtosis, trend_slope). The query is also far from the pool (76.92% of windows beyond p99 reference distance), which means the model is extrapolating.\n\nGiven:\n1. The query shows strong early warning signals in features\n2. The random context predicts the last window is very close to tipping (0.02, p_critical 0.64)\n3. The knn context predicts moderately close (0.31, p_critical 0.46)\n4. Both contexts have very wide prediction intervals (high uncertainty)\n5. The query is far from the pool (out-of-distribution)\n\nI'm torn between \"alert\" and \"abstain\". The high uncertainty and out-of-distribution nature suggest abstain might be appropriate. But the early warning signals and the random context's strong prediction suggest alert.\n\nLet me think about this more carefully. The gate will check my final context and predictions against fixed rules. I need to choose one context to submit.\n\nThe key question: should I go with alert or abstain?\n\nArguments for alert:\n- Query features show classic early warning signals (increasing variance, skewness, kurtosis)\n- Random context predicts last window at 0.02 with p_critical 0.64\n- The trend in predictions is decreasing (toward tipping) in both contexts\n\nArguments for abstain:\n- Very wide prediction intervals (high uncertainty)\n- Query is far from pool (out-of-distribution)\n- Two contexts give different results for the last window\n- knn context doesn't have p_critical above 0.5 for the last window\n\nI think the uncertainty is too high and the results are too inconsistent between contexts. The query is also far from the pool. I should probably abstain.\n\nBut wait - let me reconsider. The rules say \"A context with examples both near tipping and far from it is more useful than one with only one kind.\" Both my contexts have this mix. The gate checks my final context against fixed rules.\n\nActually, I think I should try one more context - maybe a larger knn context to see if it gives more stable results. I have 1 context left and 2 calls left.\n\nLet me try knn with size 200.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"knn\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-25448730-2b26-4b4a-a7e4-d4e95cc57a92",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T16:06:11Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793462771-OKRVTFHFGxtO50UeHw1W",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T16:06:30.385920Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 894
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 4513,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 894,
+      "output_tokens": 934
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

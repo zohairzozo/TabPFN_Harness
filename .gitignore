@@ -2,7 +2,9 @@
 .env
 
 # Data and caches
-results/cache/
+results/cache/*
+# The recorded LLM responses are small and are needed to replay the demo with no network.
+!results/cache/llm/
 data/raw/
 
 # Model weights

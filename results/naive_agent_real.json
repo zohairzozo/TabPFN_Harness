@@ -1,0 +1,623 @@
+{
+  "method": "naive_agent",
+  "split": "real",
+  "dataset_splits": [
+    "real_tipping"
+  ],
+  "held_out": true,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "llm_mode": "replay",
+  "debug_model": false,
+  "settings": {
+    "backend": "tabpfn_local",
+    "model_version": "v3.5",
+    "package_version": "9.2.0",
+    "max_context": 200,
+    "data_version": "7537845ee16feb9f"
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "seeds_per_scenario": 3,
+  "limit": 3,
+  "n_runs": 9,
+  "usage": {
+    "n_runs": 9,
+    "model_requests": 27,
+    "replayed_requests": 27,
+    "tokens_in": 38626,
+    "tokens_out": 9858,
+    "llm_seconds": 96.50110919988947,
+    "cost_usd_approx": 0.0,
+    "cost_note": "approximate: prices in configs/agent.yaml, as recorded",
+    "temperature_applied_runs": 9,
+    "stop_reasons": {
+      "completed": 9,
+      "tool_cap": 0,
+      "request_cap": 0,
+      "bad_output": 0
+    }
+  },
+  "metrics": {
+    "naive_agent": {
+      "n_runs": 9,
+      "n_positive_end": 6,
+      "n_negative_end": 3,
+      "n_middle_end": 0,
+      "n_control_runs": 3,
+      "decisions": {
+        "alert": 0,
+        "no_alert": 9,
+        "abstain": 0
+      },
+      "abstention": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "recall_end": {
+        "value": 0.0,
+        "n": 6,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.0,
+        "n": 3,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.0,
+        "n": 3,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "precision_end": {
+        "value": null,
+        "n": 0,
+        "ci": null
+      },
+      "n_scored": 9,
+      "auroc_end": {
+        "auroc": 0.05555555555555556,
+        "ci_low": 0.0,
+        "ci_high": 0.25
+      }
+    }
+  },
+  "gate": null,
+  "summary": {
+    "n_runs": 9,
+    "latency_seconds": {
+      "n": 9,
+      "mean": 14.87747886665036,
+      "p50": 15.556067099969368,
+      "p95": 17.579222439986186,
+      "max": 18.1277482000296
+    },
+    "llm_seconds_mean": 10.722345466654385,
+    "pfn_seconds_mean": 4.155133399995975,
+    "tool_calls": {
+      "n": 9,
+      "mean": 2.0,
+      "max": 2
+    },
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 1,
+      "n_agree": 1,
+      "share": 1.0,
+      "n_incomplete": 1,
+      "decisions": {
+        "daphnia_deteriorating": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ]
+      }
+    },
+    "pfn": {
+      "n_runs": 9,
+      "n_without_pfn_output": 0,
+      "gated": false,
+      "coverage_90_mean_all": 0.9195048778382113,
+      "coverage_90_mean_accepted": null,
+      "n_accepted": null,
+      "calibration_error_mean": 0.18264951098284432,
+      "n_bad": 1,
+      "n_bad_blocked": null,
+      "bad_blocked_share": null
+    }
+  },
+  "trace": "naive_agent-real-20261031T163456Z-2328fe0d.jsonl",
+  "wall_seconds": 4.0505752000026405,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "run_id": "naive_agent-real-20261031T163456Z-2328fe0d.0000",
+        "trajectory_id": "daphnia_constant/0",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 11.170457899861503,
+        "tokens_in": 4265,
+        "tokens_out": 1266,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The model's median prediction rises from 0.19 in the first third to 0.47 in the last third, with the last window at 0.386 (0 = tipping, 1 = far). p_critical for the last window is 0.36, below 0.5, and only 31% of windows exceed 0.5. The system is moving away from, not toward, the tipping point at the series end.",
+          "confidence": 0.72
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "9b551a188a0cdc15",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "control",
+        "family": "real_persisting",
+        "split": "real_tipping",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.7692307692307693,
+        "bad": true,
+        "calibration_error": 0.34615384615384615,
+        "coverage_90_positive_windows": null,
+        "n_windows": 13,
+        "last_window_p_critical": 0.36161085486766453
+      },
+      "timing": {
+        "llm_seconds": 11.170457899861503,
+        "pfn_seconds": 4.42273940006271,
+        "total_seconds": 15.593197299924213
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-real-20261031T163456Z-2328fe0d.0001",
+        "trajectory_id": "daphnia_deteriorating/1",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 9.352411300002132,
+        "tokens_in": 4330,
+        "tokens_out": 1265,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN predicts the last query window at 0.9533 (where 1 = far from tipping), with p_critical of only 0.1768 at the end and no windows exceeding 0.5 critical probability. The prediction trend increases over the series (0.5262 \u2192 0.738 \u2192 0.9533), indicating movement away from, not toward, a tipping point.",
+          "confidence": 0.85
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "a3f2e3492607dbec",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_deteriorating",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.07,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.16,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 10,
+        "last_window_p_critical": 0.17684125771144957
+      },
+      "timing": {
+        "llm_seconds": 9.352411300002132,
+        "pfn_seconds": 4.083655899972655,
+        "total_seconds": 13.436067199974786
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-real-20261031T163456Z-2328fe0d.0002",
+        "trajectory_id": "daphnia_constant/2",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 11.388290199975017,
+        "tokens_in": 4293,
+        "tokens_out": 1333,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The model's median prediction for the last window is 0.698 (closer to 1 = far from tipping), and p_critical is 0.283 (below 0.5, no windows above half). While early-warning features (variance_log_ratio, trend_slope) show strong increasing trends and uncertainty is high, the model does not indicate the end of the series is near a tipping point.",
+          "confidence": 0.6
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "0cad611aab360f55",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "control",
+        "family": "real_persisting",
+        "split": "real_tipping",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.32,
+        "coverage_90_positive_windows": null,
+        "n_windows": 13,
+        "last_window_p_critical": 0.28304811126428847
+      },
+      "timing": {
+        "llm_seconds": 11.388290199975017,
+        "pfn_seconds": 4.167776899994351,
+        "total_seconds": 15.556067099969368
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-real-20261031T163456Z-2328fe0d.0003",
+        "trajectory_id": "daphnia_constant/3",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 8.465695099963341,
+        "tokens_in": 4212,
+        "tokens_out": 957,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN model predicts the query series is far from tipping: median prediction is 0.9629 for the last window (1 = far away), and p_critical is only 0.2603 at the end, with no window exceeding 0.5. Despite some rising feature trends, the model's calibrated output indicates low critical probability throughout.",
+          "confidence": 0.85
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "b8816a6ec3550b16",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "control",
+        "family": "real_persisting",
+        "split": "real_tipping",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.17384615384615387,
+        "coverage_90_positive_windows": null,
+        "n_windows": 13,
+        "last_window_p_critical": 0.2602575293236281
+      },
+      "timing": {
+        "llm_seconds": 8.465695099963341,
+        "pfn_seconds": 4.107679999899119,
+        "total_seconds": 12.57337509986246
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-real-20261031T163456Z-2328fe0d.0004",
+        "trajectory_id": "daphnia_deteriorating/6",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 10.331577100034337,
+        "tokens_in": 4271,
+        "tokens_out": 779,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN model predicts median values near 1.0 (far from tipping) across all 7 query windows, with p_critical averaging only 0.064 and no windows above 0.5. The system shows no indication of approaching a tipping point at the end of the series.",
+          "confidence": 0.95
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "0fb40cc10cb04455",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_deteriorating",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.14,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.20571428571428574,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 7,
+        "last_window_p_critical": 0.06344072565642235
+      },
+      "timing": {
+        "llm_seconds": 10.331577100034337,
+        "pfn_seconds": 3.998112400062382,
+        "total_seconds": 14.32968950009672
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-real-20261031T163456Z-2328fe0d.0005",
+        "trajectory_id": "daphnia_deteriorating/7",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 11.593354800075758,
+        "tokens_in": 4311,
+        "tokens_out": 1247,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN model predicts the last query window at 0.9992 (where 0 = tipping point, 1 = far away), and p_critical for the last window is only 0.1037. Predictions rise from 0.118 (first third) to 0.9994 (last third), indicating the system is moving away from, not toward, the tipping point.",
+          "confidence": 0.9
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "10203a3113b9e46a",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_deteriorating",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.07,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.875,
+        "bad": false,
+        "calibration_error": 0.125,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 8,
+        "last_window_p_critical": 0.10369516652334813
+      },
+      "timing": {
+        "llm_seconds": 11.593354800075758,
+        "pfn_seconds": 4.200134199927561,
+        "total_seconds": 15.79348900000332
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-real-20261031T163456Z-2328fe0d.0006",
+        "trajectory_id": "daphnia_constant/20",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 12.6299519999302,
+        "tokens_in": 4223,
+        "tokens_out": 954,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN predicts the query windows are far from tipping: median prediction is 0.999 in the last third (1 = far away), p_critical is only 0.0375 in the last third and 0.0308 in the final window, and no window exceeds p_critical = 0.5. The model is confident the system is not near a tipping point.",
+          "confidence": 0.92
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "e81da2f9a726926f",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.17,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.8888888888888888,
+        "bad": false,
+        "calibration_error": 0.08888888888888889,
+        "coverage_90_positive_windows": 0.0,
+        "n_windows": 9,
+        "last_window_p_critical": 0.030768266173865053
+      },
+      "timing": {
+        "llm_seconds": 12.6299519999302,
+        "pfn_seconds": 4.12648179999087,
+        "total_seconds": 16.75643379992107
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-real-20261031T163456Z-2328fe0d.0007",
+        "trajectory_id": "daphnia_constant/32",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 14.044896000006702,
+        "tokens_in": 4348,
+        "tokens_out": 1154,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN model predicts median values near 1 (far from tipping) for the end of the series, with the last window at 0.9983. p_critical is low (0.1165 for the last window, 0.0983 mean for the last third), and no windows exceed p_critical = 0.5. Despite rising variance and trend slope in the raw features, the model's learned assessment indicates the system is far from a tipping point.",
+          "confidence": 0.85
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "05732c8ddf6a9889",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9090909090909091,
+        "bad": false,
+        "calibration_error": 0.09090909090909091,
+        "coverage_90_positive_windows": 0.0,
+        "n_windows": 11,
+        "last_window_p_critical": 0.11646903862548467
+      },
+      "timing": {
+        "llm_seconds": 14.044896000006702,
+        "pfn_seconds": 4.082852200022899,
+        "total_seconds": 18.1277482000296
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-real-20261031T163456Z-2328fe0d.0008",
+        "trajectory_id": "daphnia_constant/35",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 7.52447480004048,
+        "tokens_in": 4373,
+        "tokens_out": 903,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN model predicts median values near 1 (far from tipping) across all windows, with the last window at 0.9996. p_critical is very low (last window 0.0193, last-third mean 0.0314), and no windows exceed p_critical = 0.5. Despite some rising feature trends, the model's assessment is that the system is far from tipping.",
+          "confidence": 0.9
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "62764c53c98065d6",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.14,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.8333333333333334,
+        "bad": false,
+        "calibration_error": 0.13333333333333336,
+        "coverage_90_positive_windows": 0.0,
+        "n_windows": 12,
+        "last_window_p_critical": 0.019331107501637305
+      },
+      "timing": {
+        "llm_seconds": 7.52447480004048,
+        "pfn_seconds": 4.20676780003123,
+        "total_seconds": 11.73124260007171
+      }
+    }
+  ]
+}

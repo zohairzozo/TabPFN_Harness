@@ -1,0 +1,786 @@
+{
+  "method": "oracle",
+  "split": "test",
+  "dataset_splits": [
+    "test_in_prior"
+  ],
+  "held_out": true,
+  "model": null,
+  "llm_mode": null,
+  "oracle": true,
+  "settings": {
+    "backend": "tabpfn_local",
+    "model_version": "v3.5",
+    "package_version": "9.2.0",
+    "max_context": 2000,
+    "data_version": "7537845ee16feb9f",
+    "strategy": "family_matched",
+    "alert_threshold": 5e-324
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "seeds_per_scenario": 3,
+  "limit": 3,
+  "n_runs": 18,
+  "skipped": [],
+  "usage": null,
+  "summary": {
+    "n_runs": 18,
+    "latency_seconds": {
+      "n": 18,
+      "mean": 22.18430075553867,
+      "p50": 20.045400150003843,
+      "p95": 48.50825964504619,
+      "max": 54.990580899990164
+    },
+    "llm_seconds_mean": 0.0,
+    "pfn_seconds_mean": 22.18430075553867,
+    "tool_calls": null,
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 6,
+      "n_agree": 6,
+      "share": 1.0,
+      "n_incomplete": 0,
+      "decisions": {
+        "fold_L1_slow": [
+          "alert",
+          "alert",
+          "alert"
+        ],
+        "hopf_L2_slow": [
+          "alert",
+          "alert",
+          "alert"
+        ],
+        "ou_L1": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "regime_L3": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "short_ramp_L2": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "transcritical_L3_fast": [
+          "alert",
+          "alert",
+          "alert"
+        ]
+      }
+    },
+    "pfn": {
+      "n_runs": 18,
+      "n_without_pfn_output": 0,
+      "gated": false,
+      "coverage_90_mean_all": 0.9551702404755886,
+      "coverage_90_mean_accepted": null,
+      "n_accepted": null,
+      "calibration_error_mean": 0.27989806552277,
+      "n_bad": 0,
+      "n_bad_blocked": null,
+      "bad_blocked_share": null
+    }
+  },
+  "metrics": {
+    "oracle": {
+      "n_runs": 18,
+      "n_positive_end": 9,
+      "n_negative_end": 9,
+      "n_middle_end": 0,
+      "n_control_runs": 9,
+      "decisions": {
+        "alert": 9,
+        "no_alert": 9,
+        "abstain": 0
+      },
+      "abstention": {
+        "value": 0.0,
+        "n": 18,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "recall_end": {
+        "value": 1.0,
+        "n": 9,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "precision_end": {
+        "value": 1.0,
+        "n": 9,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "n_scored": 18,
+      "auroc_end": {
+        "auroc": 1.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      }
+    }
+  },
+  "trace": "oracle-test-20261031T163617Z-2a0183ab.jsonl",
+  "wall_seconds": 3.726725000073202,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "trajectory_id": "fold_L1_slow/3000",
+        "n_windows": 251,
+        "context_hash": "4664aa43a72bec2c",
+        "context_size": 2000,
+        "score": 0.9998824469285138,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "test_in_prior",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9282868525896414,
+        "bad": false,
+        "calibration_error": 0.03944223107569721,
+        "coverage_90_positive_windows": 0.9827586206896551,
+        "n_windows": 251,
+        "last_window_p_critical": 0.9998824469285138
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 46.680428600055166,
+        "total_seconds": 46.680428600055166
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "fold_L1_slow/3001",
+        "n_windows": 253,
+        "context_hash": "27ffe90307e3dbd2",
+        "context_size": 2000,
+        "score": 0.9997059888289592,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "test_in_prior",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.932806324110672,
+        "bad": false,
+        "calibration_error": 0.052806324110671946,
+        "coverage_90_positive_windows": 0.9166666666666666,
+        "n_windows": 253,
+        "last_window_p_critical": 0.9997059888289592
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 54.990580899990164,
+        "total_seconds": 54.990580899990164
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "fold_L1_slow/3002",
+        "n_windows": 252,
+        "context_hash": "48c4f58a654c5c51",
+        "context_size": 2000,
+        "score": 0.9999171692321307,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "test_in_prior",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9603174603174603,
+        "bad": false,
+        "calibration_error": 0.046984126984127,
+        "coverage_90_positive_windows": 0.9152542372881356,
+        "n_windows": 252,
+        "last_window_p_critical": 0.9999171692321307
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 47.36432060005609,
+        "total_seconds": 47.36432060005609
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "hopf_L2_slow/3000",
+        "n_windows": 239,
+        "context_hash": "f639ae5ffcb15f1b",
+        "context_size": 2000,
+        "score": 0.9983814381547984,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "test_in_prior",
+        "end_target": 0.016249999999999987,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.8619246861924686,
+        "bad": false,
+        "calibration_error": 0.04903765690376567,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 239,
+        "last_window_p_critical": 0.9983814381547984
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 43.11623669997789,
+        "total_seconds": 43.11623669997789
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "hopf_L2_slow/3001",
+        "n_windows": 227,
+        "context_hash": "ab7429584917a259",
+        "context_size": 2000,
+        "score": 0.9955995651553547,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "test_in_prior",
+        "end_target": 0.06424999999999992,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.8898678414096917,
+        "bad": false,
+        "calibration_error": 0.029515418502202618,
+        "coverage_90_positive_windows": 0.7941176470588235,
+        "n_windows": 227,
+        "last_window_p_critical": 0.9955995651553547
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 42.06597720005084,
+        "total_seconds": 42.06597720005084
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "hopf_L2_slow/3002",
+        "n_windows": 239,
+        "context_hash": "e31cb334b7216cba",
+        "context_size": 2000,
+        "score": 0.9694656626538801,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "test_in_prior",
+        "end_target": 0.016249999999999987,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9121338912133892,
+        "bad": false,
+        "calibration_error": 0.04560669456066946,
+        "coverage_90_positive_windows": 0.8478260869565217,
+        "n_windows": 239,
+        "last_window_p_critical": 0.9694656626538801
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 42.95071440003812,
+        "total_seconds": 42.95071440003812
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "transcritical_L3_fast/3000",
+        "n_windows": 48,
+        "context_hash": "f9473bb991a0191d",
+        "context_size": 2000,
+        "score": 0.36004505322291,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "test_in_prior",
+        "end_target": 0.121,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.875,
+        "bad": false,
+        "calibration_error": 0.08750000000000002,
+        "coverage_90_positive_windows": 0.4,
+        "n_windows": 48,
+        "last_window_p_critical": 0.36004505322291
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 40.080990799935535,
+        "total_seconds": 40.080990799935535
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "transcritical_L3_fast/3001",
+        "n_windows": 50,
+        "context_hash": "1d01cc0ef8a9e484",
+        "context_size": 2000,
+        "score": 0.17983055886573515,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "test_in_prior",
+        "end_target": 0.08899999999999997,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.96,
+        "bad": false,
+        "calibration_error": 0.12000000000000002,
+        "coverage_90_positive_windows": 0.7142857142857143,
+        "n_windows": 50,
+        "last_window_p_critical": 0.17983055886573515
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 40.63179389992729,
+        "total_seconds": 40.63179389992729
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "transcritical_L3_fast/3002",
+        "n_windows": 55,
+        "context_hash": "7075255f324602f1",
+        "context_size": 2000,
+        "score": 0.2049999110310378,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "test_in_prior",
+        "end_target": 0.008999999999999897,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.8727272727272727,
+        "bad": false,
+        "calibration_error": 0.06727272727272729,
+        "coverage_90_positive_windows": 0.4166666666666667,
+        "n_windows": 55,
+        "last_window_p_critical": 0.2049999110310378
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 39.80814619990997,
+        "total_seconds": 39.80814619990997
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L1/3000",
+        "n_windows": 305,
+        "context_hash": "4b032ad97aa6e60e",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.2443399999756366,
+        "total_seconds": 0.2443399999756366
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L1/3001",
+        "n_windows": 305,
+        "context_hash": "db58991118cc7cbb",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.1606639998499304,
+        "total_seconds": 0.1606639998499304
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L1/3002",
+        "n_windows": 305,
+        "context_hash": "fffe15b9770eb57e",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.28265410009771585,
+        "total_seconds": 0.28265410009771585
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "short_ramp_L2/3000",
+        "n_windows": 305,
+        "context_hash": "11a1e102568c4086",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.1538086999207735,
+        "total_seconds": 0.1538086999207735
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "short_ramp_L2/3001",
+        "n_windows": 305,
+        "context_hash": "a155ea0a3cc12df4",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.15926510002464056,
+        "total_seconds": 0.15926510002464056
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "short_ramp_L2/3002",
+        "n_windows": 305,
+        "context_hash": "be070b6268b647d0",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.154988499940373,
+        "total_seconds": 0.154988499940373
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L3/3000",
+        "n_windows": 305,
+        "context_hash": "99d086562eb0082f",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.1495044999755919,
+        "total_seconds": 0.1495044999755919
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L3/3001",
+        "n_windows": 305,
+        "context_hash": "78142f668e8f50fe",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.158497600001283,
+        "total_seconds": 0.158497600001283
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L3/3002",
+        "n_windows": 305,
+        "context_hash": "7a0b733ae5272f83",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.1645017999690026,
+        "total_seconds": 0.1645017999690026
+      }
+    }
+  ]
+}

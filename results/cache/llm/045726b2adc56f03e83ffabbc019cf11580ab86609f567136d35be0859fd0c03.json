@@ -1,0 +1,77 @@
+{
+  "key": "045726b2adc56f03e83ffabbc019cf11580ab86609f567136d35be0859fd0c03",
+  "latency_s": 2.277648799936287,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:43:49+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The query has 305 windows. Let me look at the features:\n- variance_log_ratio: mean 0.0153, std 0.4297, trend 0.0271 (slightly increasing)\n- ac1: mean 0.5606, std 0.1478, trend 0.2202 (increasing autocorrelation - this is a classic early warning signal!)\n- skewness: mean -0.0299, std 0.231, trend -0.0215 (slightly decreasing)\n- kurtosis: mean -0.2973, std 0.3833, trend -0.2899 (decreasing)\n- trend_slope: mean 0.0812, std 1.1638, trend 0.0641\n- tau_variance: mean 0.0138, std 0.3165, trend 0.0216\n- tau_ac1: mean 0.0124, std 0.3286, trend 0.0071\n- low_freq_power: mean 0.5013, std 0.1381, trend 0.1719 (increasing)\n\nThe increasing ac1 trend (0.2202) and increasing low_freq_power trend (0.1719) are classic critical slowing down indicators - these suggest the system may be approaching a tipping point.\n\nNow let me run the PFN model to get actual predictions.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"reason\":\"Get model predictions on whether the query is near tipping\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-302be99c-7ad6-4bd8-91f9-cb7c2c4fd1a0",
+        "tool_kind": null,
+        "tool_name": "run_pfn"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:43:46Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793461426-QaSpJfkhU6Eqrk2mOAUP",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:43:49.432327Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 358
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 1389,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 358,
+      "output_tokens": 396
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

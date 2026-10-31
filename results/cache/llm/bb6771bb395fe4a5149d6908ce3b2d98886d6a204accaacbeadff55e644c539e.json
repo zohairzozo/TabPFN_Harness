@@ -1,0 +1,77 @@
+{
+  "key": "bb6771bb395fe4a5149d6908ce3b2d98886d6a204accaacbeadff55e644c539e",
+  "latency_s": 4.083340900018811,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:43:33+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The model predictions show:\n- median_prediction mean: 0.9946 (very high, meaning far from tipping)\n- last_third_mean: 0.9919 (still very high)\n- last_window: 0.9993 (extremely far from tipping)\n- p_critical mean: 0.0114 (very low probability of being near tipping)\n- p_critical last_window: 0.0144 (very low)\n- p_critical last_third_mean: 0.0139 (very low)\n- share_of_windows_above_half: 0.0 (no windows above 0.5 p_critical)\n\nThe prediction is close to 1 (far from tipping) throughout, and p_critical is very low. Despite the ac1 trend increasing, the model is very confident the system is far from tipping.\n\nThe decision should be \"no_alert\" - the end of the series does not look close to tipping.\n\nConfidence: The model predictions are very consistent (median near 0.99-1.0, p_critical near 0.01), so I should have high confidence. Let me say 0.9 or so.\n\nRationale: The PFN predicts median distance from tipping near 0.99-1.0 across the series, with the last window at 0.9993. p_critical is ~0.01 throughout and no window exceeds 0.5. Despite rising autocorrelation, the model strongly indicates the system is far from tipping.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"decision\":\"no_alert\",\"rationale\":\"The PFN predicts median distance from tipping near 0.99–1.0 across all 305 windows, with the last window at 0.9993. p_critical is ~0.01 throughout (last window 0.0144), and no window exceeds 0.5. Despite rising autocorrelation, the model strongly indicates the system is far from tipping at the end of the series.\",\"confidence\":0.92}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-1ab87330-24dc-43e3-bbb1-7d45e5c45eff",
+        "tool_kind": null,
+        "tool_name": "final_result"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:43:29Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793461409-MHUVsz08fTHUOnNaq1IO",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:43:33.532057Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 343
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 1979,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 343,
+      "output_tokens": 490
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

@@ -1,0 +1,87 @@
+{
+  "key": "9443929c6ce9aa1548ee593f9d91e31910a324165bb66facd08a7eeaa3bb7460",
+  "latency_s": 43.73789970006328,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T16:02:50+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the results:\n\n- Median prediction mean: 0.7145 (fairly high, meaning far from tipping on average)\n- First third mean: 0.4925 (middle)\n- Last third mean: 0.97 (very high, far from tipping)\n- Last window: 0.9946 (extremely high, far from tipping)\n- Interval 90 width mean: 0.9367 (very wide - high uncertainty)\n- Last window interval width: 0.9842 (extremely wide)\n- p_critical mean: 0.239 (low probability of being near tipping)\n- p_critical max: 0.6457 (some windows have higher probability)\n- p_critical last window: 0.1531 (low)\n- p_critical last third mean: 0.1289 (low)\n- Share of windows above half: 0.1538 (only ~15% of windows above 0.5)\n\nWait, this is interesting. The median predictions show the system is far from tipping (high values near 1.0), especially in the last third. But the interval widths are extremely wide, suggesting high uncertainty. The p_critical values are low.\n\nBut wait - the query trends showed variance_log_ratio and trend_slope strongly increasing, which are early warning signals of approaching tipping. Yet the model predicts far from tipping with high uncertainty.\n\nThe wide intervals suggest the model is not confident. The query is far from the pool (out-of-distribution), which explains the uncertainty.\n\nLet me think about what decision to make:\n- The model predicts far from tipping (median ~0.97-0.99 for last windows)\n- But uncertainty is very high (interval width ~0.98)\n- p_critical is low (0.15 for last window)\n\nThe question is whether to trust this result. The gate will check against fixed rules. Given:\n1. The query is far from the pool (76.92% of windows beyond p99 reference)\n2. The interval widths are very wide (high uncertainty)\n3. But the model does give a clear prediction of \"far from tipping\"\n\nI should probably try another context to see if results are consistent. Let me try a random context to compare.\n\nActually, let me think about this more carefully. The model predictions show:\n- High median values (far from tipping) especially at the end\n- Very wide uncertainty intervals\n- Low p_critical\n\nThe wide intervals suggest the model is uncertain. But the median is consistently high. The question is whether the gate will consider this trustworthy.\n\nLet me try a random context to see if we get consistent results. If both contexts agree, I can be more confident.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":150}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-e60a3ead-bab5-453c-8e3f-37ccf058e968",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      },
+      {
+        "args": "{\"reason\":\"Run PFN on random context to compare predictions\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-ae0dc322-70f3-41b9-9484-8f189e7011ad",
+        "tool_kind": null,
+        "tool_name": "run_pfn"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T16:02:06Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793462526-DaoKoxjgl4EebKhN9Qxi",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T16:02:50.554575Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 603
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3622,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 603,
+      "output_tokens": 675
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

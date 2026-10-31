@@ -51,7 +51,9 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
+from pfngate.data import REAL_CONTROL_SPLIT, REAL_SPLIT
 from pfngate.evals.gating import (
+    CalibrationRefit,
     FitPredict,
     gate_false_alarms,
     gate_one,
@@ -69,7 +71,9 @@ from pfngate.evals.trace import Tracer
 from pfngate.features import FeatureConfig, build_dataset, load_feature_config
 from pfngate.features.config import REPO_ROOT
 from pfngate.gate import (
+    Decision,
     GateConfig,
+    GateResult,
     assert_applicable,
     assert_frozen,
     decide,
@@ -94,9 +98,17 @@ SPLIT_FLAGS: dict[str, tuple[str, ...]] = {
     "ood": ("test_out_of_prior",),
     "controls": ("validation", "test_in_prior", "test_out_of_prior"),
     "val_controls": ("validation",),
+    # Real data is test only (docs/DAPHNIA.md, docs/GRID.md).
+    "real": (REAL_SPLIT,),  # Daphnia populations that go extinct
+    "real_controls": ("validation", REAL_SPLIT),  # Daphnia populations that persist
+    "real_control": ("validation", REAL_CONTROL_SPLIT),  # grid frequency, normal operation
 }
-HELD_OUT_FLAGS: frozenset[str] = frozenset({"test", "ood", "controls"})
-CONTROL_FLAGS: frozenset[str] = frozenset({"controls", "val_controls"})
+HELD_OUT_FLAGS: frozenset[str] = frozenset(
+    {"test", "ood", "controls", "real", "real_controls", "real_control"}
+)
+CONTROL_FLAGS: frozenset[str] = frozenset(
+    {"controls", "val_controls", "real_controls", "real_control"}
+)
 SCORES: tuple[str, ...] = ("neg_median", "p_critical")
 SCORE_NOTES = {
     "neg_median": "minus the median of the predicted target; higher means closer to the tip",
@@ -397,7 +409,18 @@ def run(
     return result
 
 
-def gate_run(
+@dataclasses.dataclass(frozen=True)
+class GateStage:
+    """The gate's verdict on one run, its refit, and the decision of each window."""
+
+    result: GateResult
+    refit: CalibrationRefit
+    decisions: tuple[Decision, ...] | None  # None: no alert threshold for the strategy yet
+    alert_threshold: float | None
+    seconds: float
+
+
+def gate_and_trace(
     gate_cfg: GateConfig,
     fit_predict: FitPredict,
     pool_distance: PoolDistance,
@@ -406,8 +429,12 @@ def gate_run(
     q: pd.DataFrame,
     out: PFNOutput,
     cfg: PFNConfig,
-) -> dict[str, Any]:
-    """Gate one run, trace it, and return the per-trajectory fields for the result JSON."""
+) -> GateStage:
+    """Run the gate on one run and write its trace steps. Never reads the query targets.
+
+    The agent calls this too, with a query that has no target or label columns, so both
+    paths use the same gate code.
+    """
     tid = str(q["trajectory_id"].iloc[0])
     t0 = time.perf_counter()
     result, refit = gate_one(
@@ -435,6 +462,24 @@ def gate_run(
     )
     thr = gate_cfg.alert_threshold(sel.strategy)
     decisions = decide(result, out.p_critical, thr) if thr is not None else None
+    return GateStage(result, refit, decisions, thr, time.perf_counter() - t0)
+
+
+def gate_run(
+    gate_cfg: GateConfig,
+    fit_predict: FitPredict,
+    pool_distance: PoolDistance,
+    tracer: Tracer,
+    sel: ContextSelection,
+    q: pd.DataFrame,
+    out: PFNOutput,
+    cfg: PFNConfig,
+) -> dict[str, Any]:
+    """Gate one run, trace it, and return the per-trajectory fields for the result JSON."""
+    stage = gate_and_trace(gate_cfg, fit_predict, pool_distance, tracer, sel, q, out, cfg)
+    result, refit, decisions = stage.result, stage.refit, stage.decisions
+    thr = stage.alert_threshold
+    dump = result.model_dump(mode="json")
     return {
         "gate": {**dump, "failed": list(result.failed)},
         "decisions": decision_counts(decisions),
@@ -447,7 +492,7 @@ def gate_run(
             "n_cache_hits": refit.n_cache_hits,
             "seconds": refit.seconds,
         },
-        "gate_seconds": time.perf_counter() - t0,
+        "gate_seconds": stage.seconds,
         "ground_truth": ground_truth(q, out, gate_cfg),
         # Per-window scores of control runs: the tuner sets the alert threshold from them.
         "p_critical": out.p_critical.tolist() if q["role"].iloc[0] == "control" else None,

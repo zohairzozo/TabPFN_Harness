@@ -10,6 +10,7 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+from pfngate.data import REAL_CONTROL_SPLIT, REAL_SPLIT
 from pfngate.features.compute import FEATURE_NAMES, window_features
 from pfngate.features.config import FeatureConfig, load_feature_config
 from pfngate.features.windows import window_ends, window_matrix
@@ -109,6 +110,29 @@ def build_dataset(
     `scenario_ids` and `seeds_per_scenario` select a subset (used by tests). The
     per-split summary in results/datasets/ is only written for a full build.
     """
+    if split == REAL_SPLIT:
+        # Real data: test only, not simulated. It calls assert_frozen() before reading a row.
+        # seeds_per_scenario keeps the first n populations of each scenario and role (a trial).
+        from pfngate.data.daphnia import build_real_dataset
+
+        fc = feature_config or load_feature_config()
+        full = seeds_per_scenario is None  # a trial subset must not overwrite the summary
+        return build_real_dataset(
+            feature_config=fc,
+            seeds_per_scenario=seeds_per_scenario,
+            summary_dir=fc.summary_dir if full else None,
+        )
+    if split == REAL_CONTROL_SPLIT:
+        # Real grid data: test only, false alarms only. It calls assert_frozen() first.
+        from pfngate.data.grid import build_real_control_dataset
+
+        fc = feature_config or load_feature_config()
+        full = seeds_per_scenario is None
+        return build_real_control_dataset(
+            feature_config=fc,
+            seeds_per_scenario=seeds_per_scenario,
+            summary_dir=fc.summary_dir if full else None,
+        )
     fc = feature_config or load_feature_config()
     scenarios = load_scenarios(scenario_dir)
     if scenario_ids is not None:

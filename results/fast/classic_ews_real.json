@@ -1,0 +1,186 @@
+{
+  "method": "classic_ews",
+  "split": "real",
+  "dataset_splits": [
+    "real_tipping"
+  ],
+  "held_out": true,
+  "model": null,
+  "llm_mode": null,
+  "oracle": false,
+  "settings": {
+    "alarm_threshold": 0.5,
+    "k_windows": 16
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "seeds_per_scenario": 1,
+  "limit": 5,
+  "n_runs": 3,
+  "skipped": [],
+  "usage": null,
+  "summary": {
+    "n_runs": 3,
+    "latency_seconds": {
+      "n": 3,
+      "mean": 0.0029622999718412757,
+      "p50": 0.002674699993804097,
+      "p95": 0.0035827099927701056,
+      "max": 0.0036835999926552176
+    },
+    "llm_seconds_mean": 0.0,
+    "pfn_seconds_mean": 0.0029622999718412757,
+    "tool_calls": null,
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 0,
+      "n_agree": 0,
+      "share": null,
+      "n_incomplete": 2,
+      "decisions": {}
+    },
+    "pfn": null
+  },
+  "metrics": {
+    "classic_ews": {
+      "n_runs": 3,
+      "n_positive_end": 2,
+      "n_negative_end": 1,
+      "n_middle_end": 0,
+      "n_control_runs": 1,
+      "decisions": {
+        "alert": 0,
+        "no_alert": 3,
+        "abstain": 0
+      },
+      "abstention": {
+        "value": 0.0,
+        "n": 3,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "recall_end": {
+        "value": 0.0,
+        "n": 2,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.0,
+        "n": 1,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.0,
+        "n": 1,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "precision_end": {
+        "value": null,
+        "n": 0,
+        "ci": null
+      },
+      "n_scored": 0,
+      "auroc_end": null
+    }
+  },
+  "trace": "classic_ews-real-20261031T152414Z-cb5ea332.jsonl",
+  "wall_seconds": 0.0990367999766022,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "trajectory_id": "daphnia_constant/0",
+        "n_windows": 13,
+        "score": null,
+        "score_defined": false,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.0025285999290645123
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "control",
+        "family": "real_persisting",
+        "split": "real_tipping",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0025285999290645123,
+        "total_seconds": 0.0025285999290645123
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "daphnia_deteriorating/1",
+        "n_windows": 10,
+        "score": null,
+        "score_defined": false,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.002674699993804097
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_deteriorating",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.07,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.002674699993804097,
+        "total_seconds": 0.002674699993804097
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "daphnia_constant/20",
+        "n_windows": 9,
+        "score": null,
+        "score_defined": false,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.0036835999926552176
+      },
+      "ground_truth": {
+        "scenario_id": "daphnia_constant",
+        "role": "real",
+        "family": "real_extinction",
+        "split": "real_tipping",
+        "end_target": 0.17,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0036835999926552176,
+        "total_seconds": 0.0036835999926552176
+      }
+    }
+  ]
+}

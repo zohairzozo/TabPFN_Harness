@@ -1,0 +1,77 @@
+{
+  "key": "1033be212cd67c0a9a97940c2b8a97df94a5429c598f4389adbcfa9d4af30884",
+  "latency_s": 3.587350200046785,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:16:48+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The predictions from the knn context:\n- Median prediction mean: 0.9561 (very high, meaning far from tipping)\n- Last window: 0.9988 (essentially 1, far from tipping)\n- p_critical mean: 0.0612 (low probability of being near tipping)\n- Share of windows above half: 0.0 (no windows predicted as near tipping)\n- Interval width is quite wide (mean 0.8116), suggesting uncertainty\n\nBut wait - the context is heavily imbalanced: 9 near tipping, 154 far from tipping. The model might be biased toward predicting \"far from tipping\" because most context examples are far. The rules say \"A context with examples both near tipping and far from it is more useful than one with only one kind.\"\n\nLet me try a random context to see if it gives a different/more balanced result. Or I could try knn with a different size. Let me try random with size 200 to see if it gives more near-tipping examples.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-1ee41dab-fbc2-47b2-bc56-c8c101ecacb0",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:16:44Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793441804-NWMbiTTSeXqjojhGX5Tl",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:16:48.217143Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 234
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3465,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 234,
+      "output_tokens": 278
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

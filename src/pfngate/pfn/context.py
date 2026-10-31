@@ -24,6 +24,7 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import cKDTree
 
+from pfngate.data import REAL_SPLITS
 from pfngate.features import FEATURE_NAMES
 from pfngate.pfn.config import PFNConfig, load_pfn_config
 
@@ -240,6 +241,8 @@ def select_context(
     cap = cfg.max_context if max_context is None else max_context
     if cap < 1:
         raise ValueError("max_context must be at least 1")
+    if "split" in pool.columns and pool["split"].isin(REAL_SPLITS).any():
+        raise ValueError("real data is test only and must never be part of the context pool")
     if strategy == "random":
         return random_context(pool, query, max_context=cap, seed=cfg.seed)
     if strategy == "knn":

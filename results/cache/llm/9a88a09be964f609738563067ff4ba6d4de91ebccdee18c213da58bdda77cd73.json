@@ -1,0 +1,77 @@
+{
+  "key": "9a88a09be964f609738563067ff4ba6d4de91ebccdee18c213da58bdda77cd73",
+  "latency_s": 3.7863519999664277,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-30T18:57:06+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the results:\n\n- median_prediction: mean 0.8994, first_third_mean 0.8741, last_third_mean 0.9069, last_window 0.8532\n  - The prediction is high (close to 1 = far from tipping). The last third mean is 0.9069, which is higher than the first third mean of 0.8741. But the last window is 0.8532, which is lower than the last third mean.\n  \n- p_critical: mean 0.0484, max 0.4265, last_window 0.0565, last_third_mean 0.0444, share_of_windows_above_half: 0.0\n  - p_critical is the probability that the system is near tipping. The mean is very low (0.0484), the last window is 0.0565, and no windows are above 0.5. The max is 0.4265 but that's not the last window.\n\nSo the model predicts the system is far from tipping (prediction close to 1, p_critical close to 0). The last window prediction is 0.8532 (still far from 0), and p_critical for the last window is 0.0565 (very low).\n\nThe decision should be \"no_alert\" since the system is not close to tipping according to the model.\n\nLet me also consider the trend: the last third mean (0.9069) is higher than the first third mean (0.8741), suggesting the system is moving away from tipping if anything. The last window is 0.8532 which is a bit lower but still high.\n\nConfidence: The p_critical is very low (0.0565 for last window), share of windows above half is 0.0, and the median prediction is high (0.8532 for last window). I'd say confidence around 0.8-0.85.\n\nLet me write the rationale (max 80 words) and final answer.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"decision\":\"no_alert\",\"rationale\":\"The PFN predicts the query windows are far from tipping: median prediction is high (last window 0.853, last-third mean 0.907), p_critical is very low (last window 0.056, mean 0.048), and no window exceeds p_critical=0.5. The series shows no approach toward the tipping point at its end.\",\"confidence\":0.85}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-a5bb1064-b72d-4609-8db0-e37bf8337bfd",
+        "tool_kind": null,
+        "tool_name": "final_result"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-30T18:57:03Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793386623-Hn9cVkakN4KIaMhQOZbL",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-30T18:57:06.912251Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 488
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 1975,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 488,
+      "output_tokens": 629
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

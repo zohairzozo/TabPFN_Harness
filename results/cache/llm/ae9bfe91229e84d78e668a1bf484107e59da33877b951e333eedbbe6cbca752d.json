@@ -1,0 +1,77 @@
+{
+  "key": "ae9bfe91229e84d78e668a1bf484107e59da33877b951e333eedbbe6cbca752d",
+  "latency_s": 4.168599700089544,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:48:46+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The PFN predictions on the knn context:\n- Median prediction mean: 0.9672 (very high, meaning far from tipping)\n- Last window: 0.9995 (essentially 1, far from tipping)\n- Last third mean: 0.9914 (increasing toward 1, meaning moving away from tipping according to the model)\n- p_critical mean: 0.0367 (low probability of being near tipping)\n- p_critical last window: 0.0529\n- Share of windows above 0.5: 0.0 (none above half)\n\nBut wait - the query shows early warning signals (increasing ac1, variance, trend slope, low frequency power). These are classic signs of approaching a tipping point. However, the model is predicting the system is far from tipping (predictions near 1).\n\nThis could mean:\n1. The model is wrong (the knn context doesn't have good near-tipping examples)\n2. The early warning signals in the query are not actually indicating an imminent tip\n\nThe context only has 6 near-tipping rows out of 200 (3%), which is not well-balanced. The rule says a context with examples both near tipping and far from it is more useful.\n\nLet me try a random context to see if it gives different results. A random sample might have more near-tipping examples (pool share is 8.71% near tipping).\n\nActually, let me think about this more carefully. The query shows:\n- Increasing trends in ac1, variance, trend_slope, low_freq_power - these are early warning signals\n- But the model predicts far from tipping\n\nThe issue might be that the knn context found rows similar to the query in feature space, but those rows are mostly far from tipping. This could mean the query's current state is similar to states that are far from tipping, even though the trends suggest movement toward tipping.\n\nLet me try a random context of size 200 to see if we get a different picture. Random should have about 8.71% near tipping, so about 17 near-tipping rows.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-0f2384fc-342a-4c7a-8aa9-0c9a218d9aa9",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:48:42Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793461722-ULEy6WTgQzH4fWhlgGGt",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:48:46.851570Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 470
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3796,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 470,
+      "output_tokens": 515
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

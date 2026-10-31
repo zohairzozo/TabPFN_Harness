@@ -1,0 +1,77 @@
+{
+  "key": "d9102c1ebba300ae90e0ef210e624e301ce015f8f037f9e85d8d6674f6a380c7",
+  "latency_s": 14.74664530006703,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:13:46+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Random context results:\n- Median prediction mean: 0.947 (high, far from tipping)\n- First third mean: 0.9476\n- Last third mean: 0.9814 (even higher)\n- Last window: 0.9991 (essentially 1.0, very far from tipping)\n- Interval 90 width mean: 0.8644 (wide, uncertainty)\n- p_critical mean: 0.093\n- p_critical max: 0.3369 (some windows have higher critical probability)\n- p_critical last window: 0.0526\n- Share of windows above 0.5: 0.0\n\nBoth contexts consistently predict the system is far from tipping. Predictions are near 1.0, p_critical is low, and no windows are above 0.5 p_critical.\n\nThe last window predictions are particularly telling:\n- knn: 0.9552, p_critical 0.0807\n- random: 0.9991, p_critical 0.0526\n\nBoth suggest the system is far from tipping at the end of the series.\n\nThe interval widths are wide (0.79-0.86), which indicates some uncertainty, but the predictions are consistently high across both contexts.\n\nGiven:\n1. Both contexts predict far from tipping (median predictions ~0.95-0.99)\n2. p_critical is low (<0.1 for last window in both)\n3. No windows have p_critical above 0.5\n4. The trend in predictions goes toward 1.0 (last third mean higher than first third mean)\n\nI should recommend \"no_alert\". The system looks far from tipping.\n\nLet me decide which context to use for the final gate check. The random context has a better mix of near and far examples (22 near vs 9 near in knn), and the rules say a context with examples both near tipping and far from it is more useful. The random context also gives a very clear prediction (last window 0.9991).\n\nI'll use the random context with size 200 for the final check.\n\nActually, wait - let me reconsider. The gate checks my final context and predictions against fixed rules. I should pick the context that gives the most reliable result. Both give consistent results. The random context has better balance (22 near vs 9 near), which the rules say is more useful. Let me go with random.\n\nDecision: no_alert\nContext: random, size 200\nConfidence: fairly high given consistent predictions across two different contexts",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"decision\":\"no_alert\",\"context_strategy\":\"random\",\"context_size\":200,\"rationale\":\"Both knn and random contexts consistently predict the system is far from tipping (median predictions ~0.95-0.99, last window ~0.96-1.0). p_critical is low (<0.1 at last window) and no windows exceed p_critical=0.5. Predictions trend toward 1.0 over the series. Random context has better near/far balance (22 near, 143 far).\",\"confidence\":0.85}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-806262c3-432c-4fb2-8df1-d0f6a4af5974",
+        "tool_kind": null,
+        "tool_name": "final_result"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:13:31Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793441611-ZC1pu8Iql5pqjdprBrAm",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:13:46.517518Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 583
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 4139,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 583,
+      "output_tokens": 759
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

@@ -1,0 +1,77 @@
+{
+  "key": "3830b03715ab54281846aaefe9407d4b0b865eaca56ec520b8e1a950ebb74f54",
+  "latency_s": 9.921681899926625,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:42:40+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the PFN results:\n\n- median_prediction: mean 0.9162, first_third_mean 0.98, last_third_mean 0.9184, last_window 0.7812\n  - The prediction is 0 at tipping point, 1 far away. So higher = further from tipping.\n  - The mean is 0.9162 (far from tipping on average)\n  - First third mean: 0.98 (very far from tipping)\n  - Last third mean: 0.9184 (still far from tipping)\n  - Last window: 0.7812 (decreasing but still relatively far from 0)\n\n- p_critical: mean 0.1078, max 0.235, last_window 0.1736, last_third_mean 0.1138, share_of_windows_above_half: 0.0\n  - p_critical is the probability that the system is near tipping\n  - Mean is 0.1078 (low)\n  - Last window is 0.1736 (still low, well below 0.5)\n  - No windows above 0.5\n\n- interval_90_width: mean 0.8852, last_window 0.9533 (wide intervals, indicating uncertainty)\n\nSo the model predictions show:\n- The system is predicted to be far from tipping (median prediction ~0.92 on average, 0.78 at the last window)\n- p_critical is low (0.17 at last window, mean 0.11)\n- No windows have p_critical above 0.5\n\nThe trends in the features (increasing ac1, skewness, trend_slope, low_freq_power) suggested some early warning signals, but the model's actual predictions indicate the system is still far from tipping. The last window prediction is 0.7812, which is closer to 1 (far away) than to 0 (tipping point). p_critical at the last window is 0.1736, well below 0.5.\n\nThe decision should be \"no_alert\" - the end of the series does not look close to tipping.\n\nConfidence: The model consistently predicts far from tipping, p_critical is well below 0.5, and no windows exceed 0.5. I'd say confidence around 0.75-0.8. The wide prediction intervals suggest some uncertainty, but the median and p_critical are clear.\n\nLet me go with no_alert, confidence 0.78.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"decision\":\"no_alert\",\"rationale\":\"The PFN predicts the system is far from tipping: median prediction averages 0.92 (1 = far away), with the last window at 0.78. p_critical averages 0.11 and is 0.17 at the last window, well below 0.5; no window exceeds 0.5. Although some early-warning features trend upward, the model's overall assessment does not indicate imminent tipping.\",\"confidence\":0.78}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-5afe2100-7b82-4ce4-a4c8-e801ad5bbac0",
+        "tool_kind": null,
+        "tool_name": "final_result"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:42:30Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793461350-C7TUJfIQ9LuvbPiJywEi",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:42:40.285378Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 589
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 1843,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 589,
+      "output_tokens": 736
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

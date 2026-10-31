@@ -1,0 +1,1128 @@
+{
+  "method": "naive_agent",
+  "split": "test",
+  "dataset_splits": [
+    "test_in_prior"
+  ],
+  "held_out": true,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "llm_mode": "replay",
+  "debug_model": false,
+  "settings": {
+    "backend": "tabpfn_local",
+    "model_version": "v3.5",
+    "package_version": "9.2.0",
+    "max_context": 200,
+    "data_version": "7537845ee16feb9f"
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "seeds_per_scenario": 3,
+  "limit": 3,
+  "n_runs": 18,
+  "usage": {
+    "n_runs": 18,
+    "model_requests": 54,
+    "replayed_requests": 54,
+    "tokens_in": 77687,
+    "tokens_out": 20416,
+    "llm_seconds": 429.43707399920095,
+    "cost_usd_approx": 0.0,
+    "cost_note": "approximate: prices in configs/agent.yaml, as recorded",
+    "temperature_applied_runs": 18,
+    "stop_reasons": {
+      "completed": 18,
+      "tool_cap": 0,
+      "request_cap": 0,
+      "bad_output": 0
+    }
+  },
+  "metrics": {
+    "naive_agent": {
+      "n_runs": 18,
+      "n_positive_end": 9,
+      "n_negative_end": 9,
+      "n_middle_end": 0,
+      "n_control_runs": 9,
+      "decisions": {
+        "alert": 7,
+        "no_alert": 11,
+        "abstain": 0
+      },
+      "abstention": {
+        "value": 0.0,
+        "n": 18,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "recall_end": {
+        "value": 0.7777777777777778,
+        "n": 9,
+        "ci": [
+          0.46136363636363653,
+          1.0
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "precision_end": {
+        "value": 1.0,
+        "n": 7,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "n_scored": 18,
+      "auroc_end": {
+        "auroc": 0.9876543209876543,
+        "ci_low": 0.9444444444444444,
+        "ci_high": 1.0
+      }
+    }
+  },
+  "gate": null,
+  "summary": {
+    "n_runs": 18,
+    "latency_seconds": {
+      "n": 18,
+      "mean": 31.058326994392296,
+      "p50": 18.750820849905722,
+      "p95": 102.69320862494345,
+      "max": 135.9470492999535
+    },
+    "llm_seconds_mean": 23.85761522217783,
+    "pfn_seconds_mean": 7.200711772214466,
+    "tool_calls": {
+      "n": 18,
+      "mean": 2.0,
+      "max": 2
+    },
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 6,
+      "n_agree": 5,
+      "share": 0.8333333333333334,
+      "n_incomplete": 0,
+      "decisions": {
+        "fold_L1_slow": [
+          "alert",
+          "alert",
+          "alert"
+        ],
+        "hopf_L2_slow": [
+          "alert",
+          "alert",
+          "alert"
+        ],
+        "ou_L1": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "regime_L3": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "short_ramp_L2": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "transcritical_L3_fast": [
+          "no_alert",
+          "no_alert",
+          "alert"
+        ]
+      }
+    },
+    "pfn": {
+      "n_runs": 18,
+      "n_without_pfn_output": 0,
+      "gated": false,
+      "coverage_90_mean_all": 0.9404721336128861,
+      "coverage_90_mean_accepted": null,
+      "n_accepted": null,
+      "calibration_error_mean": 0.2295858789459523,
+      "n_bad": 3,
+      "n_bad_blocked": null,
+      "bad_blocked_share": null
+    }
+  },
+  "trace": "naive_agent-test-20261031T163438Z-89e1e38e.jsonl",
+  "wall_seconds": 5.648704900057055,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0000",
+        "trajectory_id": "fold_L1_slow/3000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 8.006041199958418,
+        "tokens_in": 4364,
+        "tokens_out": 1108,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "rationale": "The model's last-window median prediction is -0.0088 (essentially 0, at the tipping point) with p_critical = 0.9708, indicating near-certain proximity to tipping at the series end. Early-warning features also rise: ac1 trend +0.2812 and low_freq_power trend +0.2574, consistent with critical slowing down.",
+          "confidence": 0.92
+        },
+        "decision": "alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "1d140cbbb14a6114",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "test_in_prior",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.8366533864541833,
+        "bad": false,
+        "calibration_error": 0.28326693227091637,
+        "coverage_90_positive_windows": 0.5,
+        "n_windows": 251,
+        "last_window_p_critical": 0.9707759906376888
+      },
+      "timing": {
+        "llm_seconds": 8.006041199958418,
+        "pfn_seconds": 7.672181500005536,
+        "total_seconds": 15.678222699963953
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0001",
+        "trajectory_id": "fold_L1_slow/3001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 8.550159799982794,
+        "tokens_in": 4347,
+        "tokens_out": 1309,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "rationale": "The last window's median prediction is 0.285 (close to 0 = near tipping), down from 0.947 in the first third. p_critical for the last window is 0.4038, and early-warning features (ac1 trend +0.208, low_freq_power +0.189, trend_slope +1.36) all rise strongly toward the end, indicating the system is approaching a tipping point.",
+          "confidence": 0.72
+        },
+        "decision": "alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "6e154701b91ad2e8",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "test_in_prior",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.766798418972332,
+        "bad": true,
+        "calibration_error": 0.2739130434782609,
+        "coverage_90_positive_windows": 0.21666666666666667,
+        "n_windows": 253,
+        "last_window_p_critical": 0.4037710057001508
+      },
+      "timing": {
+        "llm_seconds": 8.550159799982794,
+        "pfn_seconds": 7.950124100025278,
+        "total_seconds": 16.50028390000807
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0002",
+        "trajectory_id": "fold_L1_slow/3002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 7.227426600002218,
+        "tokens_in": 4205,
+        "tokens_out": 927,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "rationale": "The model's median prediction drops sharply across the series (0.996 \u2192 0.791 \u2192 0.068 at the last window), and p_critical reaches 0.69 at the end. Query features also show rising autocorrelation (ac1 trend +0.27) and low-frequency power (+0.24), classic critical-slowing-down indicators. The end of the series is close to the tipping point.",
+          "confidence": 0.85
+        },
+        "decision": "alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "b53dc86a67bef782",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "test_in_prior",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.7936507936507936,
+        "bad": true,
+        "calibration_error": 0.3015873015873016,
+        "coverage_90_positive_windows": 0.288135593220339,
+        "n_windows": 252,
+        "last_window_p_critical": 0.6899587546378786
+      },
+      "timing": {
+        "llm_seconds": 7.227426600002218,
+        "pfn_seconds": 7.671971999981906,
+        "total_seconds": 14.899398599984124
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0003",
+        "trajectory_id": "hopf_L2_slow/3000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 32.35103789996356,
+        "tokens_in": 4358,
+        "tokens_out": 1191,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "rationale": "The PFN predicts the last query window at 0.0439 (near 0 = tipping point), down from 0.8857 in the first third. p_critical for the last window is 0.8175, indicating high probability of a critical state. Early-warning features (ac1 trend +0.237, low_freq_power trend +0.2399) show increasing trends consistent with critical slowing down.",
+          "confidence": 0.88
+        },
+        "decision": "alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "21845eb334b57d05",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "test_in_prior",
+        "end_target": 0.016249999999999987,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9665271966527197,
+        "bad": false,
+        "calibration_error": 0.1275313807531381,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 239,
+        "last_window_p_critical": 0.817454803466644
+      },
+      "timing": {
+        "llm_seconds": 32.35103789996356,
+        "pfn_seconds": 6.474423299951013,
+        "total_seconds": 38.82546119991457
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0004",
+        "trajectory_id": "hopf_L2_slow/3001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 12.321775099961087,
+        "tokens_in": 4340,
+        "tokens_out": 1231,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "rationale": "The model's median prediction drops from 0.93 (first third) to 0.36 (last third), with the final window at 0.093 (near 0 = tipping). p_critical reaches 0.837 at the last window. Query diagnostics show rising autocorrelation (trend 0.248) and low-frequency power (trend 0.258), classic early-warning signals. The end of the series looks close to tipping.",
+          "confidence": 0.92
+        },
+        "decision": "alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "2b1df203eca22ff9",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "test_in_prior",
+        "end_target": 0.06424999999999992,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9779735682819384,
+        "bad": false,
+        "calibration_error": 0.12088105726872249,
+        "coverage_90_positive_windows": 0.8529411764705882,
+        "n_windows": 227,
+        "last_window_p_critical": 0.8367472732724938
+      },
+      "timing": {
+        "llm_seconds": 12.321775099961087,
+        "pfn_seconds": 5.997394699952565,
+        "total_seconds": 18.319169799913652
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0005",
+        "trajectory_id": "hopf_L2_slow/3002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 8.681897699949332,
+        "tokens_in": 4338,
+        "tokens_out": 1172,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "rationale": "The last window median prediction is 0.1078 (very close to 0 = tipping point), with p_critical 0.6469 (>0.5). Predictions declined from 0.9576 (first third) to 0.3544 (last third). Descriptive stats show rising autocorrelation (trend 0.2939) and low-frequency power (trend 0.3136), classic critical-slowing-down early warnings. The end of the series looks close to tipping.",
+          "confidence": 0.85
+        },
+        "decision": "alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "8941f921f2cc07fa",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "test_in_prior",
+        "end_target": 0.016249999999999987,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9874476987447699,
+        "bad": false,
+        "calibration_error": 0.14092050209205023,
+        "coverage_90_positive_windows": 0.9347826086956522,
+        "n_windows": 239,
+        "last_window_p_critical": 0.6468835861514474
+      },
+      "timing": {
+        "llm_seconds": 8.681897699949332,
+        "pfn_seconds": 6.149551199981943,
+        "total_seconds": 14.831448899931274
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0006",
+        "trajectory_id": "transcritical_L3_fast/3000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 92.56668839993654,
+        "tokens_in": 4406,
+        "tokens_out": 1566,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The model's p_critical is low throughout (last window 0.1747, last third mean 0.0503, no windows above 0.5). The median prediction at the end is 0.7035, still far from the tipping point (0). Although the last-window prediction dropped from the last-third average (0.9727), it remains well above 0, and uncertainty is high (interval width 0.9426). No strong evidence of imminent tipping.",
+          "confidence": 0.75
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "bc41a915c403b456",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "test_in_prior",
+        "end_target": 0.121,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.7708333333333334,
+        "bad": true,
+        "calibration_error": 0.225,
+        "coverage_90_positive_windows": 0.2,
+        "n_windows": 48,
+        "last_window_p_critical": 0.17471931078214237
+      },
+      "timing": {
+        "llm_seconds": 92.56668839993654,
+        "pfn_seconds": 4.2581954000052065,
+        "total_seconds": 96.82488379994174
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0007",
+        "trajectory_id": "transcritical_L3_fast/3001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 14.907644599850755,
+        "tokens_in": 4178,
+        "tokens_out": 1076,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The model's median prediction at the end of the series is 0.795 (1 = far from tipping), and p_critical at the last window is 0.2084, below 0.5. No window exceeds p_critical = 0.5. Although some early-warning features trend upward and predictions decline toward the end, the model does not indicate the system is close to tipping at the series end.",
+          "confidence": 0.65
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "7fa838c785eca6ea",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "test_in_prior",
+        "end_target": 0.08899999999999997,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.248,
+        "coverage_90_positive_windows": 1.0,
+        "n_windows": 50,
+        "last_window_p_critical": 0.20843643027446176
+      },
+      "timing": {
+        "llm_seconds": 14.907644599850755,
+        "pfn_seconds": 4.274827300047036,
+        "total_seconds": 19.18247189989779
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0008",
+        "trajectory_id": "transcritical_L3_fast/3002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 9.020118499931414,
+        "tokens_in": 4270,
+        "tokens_out": 1198,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "alert",
+          "rationale": "The query shows classic early-warning signals: rising autocorrelation (ac1 trend +0.078), skewness (+0.240), trend slope (+0.372), and low-frequency power (+0.061). The PFN median prediction drops sharply at the end (last window 0.462, below 0.5), and p_critical for the last window (0.248) exceeds the series mean (0.157). The end of the series looks closer to tipping.",
+          "confidence": 0.68
+        },
+        "decision": "alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "1cdcae8f70281ccf",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "test_in_prior",
+        "end_target": 0.008999999999999897,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.8909090909090909,
+        "bad": false,
+        "calibration_error": 0.17636363636363636,
+        "coverage_90_positive_windows": 0.5,
+        "n_windows": 55,
+        "last_window_p_critical": 0.24810696151837378
+      },
+      "timing": {
+        "llm_seconds": 9.020118499931414,
+        "pfn_seconds": 4.543695000000298,
+        "total_seconds": 13.563813499931712
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0009",
+        "trajectory_id": "ou_L1/3000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 10.408920100016985,
+        "tokens_in": 4485,
+        "tokens_out": 1180,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN predicts values near 1 (far from tipping) throughout, with the last window at 0.9991 and p_critical at 0.0526. No window exceeds p_critical = 0.5. The last-third mean prediction (0.9814) is higher than the overall mean, indicating the system is moving away from, not toward, a tipping point.",
+          "confidence": 0.95
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "b2582b573be80619",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.21639344262295085,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.052623050801594226
+      },
+      "timing": {
+        "llm_seconds": 10.408920100016985,
+        "pfn_seconds": 8.824009000032675,
+        "total_seconds": 19.23292910004966
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0010",
+        "trajectory_id": "ou_L1/3001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 8.302823399950285,
+        "tokens_in": 4323,
+        "tokens_out": 981,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN predicts values near 1 (far from tipping) across the query, with the last window at 0.9986 and p_critical at only 0.0528. The median prediction rises from 0.8988 (first third) to 0.9638 (last third), indicating movement away from the tipping point. Only 2.95% of windows exceed p_critical = 0.5.",
+          "confidence": 0.95
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "4db2c4507eb3e926",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9770491803278688,
+        "bad": false,
+        "calibration_error": 0.27999999999999997,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0528481920360415
+      },
+      "timing": {
+        "llm_seconds": 8.302823399950285,
+        "pfn_seconds": 9.119902000005823,
+        "total_seconds": 17.422725399956107
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0011",
+        "trajectory_id": "ou_L1/3002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 10.818411400017794,
+        "tokens_in": 4167,
+        "tokens_out": 722,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN predicts the system is far from tipping throughout: median prediction stays near 0.93 (1 = far away), ending at 0.9983 on the last window. p_critical is low (mean 0.059, last window 0.028) and no window exceeds 0.5. No early-warning escalation is evident at the end of the series.",
+          "confidence": 0.92
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "90f02a1a8b7b3444",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9934426229508196,
+        "bad": false,
+        "calibration_error": 0.25442622950819677,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.027658461204601078
+      },
+      "timing": {
+        "llm_seconds": 10.818411400017794,
+        "pfn_seconds": 8.96434829995269,
+        "total_seconds": 19.782759699970484
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0012",
+        "trajectory_id": "short_ramp_L2/3000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 9.625700999924447,
+        "tokens_in": 4309,
+        "tokens_out": 847,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN predicts median values near 1 (far from tipping) across all 305 windows, with the last third averaging 0.9991 and the last window at 0.9988. p_critical is very low (mean 0.0316, last window 0.0422), and no window exceeds 0.5. The end of the series shows no approach to the tipping point.",
+          "confidence": 0.95
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "60aab6ed5f341eb5",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.20688524590163934,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.04218285660013742
+      },
+      "timing": {
+        "llm_seconds": 9.625700999924447,
+        "pfn_seconds": 7.655877900018822,
+        "total_seconds": 17.28157889994327
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0013",
+        "trajectory_id": "short_ramp_L2/3001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 8.888313999923412,
+        "tokens_in": 4224,
+        "tokens_out": 721,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN predicts median values near 1 (far from tipping) across all 305 windows, with the last window at 0.9997. p_critical is extremely low (mean 0.0227, last window 0.0044), and no window exceeds p_critical = 0.5. The series shows no approach to the tipping point.",
+          "confidence": 0.99
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "1062113785d52e23",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.20196721311475413,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0043923016236833
+      },
+      "timing": {
+        "llm_seconds": 8.888313999923412,
+        "pfn_seconds": 7.923484999977518,
+        "total_seconds": 16.81179899990093
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0014",
+        "trajectory_id": "short_ramp_L2/3002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 14.299572400108445,
+        "tokens_in": 4330,
+        "tokens_out": 860,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN predicts the query windows are far from tipping (median near 0.97, last window 0.998 where 1 = far away). p_critical is low throughout (mean 0.03, last window 0.05) and no window exceeds 0.5 critical probability. The end of the series shows no approach to the tipping point.",
+          "confidence": 0.95
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "ca7254cdee5c630f",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.22163934426229512,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.05153324608852171
+      },
+      "timing": {
+        "llm_seconds": 14.299572400108445,
+        "pfn_seconds": 7.632505199930165,
+        "total_seconds": 21.93207760003861
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0015",
+        "trajectory_id": "regime_L3/3000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 27.866886799864005,
+        "tokens_in": 4345,
+        "tokens_out": 1365,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN model predicts the system is far from tipping: median prediction at the last window is 0.86 (1 = far away), p_critical is 0.075 at the end (mean 0.039), and no window exceeds 0.5 critical probability. Although some early-warning features (ac1, low_freq_power) show mild increasing trends, the model's overall assessment indicates the system is not near a tipping point.",
+          "confidence": 0.72
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "b214dafa224babd7",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.31475409836065577,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.07509965179308058
+      },
+      "timing": {
+        "llm_seconds": 27.866886799864005,
+        "pfn_seconds": 9.698806800006423,
+        "total_seconds": 37.56569359987043
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0016",
+        "trajectory_id": "regime_L3/3001",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 17.31900949991541,
+        "tokens_in": 4357,
+        "tokens_out": 1379,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The PFN model predicts the final window at 0.9992 (1 = far from tipping) with p_critical of only 0.0606, and no window exceeds p_critical = 0.5. Although ac1 and low_freq_power show upward early-warning trends, the model's assessment places the end of the series far from the tipping point.",
+          "confidence": 0.85
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "e8e7ddd68bdc3655",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9836065573770492,
+        "bad": false,
+        "calibration_error": 0.2937704918032787,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.06064149331517598
+      },
+      "timing": {
+        "llm_seconds": 17.31900949991541,
+        "pfn_seconds": 7.129109499976039,
+        "total_seconds": 24.44811899989145
+      }
+    },
+    {
+      "record": {
+        "run_id": "naive_agent-test-20261031T163438Z-89e1e38e.0017",
+        "trajectory_id": "regime_L3/3002",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 2,
+        "n_model_requests": 3,
+        "n_replayed_requests": 3,
+        "llm_seconds": 128.27464559994405,
+        "tokens_in": 4341,
+        "tokens_out": 1583,
+        "cost_usd_approx": 0.0,
+        "verdict": {
+          "decision": "no_alert",
+          "rationale": "The model predicts the last query window is 0.9987 from tipping (0 = tipping, 1 = far away), and p_critical at the end is only 0.0591, with no window exceeding 0.5. Although some raw early-warning features (ac1, low_freq_power) trend upward, the fitted model's end-of-series output places the system very far from tipping.",
+          "confidence": 0.85
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "context_strategy": "random",
+        "context_size": 200,
+        "context_hash": "f377812daf419c88",
+        "ran_pfn": true
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9836065573770492,
+        "bad": false,
+        "calibration_error": 0.2452459016393443,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.059148021273230204
+      },
+      "timing": {
+        "llm_seconds": 128.27464559994405,
+        "pfn_seconds": 7.672403700009454,
+        "total_seconds": 135.9470492999535
+      }
+    }
+  ]
+}

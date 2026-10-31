@@ -1,0 +1,77 @@
+{
+  "key": "9c463bd75081901ae0c8b4920182c145bfd18852e8d536768d5774c223b6ed56",
+  "latency_s": 4.886785700102337,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:24:18+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the results:\n\n**Query characteristics:**\n- 206 windows\n- Features show:\n  - variance_log_ratio: mean 0.0348, trend -0.0901 (decreasing)\n  - ac1: mean 0.7188, trend 0.1148 (increasing - this is a classic early warning signal, increasing autocorrelation)\n  - skewness: mean 0.3097, trend 0.1906 (increasing)\n  - kurtosis: mean 0.0447, trend 0.2198 (increasing)\n  - trend_slope: mean 0.0162, trend -0.0967\n  - tau_variance: mean 0.0325, trend -0.0004\n  - tau_ac1: mean 0.0137, trend 0.0166\n  - low_freq_power: mean 0.562, trend 0.0842 (increasing)\n\nThe trends suggest the system is approaching a tipping point: increasing AC1, increasing skewness, increasing kurtosis, increasing low_freq_power are all classic early warning signals of critical slowing down.\n\n**Pool characteristics:**\n- 105,980 rows from 540 trajectories\n- 8.71% near tipping, 70.65% far from tipping\n- Both random and knn strategies available, min 100, max 200\n- Query distance to pool: median 0.9979, p90 1.5813, pool_reference_p99 1.7924, 6.8% of windows beyond reference\n\nThe query seems somewhat distant from the pool (median distance ~1.0, with 6.8% beyond the p99 reference). This suggests the query might be somewhat out-of-distribution.\n\nNow I need to build a context. Given the query shows early warning signals (increasing AC1, skewness, kurtosis, low_freq_power), I should try to build a context that has examples both near and far from tipping.\n\nLet me think about strategy:\n- \"knn\" would find pool rows closest to the query windows in feature space. Since the query shows early warning signals, knn might find rows that are also near tipping.\n- \"random\" would give a uniform sample, which would mostly be far from tipping (70.65% far, 8.71% near).\n\nGiven the rules say \"A context with examples both near tipping and far from it is more useful than one with only one kind,\" I should try to get a mixed context.\n\nLet me start with a knn context since the query has distinctive features (early warning signals), and knn might find relevant similar examples. Let me try size 200 (max) to get more coverage.\n\nActually, let me think more carefully. The query distance to pool is notable - median 0.9979 with 6.8% beyond the p99 reference. This means the query is somewhat far from the pool. KNN might still find the closest rows, but they might not be very close.\n\nLet me try knn first with size 200, then run the PFN, and see what happens. If needed, I can try random or a different size.\n\nLet me start with knn, size 200.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"knn\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-3e4b33b1-3b86-45dc-9f1f-b2f76a5377f2",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:24:13Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793442253-RRf9l5XFtCpSiYbsqpbp",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:24:18.782403Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 756
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 2491,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 756,
+      "output_tokens": 797
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

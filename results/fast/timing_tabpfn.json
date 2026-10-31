@@ -1,0 +1,87 @@
+{
+  "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+  "os": "Windows-11-10.0.26300-SP0",
+  "cpu_model": "Intel(R) Core(TM) i7-10750H CPU @ 2.60GHz",
+  "package_versions": {
+    "tabpfn": "9.2.0",
+    "torch": "2.14.1",
+    "numpy": "2.5.4",
+    "scikit-learn": "1.9.1",
+    "scipy": "1.18.1",
+    "pandas": "3.1.0"
+  },
+  "model_version_requested": "v3.5",
+  "cpu_large_override_flag_used": false,
+  "n_test": 200,
+  "n_features": 8,
+  "repeats": 3,
+  "seed": 0,
+  "timings": {
+    "500": {
+      "fit_seconds_median": 0.25183779999497347,
+      "predict_seconds_median": 9.727917900017928,
+      "fit_seconds_all": [
+        452.77485099999467,
+        0.15809869999065995,
+        0.25183779999497347
+      ],
+      "predict_seconds_all": [
+        9.634484999987762,
+        9.727917900017928,
+        9.764028100005817
+      ],
+      "default_cpu_sample_limit": 5000,
+      "needed_cpu_large_override": false,
+      "quantile_order_ok": true
+    },
+    "2000": {
+      "fit_seconds_median": 0.17697950001456775,
+      "predict_seconds_median": 40.7715945999953,
+      "fit_seconds_all": [
+        0.17697950001456775,
+        0.18993560000672005,
+        0.17560069999308325
+      ],
+      "predict_seconds_all": [
+        40.7715945999953,
+        40.16234969999641,
+        44.97489070001757
+      ],
+      "default_cpu_sample_limit": 5000,
+      "needed_cpu_large_override": false,
+      "quantile_order_ok": true
+    },
+    "5000": {
+      "fit_seconds_median": 0.20254689999273978,
+      "predict_seconds_median": 141.48661819999688,
+      "fit_seconds_all": [
+        0.1989811999956146,
+        0.215976600011345,
+        0.20254689999273978
+      ],
+      "predict_seconds_all": [
+        141.48661819999688,
+        136.69548679998843,
+        156.950760000007
+      ],
+      "default_cpu_sample_limit": 5000,
+      "needed_cpu_large_override": false,
+      "quantile_order_ok": true
+    }
+  },
+  "warnings": [
+    "n_train=2000: UserWarning: Running on CPU with more than 1000 samples may be slow.\nConsider using a GPU or the tabpfn-client API: https://github.com/PriorLabs/tabpfn-client",
+    "n_train=5000: UserWarning: Running on CPU with more than 1000 samples may be slow.\nConsider using a GPU or the tabpfn-client API: https://github.com/PriorLabs/tabpfn-client"
+  ],
+  "errors": [],
+  "model_path_used": "C:\\Users\\donzo\\AppData\\Roaming\\tabpfn\\tabpfn-v3.5-20260909.safetensors",
+  "full_output_keys": [
+    "criterion",
+    "logits",
+    "mean",
+    "median",
+    "mode",
+    "quantiles"
+  ],
+  "quantile_order_ok_all_sizes": true
+}

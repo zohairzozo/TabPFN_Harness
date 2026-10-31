@@ -1,0 +1,18 @@
+# The real_control split: real power-grid frequency in normal operation (Fingrid, Nordic grid).
+# Read by src/pfngate/data/grid.py. See docs/GRID.md.
+#
+# TEST ONLY, and it exists only to measure false alarms: every window is labelled negative.
+# It is normal operation, not a pre-blackout run. Settings are fixed from the data layout
+# (one value per second) and must not be changed after a result has been seen.
+
+raw_glob: data/raw/grid/fingrid_*.csv   # written by scripts/fetch_grid.py, git-ignored
+
+# One value per second is far finer than the simulated series, so the frequency is averaged
+# over blocks of this many seconds. A day then has 1440 points, enough for 128-point windows.
+resample_seconds: 60
+
+# Seconds that may be interpolated linearly when the source marks them as NaN. Longer holes
+# are not filled and stop the load.
+max_interpolated_gap_seconds: 30
+
+# Each calendar day is one trajectory, so that all windows of a day stay together.

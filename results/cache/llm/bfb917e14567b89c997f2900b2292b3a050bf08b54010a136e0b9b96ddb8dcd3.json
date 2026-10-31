@@ -1,0 +1,77 @@
+{
+  "key": "bfb917e14567b89c997f2900b2292b3a050bf08b54010a136e0b9b96ddb8dcd3",
+  "latency_s": 2.9550650001037866,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:15:11+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The model predictions on the knn context show:\n- Median prediction mean: 0.9995 (very close to 1, meaning far from tipping)\n- Last window: 0.9994\n- p_critical mean: 0.023 (very low probability of being near tipping)\n- Share of windows above 0.5: 0.0 (no windows predicted as near tipping)\n- Interval width: mean 0.6692, last window 0.7042 (quite wide intervals)\n\nThe model is predicting the system is far from tipping (predictions near 1.0). But the context is heavily imbalanced (only 3 near tipping out of 200). The query shows early warning signals (increasing ac1, decreasing kurtosis, decreasing trend_slope), which suggests the system might be approaching a tipping point.\n\nThe wide interval widths suggest uncertainty. Let me try a different context to see if results change. Let me try random with size 200 to get a more balanced context (since the pool has 8.71% near tipping, random should give about 17 near tipping out of 200).\n\nActually, wait. Let me think about this. The knn context found the closest rows to the query, and only 3 were near tipping. This means the query's feature space is closest to rows that are far from tipping. But the query trends suggest it's approaching a tipping point.\n\nLet me try a random context to see if we get different predictions.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-1dc11a33-6b3e-4450-88f9-95365bce82f7",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:15:07Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793441707-e9kse5q5ebcNgXokknm4",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:15:11.342301Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 337
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3381,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 337,
+      "output_tokens": 377
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

@@ -42,6 +42,10 @@ class FitPredict:
     cfg: PFNConfig
     model_version: str
     data_ver: str
+    # The fit and predict time of every call, as the backend first measured it. A call that
+    # is answered from the cache adds the time its entry was computed in, so the total is
+    # what the same work costs without a cache.
+    compute_seconds: float = 0.0
 
     def __call__(self, context: pd.DataFrame, query: pd.DataFrame) -> tuple[PFNOutput, bool]:
         key = cache_key(
@@ -54,10 +58,12 @@ class FitPredict:
         )
         out = self.cache.get(key)
         if out is not None:
+            self.compute_seconds += out.metadata.fit_seconds + out.metadata.predict_seconds
             return out, True
         self.backend.fit(query_x(context), context["target"].to_numpy(float))
         out = self.backend.predict(query_x(query))
         self.cache.put(key, out)
+        self.compute_seconds += out.metadata.fit_seconds + out.metadata.predict_seconds
         return out, False
 
 

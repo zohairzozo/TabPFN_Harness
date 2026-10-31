@@ -1,0 +1,77 @@
+{
+  "key": "6c59e71de96df95ff05ddd13384e152c6f18fa4c3b3391c0aca56a00e58499c5",
+  "latency_s": 21.397117899963632,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:27:25+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Random context results:\n- Median prediction mean: 0.9927 (very close to 1, far from tipping)\n- Last window: 0.9994 (extremely far from tipping)\n- p_critical mean: 0.0251 (low)\n- Last window p_critical: 0.013\n- Last third mean: 0.026\n- Share of windows above 0.5: 0.0\n- Interval width mean: 0.6594 (wide, suggesting uncertainty)\n\nBoth contexts consistently predict the system is far from tipping. The predictions are very close to 1 (far from tipping) across all windows. The p_critical is very low (0.01-0.025), and no windows are above 0.5.\n\nHowever, I'm a bit concerned about:\n1. The wide interval widths (0.62-0.66 mean) suggest uncertainty\n2. The knn context had only 1 near-tipping row, which might not be representative\n3. The random context had 15 near-tipping rows, better mix\n\nBut both models agree: the system is far from tipping. The last window prediction is 0.9994 (random) and 0.9924 (knn), both very close to 1.\n\nGiven the consistent predictions across two different contexts, and the query being within the pool's feature range (no windows beyond p99 reference), I think the model is reasonably confident that the system is far from tipping.\n\nThe decision should be \"no_alert\" since the system looks far from tipping.\n\nLet me decide which context to use for the final gate check. The random context has a better mix (15 near, 146 far) compared to knn (1 near, 179 far). The rules say \"A context with examples both near tipping and far from it is more useful than one with only one kind.\" So the random context is better.\n\nI'll use the random context (strategy: random, size: 200) for the final check.\n\nDecision: no_alert\nContext: random, size 200\nRationale: Both knn and random contexts consistently predict the system is far from tipping (median predictions ~0.99-1.0, p_critical < 0.03, no windows above 0.5). The random context has a better mix of near and far examples. Query is within pool feature range.\n\nConfidence: Let me think... The predictions are very consistent across contexts, but the interval widths are wide (0.6-0.66), suggesting some uncertainty. However, the median predictions are extremely close to 1 and p_critical is very low. I'll go with confidence around 0.75.\n\nWait, let me reconsider. The interval width is quite wide, which means the model is uncertain. But the median is consistently near 1.0. The p_critical is very low. I think \"no_alert\" is the right call, but with moderate confidence due to the wide intervals.\n\nActually, looking more carefully:\n- Both contexts agree strongly\n- The query is within the pool's feature range\n- p_critical is very low (0.01-0.025)\n- No windows above 0.5\n\nI'll set confidence to 0.8.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"decision\":\"no_alert\",\"context_strategy\":\"random\",\"context_size\":200,\"rationale\":\"Both knn and random contexts consistently predict the system is far from tipping (median ~0.99-1.0, p_critical < 0.03, zero windows above 0.5). The random context has a better mix of near (15) and far (146) examples. Query lies within pool feature range, supporting model reliability.\",\"confidence\":0.8}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-d176468f-55b2-4eee-af79-faf72a48b708",
+        "tool_kind": null,
+        "tool_name": "final_result"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:27:03Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793442423-KDUU17xnDX5ms9R7PMWA",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:27:25.379689Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 734
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 4271,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 734,
+      "output_tokens": 889
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

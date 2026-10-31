@@ -1,0 +1,77 @@
+{
+  "key": "3cdefbe216c9263bcbaed2003f86626e7b48736b7c0ce4bd2c4e38bfc663e2a9",
+  "latency_s": 2.0307514999294654,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:47:30+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The query has 83 windows. Let me look at the trends:\n- variance_log_ratio: trend -0.1008 (decreasing)\n- ac1: trend 0.066 (increasing)\n- skewness: trend 0.0979 (increasing)\n- kurtosis: trend -0.2946 (decreasing)\n- trend_slope: trend 1.4793 (strongly increasing)\n- tau_variance: trend -0.0475 (slightly decreasing)\n- tau_ac1: trend 0.0218 (slightly increasing)\n- low_freq_power: trend 0.067 (increasing)\n\nThese trends suggest the system might be approaching a tipping point - increasing autocorrelation (ac1), increasing skewness, increasing low frequency power are classic early warning signals. The trend_slope is strongly increasing.\n\nNow let me run the PFN model to get predictions.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"reason\":\"Get model predictions on the query windows to assess tipping point proximity\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-5aa88ca2-4ec4-4b35-b090-8657d2c9760e",
+        "tool_kind": null,
+        "tool_name": "run_pfn"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:47:28Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793461648-tgRExj1fQbFwIYPt9PFo",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:47:30.676755Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 208
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 1388,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 208,
+      "output_tokens": 248
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

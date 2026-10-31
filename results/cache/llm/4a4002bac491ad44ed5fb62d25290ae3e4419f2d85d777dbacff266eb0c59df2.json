@@ -1,0 +1,87 @@
+{
+  "key": "4a4002bac491ad44ed5fb62d25290ae3e4419f2d85d777dbacff266eb0c59df2",
+  "latency_s": 2.281148500042036,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T00:02:19+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me start by understanding the task. I need to:\n1. Describe the query to understand what kind of series this is\n2. Describe the context pool to understand what's available\n3. Build contexts (at most 3) and run the PFN model on them\n4. Make a final decision\n\nLet me start by calling describe_query and describe_context_pool in parallel since they're independent.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"reason\":\"Understand the query series characteristics before building context\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-3cc4f820-0ffe-4519-89b8-93792941d22f",
+        "tool_kind": null,
+        "tool_name": "describe_query"
+      },
+      {
+        "args": "{\"reason\":\"Understand pool size, feature ranges, and query distance from pool\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-39ed8986-492b-4037-98cb-c88f60890357",
+        "tool_kind": null,
+        "tool_name": "describe_context_pool"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T00:02:17Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793404937-QnFw6tapJaY5nkmAi3rH",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T00:02:19.881866Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 82
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 1549,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 82,
+      "output_tokens": 153
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

@@ -1,0 +1,77 @@
+{
+  "key": "b7f239d2d9f3a8564d24a74c591e0bb0644d4e2cf20e139a51f6147008dfef09",
+  "latency_s": 7.131009700009599,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:54:09+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the random context results:\n\n- Median prediction mean: 0.905 (far from tipping)\n- First third mean: 0.9065\n- Last third mean: 0.9784 (even higher, further from tipping)\n- Last window: 0.9578\n- Interval 90 width mean: 0.8839 (wide)\n- p_critical mean: 0.1333\n- p_critical max: 0.593 (one window has high p_critical)\n- p_critical last window: 0.1481\n- p_critical last third mean: 0.0884\n- Share of windows above 0.5: 0.0182 (1 window out of 55)\n\nBoth contexts consistently predict the system is far from tipping:\n- knn: median mean 0.9141, p_critical mean 0.0859, last window 0.92\n- random: median mean 0.905, p_critical mean 0.1333, last window 0.9578\n\nThe last third mean is even higher (0.9784 for random, 0.9128 for knn), suggesting the model sees the end of the series as further from tipping.\n\nThe p_critical values are low in both cases (0.0859 and 0.1333 means), and no significant share of windows are above 0.5 (0.0 for knn, 0.0182 for random - just 1 window).\n\nThe interval widths are wide (0.8678 and 0.8839), indicating uncertainty, but the median predictions are consistently high (far from tipping).\n\nGiven both contexts agree, I'm fairly confident in \"no_alert\". The query features showed some early warning signs, but the model predictions from two different context strategies both say far from tipping.\n\nLet me make my final decision. I'll use the knn context since it's more targeted to the query, and the results are clear. Or I could use the random context. Both give similar results. Let me go with knn since it's more principled for this task.\n\nActually, let me think about which context to use for the final answer. The gate will check my final context and predictions. Both contexts give consistent results. I'll go with knn size 100 since it's more relevant to the query.\n\nDecision: no_alert\nContext: knn, size 100\nRationale: Both knn and random contexts consistently predict the system is far from tipping (median predictions ~0.91-0.96, p_critical < 0.14, no meaningful share above 0.5). The last window predictions are 0.92 (knn) and 0.958 (random), indicating the end of the series is far from tipping.\n\nConfidence: Let me say 0.75. The predictions are consistent across two context strategies, but the wide interval widths suggest some uncertainty.\n\nWait, let me reconsider the confidence. The interval width is quite wide (mean ~0.87), which means the 90% interval is very broad. This could mean the model is quite uncertain. But the median predictions are consistently high across both contexts. I'll set confidence around 0.7.\n\nActually, let me reconsider. The predictions are:\n- knn: median mean 0.9141, last window 0.92, p_critical mean 0.0859\n- random: median mean 0.905, last window 0.9578, p_critical mean 0.1333\n\nBoth agree the system is far from tipping. The consistency across two different context strategies increases my confidence. The wide intervals are a concern but the medians are clear.\n\nI'll go with confidence 0.75.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"decision\":\"no_alert\",\"context_strategy\":\"knn\",\"context_size\":100,\"rationale\":\"Both knn and random contexts (size 100) consistently predict the system is far from tipping: median predictions ~0.91-0.96, p_critical means 0.086-0.133, and no meaningful share of windows above p_critical=0.5. The last window predictions are 0.92 (knn) and 0.958 (random), indicating the end of the series is far from tipping. Cross-strategy agreement increases confidence despite wide prediction intervals.\",\"confidence\":0.75}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-f9f1d367-f566-4c9f-95b2-3972c8a398ba",
+        "tool_kind": null,
+        "tool_name": "final_result"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:54:01Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793462041-qfG5bopUkMZCGWc1B6va",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:54:09.199160Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 4336,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 873
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 4669,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 873,
+      "output_tokens": 1067
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

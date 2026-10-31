@@ -1,0 +1,77 @@
+{
+  "key": "86cec079ecb161c1513be7471dfec0c07114d47e04cf7ef82517290985c75447",
+  "latency_s": 3.022112200036645,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-30T18:55:52+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The query has 191 windows. Let me look at the features:\n- variance_log_ratio: mean 0.0475, std 0.5189, trend 0.1218 (increasing)\n- ac1: mean 0.6904, std 0.1242, trend 0.2037 (increasing - autocorrelation increasing, which is a warning sign for tipping points)\n- skewness: mean 0.1627, std 0.2775, trend 0.1211 (increasing)\n- kurtosis: mean -0.1322, std 0.481, trend 0.0379 (slightly increasing)\n- trend_slope: mean 0.0511, std 1.6651, trend 0.1218\n- tau_variance: mean 0.0188, std 0.3719, trend 0.0818\n- tau_ac1: mean -0.0111, std 0.3266, trend 0.0765\n- low_freq_power: mean 0.5435, std 0.146, trend 0.2098 (increasing)\n\nThe trends are all positive, and ac1 is quite high (0.69) and increasing. Low frequency power is also increasing. These are classic early warning signals of critical transitions (tipping points): increasing autocorrelation, increasing variance, increasing skewness, increasing low-frequency power.\n\nNow let me run the PFN model to get the actual predictions.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"reason\":\"Get model predictions on whether the query is near tipping\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-74bc7e92-c0ca-4bd7-90e1-d5aab435c27d",
+        "tool_kind": null,
+        "tool_name": "run_pfn"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-30T18:55:49Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793386549-IbLzeKXfiv2U6w1pjM5o",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-30T18:55:52.328667Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 373
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 1386,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 373,
+      "output_tokens": 411
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

@@ -1,0 +1,77 @@
+{
+  "key": "9157604e1a0a592356aa421a18929b4e967fa92864aa5a4a1e364b7c198fa2ed",
+  "latency_s": 2.748303100001067,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:27:02+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The knn context predictions show:\n- Median prediction mean: 0.9961 (very close to 1, meaning far from tipping)\n- Last window: 0.9924 (still very far from tipping)\n- p_critical mean: 0.0124 (very low probability of being near tipping)\n- Last window p_critical: 0.0085\n- Share of windows above 0.5: 0.0 (no windows predicted as near tipping)\n- Interval width is quite wide (mean 0.6223), suggesting uncertainty\n\nThe model predicts the system is very far from tipping. But the context only had 1 near-tipping row out of 200, which might bias the model. Let me try a random context to see if we get a better mix and different predictions.\n\nI have 2 contexts left and 4 tool calls left (used 3 so far: describe_query, describe_context_pool, choose_context, run_pfn - wait that's 4 calls). Let me recount:\n1. describe_query\n2. describe_context_pool\n3. choose_context (knn)\n4. run_pfn\n\nSo I've used 4 calls. I have 2 calls left and 2 contexts left.\n\nLet me try a random context with size 200 to get a better mix of near and far examples.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-f73a55a6-e30e-439d-8c61-0a23f644a35e",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:26:59Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793442419-sbLIRp9VnksfSQkO9TnC",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:27:02.721636Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 297
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3591,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 297,
+      "output_tokens": 337
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

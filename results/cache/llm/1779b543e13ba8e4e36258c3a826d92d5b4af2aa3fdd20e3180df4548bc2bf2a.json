@@ -1,0 +1,77 @@
+{
+  "key": "1779b543e13ba8e4e36258c3a826d92d5b4af2aa3fdd20e3180df4548bc2bf2a",
+  "latency_s": 3.227955300011672,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-30T18:44:33+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The model predictions show:\n- median_prediction mean: 0.9977 (very close to 1, meaning far from tipping point)\n- last_third_mean: 0.9991 (even closer to 1)\n- last_window: 0.9988\n- p_critical mean: 0.0316 (very low probability of being near tipping)\n- p_critical last_window: 0.0422\n- p_critical last_third_mean: 0.0311\n- share_of_windows_above_half: 0.0 (no windows have p_critical above 0.5)\n\nThe predictions are consistently near 1 (far from tipping point), and p_critical is very low throughout. The end of the series (last window, last third) shows predictions even closer to 1 and low p_critical. This strongly suggests \"no_alert\".\n\nThe system is far from a tipping point at the end of the series.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"decision\":\"no_alert\",\"rationale\":\"The PFN predicts median values near 1 (far from tipping) across all 305 windows, with the last third averaging 0.9991 and the last window at 0.9988. p_critical is very low (mean 0.0316, last window 0.0422), and no window exceeds 0.5. The end of the series shows no approach to the tipping point.\",\"confidence\":0.95}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-79634802-1118-4691-a2a5-f818a0610d85",
+        "tool_kind": null,
+        "tool_name": "final_result"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-30T18:44:31Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793385871-6SKy0VsUEMiHtCnlwcXK",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-30T18:44:33.905784Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 218
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 1948,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 218,
+      "output_tokens": 369
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

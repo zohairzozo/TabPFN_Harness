@@ -1,0 +1,77 @@
+{
+  "key": "0a25dc81b062ca506675d32aaf59aaffb0d8f29fc5542717f8dfe3c88aa3deec",
+  "latency_s": 1.651713499915786,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:15:28+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Random context: 6 near tipping, 78 far from tipping. Still mostly far, but at least some near examples. The pool share near tipping is 8.71%, so 6/100 = 6% is close to expected.\n\nLet me try KNN with a larger size, say 200, to see if we get more near-tipping examples. Or I could try the current contexts and run the model.\n\nActually, let me think about this more carefully. The KNN context had 0 near-tipping rows, which is bad. The random context has 6 near, 78 far. \n\nLet me try KNN with size 200 to see if we get a better mix.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"knn\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-0b9902eb-faf8-43e6-8dc2-af0ec75ddef6",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:15:26Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793441726-VmpPrrJRmnuNdlkgHwgs",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:15:28.574336Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 157
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3501,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 157,
+      "output_tokens": 197
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

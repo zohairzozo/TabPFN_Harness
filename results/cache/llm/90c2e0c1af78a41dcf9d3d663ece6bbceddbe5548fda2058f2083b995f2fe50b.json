@@ -1,0 +1,77 @@
+{
+  "key": "90c2e0c1af78a41dcf9d3d663ece6bbceddbe5548fda2058f2083b995f2fe50b",
+  "latency_s": 6.885938599938527,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:46:30+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "Let me analyze the PFN results:\n\n- median_prediction: mean 0.875, first_third_mean 0.71, last_third_mean 0.999, last_window 0.9991\n  - The prediction is very high (close to 1 = far from tipping) especially in the last third\n  - The last window prediction is 0.9991, meaning very far from tipping\n\n- p_critical: mean 0.116, max 0.285, last_window 0.0308, last_third_mean 0.0375, share_of_windows_above_half: 0.0\n  - p_critical is the probability that the system is near tipping\n  - Very low values, especially in the last third (0.0375) and last window (0.0308)\n  - No windows above 0.5\n\n- interval_90_width: mean 0.883, max 1.04, last_window 0.69\n  - Reasonable uncertainty\n\nSo the model predicts the system is far from tipping (prediction near 1, p_critical near 0). The trend in the query description showed some features increasing (variance_log_ratio, trend_slope), but the model's prediction is clearly indicating \"no_alert\" - the system is far from a tipping point.\n\nThe decision should be \"no_alert\" with high confidence since:\n- median prediction in last third is 0.999 (very far from tipping)\n- p_critical in last third is 0.0375 (very low probability of being near tipping)\n- last window p_critical is 0.0308\n- No windows have p_critical above 0.5\n\nConfidence: high, maybe 0.9 or so.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"decision\":\"no_alert\",\"rationale\":\"The PFN predicts the query windows are far from tipping: median prediction is 0.999 in the last third (1 = far away), p_critical is only 0.0375 in the last third and 0.0308 in the final window, and no window exceeds p_critical = 0.5. The model is confident the system is not near a tipping point.\",\"confidence\":0.92}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-0a93a309-20b7-4f89-ac1a-01f843ef500a",
+        "tool_kind": null,
+        "tool_name": "final_result"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:46:23Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793461583-iY6JQgerAEU5w9Ctots1",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:46:30.777705Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 416
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 1863,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 416,
+      "output_tokens": 558
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

@@ -1,0 +1,475 @@
+{
+  "method": "oracle",
+  "split": "val",
+  "dataset_splits": [
+    "validation"
+  ],
+  "held_out": false,
+  "model": null,
+  "llm_mode": null,
+  "oracle": true,
+  "settings": {
+    "backend": "tabpfn_local",
+    "model_version": "v3.5",
+    "package_version": "9.2.0",
+    "max_context": 2000,
+    "data_version": "7537845ee16feb9f",
+    "strategy": "family_matched",
+    "alert_threshold": 5e-324
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": null,
+  "seeds_per_scenario": 1,
+  "limit": 5,
+  "n_runs": 10,
+  "skipped": [],
+  "usage": null,
+  "summary": {
+    "n_runs": 10,
+    "latency_seconds": {
+      "n": 10,
+      "mean": 25.275478159973865,
+      "p50": 23.36398109991569,
+      "p95": 53.22461596004432,
+      "max": 53.891036799992435
+    },
+    "llm_seconds_mean": 0.0,
+    "pfn_seconds_mean": 25.275478159973865,
+    "tool_calls": null,
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 0,
+      "n_agree": 0,
+      "share": null,
+      "n_incomplete": 10,
+      "decisions": {}
+    },
+    "pfn": {
+      "n_runs": 10,
+      "n_without_pfn_output": 0,
+      "gated": false,
+      "coverage_90_mean_all": 0.9451656565656565,
+      "coverage_90_mean_accepted": null,
+      "n_accepted": null,
+      "calibration_error_mean": 0.2797073015873016,
+      "n_bad": 0,
+      "n_bad_blocked": null,
+      "bad_blocked_share": null
+    }
+  },
+  "metrics": {
+    "oracle": {
+      "n_runs": 10,
+      "n_positive_end": 5,
+      "n_negative_end": 5,
+      "n_middle_end": 0,
+      "n_control_runs": 5,
+      "decisions": {
+        "alert": 5,
+        "no_alert": 5,
+        "abstain": 0
+      },
+      "abstention": {
+        "value": 0.0,
+        "n": 10,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "recall_end": {
+        "value": 1.0,
+        "n": 5,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.0,
+        "n": 5,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.0,
+        "n": 5,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "precision_end": {
+        "value": 1.0,
+        "n": 5,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "n_scored": 10,
+      "auroc_end": {
+        "auroc": 1.0,
+        "ci_low": 1.0,
+        "ci_high": 1.0
+      }
+    }
+  },
+  "trace": "oracle-val-20261031T151904Z-b384da29.jsonl",
+  "wall_seconds": 264.27828720002435,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "trajectory_id": "fold_L1_slow/2000",
+        "n_windows": 252,
+        "context_hash": "39199297f7978955",
+        "context_size": 2000,
+        "score": 0.9994807867635772,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "validation",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.8611111111111112,
+        "bad": false,
+        "calibration_error": 0.04587301587301588,
+        "coverage_90_positive_windows": 0.7457627118644068,
+        "n_windows": 252,
+        "last_window_p_critical": 0.9994807867635772
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 52.41010160010774,
+        "total_seconds": 52.41010160010774
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "fold_L3_slow/2000",
+        "n_windows": 250,
+        "context_hash": "4045db00c1c9fc49",
+        "context_size": 2000,
+        "score": 0.9228028325090811,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L3_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "validation",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.836,
+        "bad": false,
+        "calibration_error": 0.07119999999999999,
+        "coverage_90_positive_windows": 0.6666666666666666,
+        "n_windows": 250,
+        "last_window_p_critical": 0.9228028325090811
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 51.05554759991355,
+        "total_seconds": 51.05554759991355
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "hopf_L2_slow/2000",
+        "n_windows": 230,
+        "context_hash": "f102f85498b66c12",
+        "context_size": 2000,
+        "score": 0.99824164513534,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "validation",
+        "end_target": 0.05224999999999991,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9,
+        "bad": false,
+        "calibration_error": 0.04,
+        "coverage_90_positive_windows": 0.918918918918919,
+        "n_windows": 230,
+        "last_window_p_critical": 0.99824164513534
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 53.891036799992435,
+        "total_seconds": 53.891036799992435
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "transcritical_L1_fast/2000",
+        "n_windows": 55,
+        "context_hash": "a22eb4b4ef160981",
+        "context_size": 2000,
+        "score": 0.7251959542022822,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L1_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "validation",
+        "end_target": 0.008999999999999897,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.9818181818181818,
+        "bad": false,
+        "calibration_error": 0.04000000000000001,
+        "coverage_90_positive_windows": 0.9166666666666666,
+        "n_windows": 55,
+        "last_window_p_critical": 0.7251959542022822
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 47.883202599943615,
+        "total_seconds": 47.883202599943615
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "transcritical_L3_fast/2000",
+        "n_windows": 55,
+        "context_hash": "927eb92f153afc41",
+        "context_size": 2000,
+        "score": 0.13850112602998138,
+        "alert_threshold": 5e-324,
+        "decision": "alert"
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "validation",
+        "end_target": 0.008999999999999897,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 0.8727272727272727,
+        "bad": false,
+        "calibration_error": 0.1,
+        "coverage_90_positive_windows": 0.6666666666666666,
+        "n_windows": 55,
+        "last_window_p_critical": 0.13850112602998138
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 46.465876899892464,
+        "total_seconds": 46.465876899892464
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L1/2000",
+        "n_windows": 305,
+        "context_hash": "2b1cdb51d0bdda6e",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.2141010999912396,
+        "total_seconds": 0.2141010999912396
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L3/2000",
+        "n_windows": 305,
+        "context_hash": "a2fd550211eb939e",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L3",
+        "role": "control",
+        "family": "control_ou",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.1903732999926433,
+        "total_seconds": 0.1903732999926433
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "short_ramp_L2/2000",
+        "n_windows": 305,
+        "context_hash": "237d8d0bff2e9c28",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.26208529993891716,
+        "total_seconds": 0.26208529993891716
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L1/2000",
+        "n_windows": 305,
+        "context_hash": "dec6399e6216bba9",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L1",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.18889089999720454,
+        "total_seconds": 0.18889089999720454
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L3/2000",
+        "n_windows": 305,
+        "context_hash": "fb3c80f956423899",
+        "context_size": 2000,
+        "score": 0.0,
+        "alert_threshold": 5e-324,
+        "decision": "no_alert"
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "validation",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": {
+        "coverage_90": 1.0,
+        "bad": false,
+        "calibration_error": 0.5,
+        "coverage_90_positive_windows": null,
+        "n_windows": 305,
+        "last_window_p_critical": 0.0
+      },
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.19356549996882677,
+        "total_seconds": 0.19356549996882677
+      }
+    }
+  ]
+}

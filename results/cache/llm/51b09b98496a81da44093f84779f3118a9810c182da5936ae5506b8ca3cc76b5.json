@@ -1,0 +1,77 @@
+{
+  "key": "51b09b98496a81da44093f84779f3118a9810c182da5936ae5506b8ca3cc76b5",
+  "latency_s": 2.029896599939093,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T10:28:39+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The knn context of size 100 has only 1 row near tipping and 81 far from tipping. That's not very balanced - mostly far from tipping. The rules say a context with both near and far is more useful. Let me run the PFN on this context first to see what predictions come out, then decide if I need another context.\n\nActually, let me think about this. The context is heavily skewed toward \"far from tipping\" (81 far, 1 near, 18 neither?). This might bias the model toward predicting far from tipping. Let me run it and see.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"reason\":\"Run PFN on knn context to see initial predictions\"}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-a08c72bb-6145-4590-983f-34363843d55d",
+        "tool_kind": null,
+        "tool_name": "run_pfn"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T10:28:37Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793442517-X725Vjp0AMxMxNnC7nhy",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T10:28:39.656928Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 131
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3079,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 131,
+      "output_tokens": 169
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

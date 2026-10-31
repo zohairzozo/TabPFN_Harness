@@ -1,0 +1,644 @@
+{
+  "method": "classic_ews",
+  "split": "test",
+  "dataset_splits": [
+    "test_in_prior"
+  ],
+  "held_out": true,
+  "model": null,
+  "llm_mode": null,
+  "oracle": false,
+  "settings": {
+    "alarm_threshold": 0.5,
+    "k_windows": 16
+  },
+  "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "seeds_per_scenario": 3,
+  "limit": 3,
+  "n_runs": 18,
+  "skipped": [],
+  "usage": null,
+  "summary": {
+    "n_runs": 18,
+    "latency_seconds": {
+      "n": 18,
+      "mean": 0.005835961104215433,
+      "p50": 0.005930199986323714,
+      "p95": 0.007881664956221357,
+      "max": 0.007967600016854703
+    },
+    "llm_seconds_mean": 0.0,
+    "pfn_seconds_mean": 0.005835961104215433,
+    "tool_calls": null,
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 6,
+      "n_agree": 5,
+      "share": 0.8333333333333334,
+      "n_incomplete": 0,
+      "decisions": {
+        "fold_L1_slow": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "hopf_L2_slow": [
+          "no_alert",
+          "alert",
+          "no_alert"
+        ],
+        "ou_L1": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "regime_L3": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "short_ramp_L2": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ],
+        "transcritical_L3_fast": [
+          "no_alert",
+          "no_alert",
+          "no_alert"
+        ]
+      }
+    },
+    "pfn": null
+  },
+  "metrics": {
+    "classic_ews": {
+      "n_runs": 18,
+      "n_positive_end": 9,
+      "n_negative_end": 9,
+      "n_middle_end": 0,
+      "n_control_runs": 9,
+      "decisions": {
+        "alert": 1,
+        "no_alert": 17,
+        "abstain": 0
+      },
+      "abstention": {
+        "value": 0.0,
+        "n": 18,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "recall_end": {
+        "value": 0.1111111111111111,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.375
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.0,
+        "n": 9,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "precision_end": {
+        "value": 1.0,
+        "n": 1,
+        "ci": [
+          1.0,
+          1.0
+        ]
+      },
+      "n_scored": 18,
+      "auroc_end": {
+        "auroc": 0.7901234567901235,
+        "ci_low": 0.520799512987013,
+        "ci_high": 1.0
+      }
+    }
+  },
+  "trace": "classic_ews-test-20261031T163345Z-c2140a01.jsonl",
+  "wall_seconds": 3.46818790002726,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "trajectory_id": "fold_L1_slow/3000",
+        "n_windows": 251,
+        "score": 0.275,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.007081700023263693
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "test_in_prior",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.007081700023263693,
+        "total_seconds": 0.007081700023263693
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "fold_L1_slow/3001",
+        "n_windows": 253,
+        "score": 0.4666666666666667,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005532399984076619
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "test_in_prior",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005532399984076619,
+        "total_seconds": 0.005532399984076619
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "fold_L1_slow/3002",
+        "n_windows": 252,
+        "score": 0.10833333333333334,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005429500015452504
+      },
+      "ground_truth": {
+        "scenario_id": "fold_L1_slow",
+        "role": "in_prior",
+        "family": "fold",
+        "split": "test_in_prior",
+        "end_target": 0.0,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005429500015452504,
+        "total_seconds": 0.005429500015452504
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "hopf_L2_slow/3000",
+        "n_windows": 239,
+        "score": 0.2833333333333333,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.007866499945521355
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "test_in_prior",
+        "end_target": 0.016249999999999987,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.007866499945521355,
+        "total_seconds": 0.007866499945521355
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "hopf_L2_slow/3001",
+        "n_windows": 227,
+        "score": 0.9416666666666667,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "alert",
+        "seconds": 0.007828300003893673
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "test_in_prior",
+        "end_target": 0.06424999999999992,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.007828300003893673,
+        "total_seconds": 0.007828300003893673
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "hopf_L2_slow/3002",
+        "n_windows": 239,
+        "score": 0.05,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.007967600016854703
+      },
+      "ground_truth": {
+        "scenario_id": "hopf_L2_slow",
+        "role": "in_prior",
+        "family": "hopf",
+        "split": "test_in_prior",
+        "end_target": 0.016249999999999987,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.007967600016854703,
+        "total_seconds": 0.007967600016854703
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "transcritical_L3_fast/3000",
+        "n_windows": 48,
+        "score": 0.15833333333333333,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.0030956000555306673
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "test_in_prior",
+        "end_target": 0.121,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0030956000555306673,
+        "total_seconds": 0.0030956000555306673
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "transcritical_L3_fast/3001",
+        "n_windows": 50,
+        "score": -0.04166666666666667,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.002994599984958768
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "test_in_prior",
+        "end_target": 0.08899999999999997,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.002994599984958768,
+        "total_seconds": 0.002994599984958768
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "transcritical_L3_fast/3002",
+        "n_windows": 55,
+        "score": -0.049999999999999996,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.0030741000082343817
+      },
+      "ground_truth": {
+        "scenario_id": "transcritical_L3_fast",
+        "role": "in_prior",
+        "family": "transcritical",
+        "split": "test_in_prior",
+        "end_target": 0.008999999999999897,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0030741000082343817,
+        "total_seconds": 0.0030741000082343817
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L1/3000",
+        "n_windows": 305,
+        "score": -0.058333333333333334,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.0061292999889701605
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.0061292999889701605,
+        "total_seconds": 0.0061292999889701605
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L1/3001",
+        "n_windows": 305,
+        "score": -0.2833333333333333,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005854899995028973
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005854899995028973,
+        "total_seconds": 0.005854899995028973
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "ou_L1/3002",
+        "n_windows": 305,
+        "score": 0.4666666666666667,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005943799973465502
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005943799973465502,
+        "total_seconds": 0.005943799973465502
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "short_ramp_L2/3000",
+        "n_windows": 305,
+        "score": -0.4083333333333333,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005916599999181926
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005916599999181926,
+        "total_seconds": 0.005916599999181926
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "short_ramp_L2/3001",
+        "n_windows": 305,
+        "score": -0.19166666666666665,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005754900048486888
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005754900048486888,
+        "total_seconds": 0.005754900048486888
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "short_ramp_L2/3002",
+        "n_windows": 305,
+        "score": -0.20833333333333331,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.006028299918398261
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.006028299918398261,
+        "total_seconds": 0.006028299918398261
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L3/3000",
+        "n_windows": 305,
+        "score": 0.4666666666666667,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005903600016608834
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005903600016608834,
+        "total_seconds": 0.005903600016608834
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L3/3001",
+        "n_windows": 305,
+        "score": -0.25,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.005951999919489026
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.005951999919489026,
+        "total_seconds": 0.005951999919489026
+      }
+    },
+    {
+      "record": {
+        "trajectory_id": "regime_L3/3002",
+        "n_windows": 305,
+        "score": 0.041666666666666664,
+        "score_defined": true,
+        "alarm_threshold": 0.5,
+        "decision": "no_alert",
+        "seconds": 0.006693599978461862
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_in_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 0.0,
+        "pfn_seconds": 0.006693599978461862,
+        "total_seconds": 0.006693599978461862
+      }
+    }
+  ]
+}

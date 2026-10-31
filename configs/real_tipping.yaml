@@ -1,0 +1,22 @@
+# The real_tipping split: Daphnia magna populations (Drake and Griffen 2010). Read by
+# src/pfngate/data/daphnia.py. See docs/DAPHNIA.md.
+#
+# TEST ONLY. These settings were fixed from the length of the series (the census is weekly and
+# a series has at most 60 points), before any result on this data was looked at. They are not
+# tuned. Do not change them after a real-data result has been seen.
+
+raw_dir: data/raw/daphnia/data-and-code   # gitignored; see docs/DAPHNIA.md for how to get it
+
+# Same feature code as the simulators, shorter windows: 128 points do not fit in 60.
+# The ratios follow configs/features.yaml (window : stride : sub-window = 128 : 16 : 32).
+window:
+  length: 24             # census points (24 weeks)
+  stride: 3
+subwindow:
+  length: 6
+  stride: 2
+
+# Surrogate label, like the time-to-tip target in docs/LABELS.md:
+#   target = clip((t_extinction - t) / horizon_days, 0, 1)
+# 100 is the horizon of the simulators, in days here. It is fixed, not tuned.
+horizon_days: 100.0

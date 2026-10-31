@@ -415,3 +415,32 @@ def test_gate_refuses_a_pool_it_was_not_built_on(env: dict[str, Any]) -> None:
             pool_seeds_per_scenario=2, feature_config=env["fc"], cfg=CFG, gate=True,
             gate_config_path=env["gate_config"], gate_hash_path=env["gate_hash"],
             results_dir=env["tmp"] / "other", progress=False)  # fmt: skip
+
+
+# The ledger of PFN compute time
+class SlowFake(FakeBackend):
+    """A fake backend that says every call took 1.5 s to fit and 2.5 s to predict."""
+
+    def predict(self, query_X: np.ndarray) -> PFNOutput:
+        out = super().predict(query_X)
+        md = out.metadata.model_copy(update={"fit_seconds": 1.5, "predict_seconds": 2.5})
+        return out.model_copy(update={"metadata": md})
+
+
+def test_the_compute_ledger_counts_a_cached_call_at_its_original_cost(
+    tmp_path: Path, small_data: dict[str, Any]
+) -> None:
+    from pfngate.evals.gating import FitPredict
+
+    pool = small_data["pool"]
+    ctx = pool.iloc[:60].copy()
+    ctx["row_id"] = ctx["trajectory_id"].astype(str) + "#" + ctx["window_end"].astype(str)
+    query = pool.iloc[60:70].copy()
+    backend = SlowFake(CFG)
+    cache = PFNCache(tmp_path / "c", enabled=True)
+    fp = FitPredict(backend, cache, CFG, backend.model_version, "t")
+    assert fp.compute_seconds == 0.0
+    _, hit = fp(ctx, query)
+    assert hit is False and fp.compute_seconds == 4.0  # a miss: what the backend reported
+    _, hit = fp(ctx, query)
+    assert hit is True and fp.compute_seconds == 8.0  # a hit costs what it cost the first time

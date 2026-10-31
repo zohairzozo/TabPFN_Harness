@@ -1,0 +1,77 @@
+{
+  "key": "862ff0cbc8ddb4631c27206a3fc4836ef77fc1cc5e376cf69239011a9faffd7e",
+  "latency_s": 2.631416599964723,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "recorded_at_utc": "2026-10-31T15:55:57+00:00",
+  "response": {
+    "canonical_system": null,
+    "conversation_id": null,
+    "failed_attempts": null,
+    "finish_reason": "tool_call",
+    "history_digest": null,
+    "kind": "response",
+    "metadata": null,
+    "model_name": "nvidia/nemotron-3.5-super-vl:free",
+    "parts": [
+      {
+        "content": "The knn context predictions show:\n- Median prediction mean: 0.9995 (very close to 1, meaning far from tipping)\n- Last window: 0.9997\n- p_critical mean: 0.0329 (low probability of being near tipping)\n- Share of windows above 0.5: 0.0 (no windows predicted as near tipping)\n- Interval width is quite large (mean 0.7295), suggesting uncertainty\n\nBut the context is heavily imbalanced (4 near, 170 far). The model might be biased toward predicting \"far from tipping\" because most context examples are far.\n\nLet me try a random context to see if it gives a more balanced mix, and potentially different predictions.",
+        "id": null,
+        "part_kind": "thinking",
+        "provider_details": {
+          "format": "unknown",
+          "index": 0,
+          "type": "reasoning.text"
+        },
+        "provider_name": "openrouter",
+        "signature": null
+      },
+      {
+        "args": "{\"strategy\":\"random\",\"size\":200}",
+        "id": null,
+        "part_kind": "tool-call",
+        "provider_details": null,
+        "provider_name": null,
+        "tool_call_id": "call-3d04dfbc-4b2d-4cd2-a5fc-d1f0ca213701",
+        "tool_kind": null,
+        "tool_name": "choose_context"
+      }
+    ],
+    "provider_details": {
+      "downstream_provider": "Nvidia",
+      "finish_reason": "tool_calls",
+      "is_byok": false,
+      "timestamp": "2026-10-31T15:55:54Z",
+      "upstream_inference_completions_cost": 0.0,
+      "upstream_inference_cost": 0.0,
+      "upstream_inference_prompt_cost": 0.0
+    },
+    "provider_name": "openrouter",
+    "provider_response_id": "gen-1793462154-5CBhdysfd3hcBk6SEwDf",
+    "provider_url": "https://openrouter.ai/api/v1",
+    "run_id": null,
+    "state": "complete",
+    "timestamp": "2026-10-31T15:55:57.027499Z",
+    "usage": {
+      "audio_seconds": 0.0,
+      "cache_audio_read_tokens": 0,
+      "cache_read_tokens": 0,
+      "cache_write_1h_tokens": 0,
+      "cache_write_tokens": 0,
+      "cost": null,
+      "details": {
+        "audio_tokens": 0,
+        "image_tokens": 0,
+        "is_byok": 0,
+        "reasoning_tokens": 166
+      },
+      "input_audio_tokens": 0,
+      "input_tokens": 3305,
+      "output_audio_tokens": 0,
+      "output_reasoning_tokens": 166,
+      "output_tokens": 211
+    },
+    "workspace_ref": null
+  },
+  "sampling_warnings": [],
+  "version": 1
+}

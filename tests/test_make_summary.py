@@ -8,6 +8,7 @@ from pathlib import Path
 from types import ModuleType
 from typing import Any
 
+import numpy as np
 import pytest
 
 SCRIPT = Path(__file__).resolve().parents[1] / "scripts" / "make_summary.py"
@@ -293,3 +294,232 @@ def test_stopped_tuning_is_reported_with_what_it_saw(results_dir: Path) -> None:
     )
     knn = [line for line in text.splitlines() if line.startswith("| TabPFN knn + gate |")]
     assert knn and all("not run (gate not tuned)" in line for line in knn)
+
+
+# The variants table
+def vfile(
+    method: str, split: str, source: str, *, seconds: list[float], **kw: Any
+) -> dict[str, Any]:
+    """A result file of a variant, with only what the summary reads."""
+    pos, neg, scored = kw.get("pos", 9), kw.get("neg", 9), kw.get("scored", None)
+    auroc = kw.get("auroc")
+    metrics = {
+        "n_positive_end": pos,
+        "n_negative_end": neg,
+        "n_scored": pos + neg if scored is None else scored,
+        "control_alert": {"value": kw.get("control_alert", 0.1), "n": kw.get("n_control", 9)},
+        "auroc_end": None
+        if auroc is None
+        else {"auroc": auroc, "ci_low": auroc - 0.1, "ci_high": min(1.0, auroc + 0.1)},
+    }
+    return {
+        "method": method,
+        "split": split,
+        "limit": 3,
+        "seeds_per_scenario": 3,
+        "n_runs": len(seconds),
+        "model": kw.get("model"),
+        "llm_mode": kw.get("mode"),
+        "usage": kw.get("usage"),
+        "skipped": kw.get("skipped", []),
+        "metrics": {source: metrics},
+        "summary": {
+            "pfn": kw.get("pfn"),
+            "tool_calls": kw.get("tool_calls"),
+            "pass_k": kw.get("pass_k"),
+        },
+        "runs": [{"timing": {"total_seconds": x}} for x in seconds],
+    }
+
+
+def gated_pfn(coverage: float, accepted: float, bad: int, blocked: int) -> dict[str, Any]:
+    return {
+        "gated": True,
+        "coverage_90_mean_all": coverage,
+        "coverage_90_mean_accepted": accepted,
+        "calibration_error_mean": 0.1234,
+        "n_bad": bad,
+        "n_bad_blocked": blocked,
+        "bad_blocked_share": blocked / bad if bad else None,
+    }
+
+
+def write_variant(results_dir: Path, data: dict[str, Any]) -> None:
+    (results_dir / f"{data['method']}_{data['split']}.json").write_text(json.dumps(data))
+
+
+def table_rows(results_dir: Path) -> dict[str, list[str]]:
+    lines = MS.variant_table(MS.Results(results_dir))
+    return {
+        line.split(" | ")[0].strip("| "): [c.strip() for c in line.strip("|").split(" | ")]
+        for line in lines[2:]
+    }
+
+
+def test_the_variants_table_has_one_row_per_variant_and_says_not_run(tmp_path: Path) -> None:
+    rows = table_rows(tmp_path)
+    assert list(rows) == [
+        "Classic EWS baseline",
+        "LLM only",
+        "Naive agent (random context, no gate)",
+        "Full harness (agent + gate)",
+        "Family-matched oracle (ORACLE)",
+    ]
+    head = MS.variant_table(MS.Results(tmp_path))[0]
+    for column in (
+        "In-prior AUROC",
+        "Out-of-prior AUROC",
+        "90% coverage",
+        "Calibration error",
+        "False alarms on controls",
+        "Share of BAD runs blocked",
+        "p95 latency",
+        "Tool calls per verdict",
+        "pass^3",
+    ):
+        assert column in head
+    assert all(cell == "not run" for row in rows.values() for cell in row[1:])
+    assert MS.variant_notes(MS.Results(tmp_path)) == [
+        "- No variant has been run yet (results/<variant>_{test,ood}.json)."
+    ]
+
+
+def test_every_cell_of_the_variants_table_comes_from_the_result_files(tmp_path: Path) -> None:
+    agent = {
+        "model": "openrouter:m/x:free",
+        "mode": "record",
+        "usage": {"temperature_applied_runs": 9},
+    }
+    for split, auroc, cov, acc, secs, calls, agree in (
+        ("test", 0.81, 0.88, 0.93, [float(i) for i in range(1, 11)], 4.0, 3),
+        ("ood", 0.62, 0.70, 0.75, [float(i) for i in range(11, 21)], 6.0, 1),
+    ):
+        write_variant(
+            tmp_path,
+            vfile(
+                "agent",
+                split,
+                "agent_final",
+                seconds=secs,
+                auroc=auroc,
+                scored=14,
+                control_alert=0.22,
+                pfn=gated_pfn(cov, acc, 4, 3 if split == "test" else 1),
+                tool_calls={"n": 10, "mean": calls},
+                pass_k={"n_agree": agree, "n_scenarios": 4 if split == "test" else 2},
+                **agent,
+            ),
+        )
+    row = table_rows(tmp_path)["Full harness (agent + gate)"]
+    assert row[1] == "0.81 [0.71, 0.91] (n=14)"  # fewer scored than scorable: the gate abstained
+    assert row[2] == "0.62 [0.52, 0.72] (n=14)"
+    assert row[3] == "0.88 / 0.70 (accepted runs: 0.93 / 0.75)"
+    assert row[4] == "0.123 / 0.123"
+    assert row[5] == "0.22 (n=9) / 0.22 (n=9)"
+    assert row[6] == "0.75 (3/4) / 0.25 (1/4)"  # BAD runs blocked, by split
+    assert row[7] == f"{float(np.percentile(list(range(1, 21)), 95)):.3g} s"  # p95 over both
+    assert row[7] == "19.1 s"
+    assert row[8] == "5.00"  # (10 * 4 + 10 * 6) / 20
+    assert row[9] == "0.67 (4/6)"  # (3 + 1) / (4 + 2)
+    notes = "\n".join(MS.variant_notes(MS.Results(tmp_path)))
+    assert (
+        "3 scenarios of each kind (tipping and control), 3 seeds per scenario (a trial run)"
+        in notes
+    )
+    assert (
+        "Full harness: 10 / 10" in notes and "LLM: openrouter:m/x:free; --llm-mode record" in notes
+    )
+    assert "Temperature 0 was applied in 18 of 20 runs" in notes  # 9 per file, 2 files
+
+
+def test_a_variant_without_a_pfn_or_tools_or_a_gate_says_why_once(tmp_path: Path) -> None:
+    for split in ("test", "ood"):
+        write_variant(
+            tmp_path,
+            vfile(
+                "classic_ews",
+                split,
+                "classic_ews",
+                seconds=[0.01, 0.02],
+                auroc=0.7,
+                pass_k={"n_agree": 1, "n_scenarios": 2},
+            ),
+        )
+    row = table_rows(tmp_path)["Classic EWS baseline"]
+    assert row[3] == "n/a (no intervals)" and row[4] == "n/a (no intervals)"
+    assert row[6] == "n/a (no gate)" and row[8] == "n/a (no tools)"  # once, not once per split
+    assert row[9] == "0.50 (2/4)"
+
+
+def test_an_oracle_that_skipped_the_out_of_prior_runs_says_so(tmp_path: Path) -> None:
+    write_variant(tmp_path, vfile("oracle", "test", "oracle", seconds=[1.0], auroc=1.0))
+    write_variant(
+        tmp_path,
+        vfile(
+            "oracle",
+            "ood",
+            "oracle",
+            seconds=[1.0],
+            pos=0,
+            neg=9,
+            skipped=[{"trajectory_id": "rate_L1_slow/4000"}],
+        ),
+    )
+    row = table_rows(tmp_path)["Family-matched oracle (ORACLE)"]
+    assert row[1] == "1.00 [0.90, 1.00]"
+    assert row[2] == "n/a (tipping runs skipped: family not in the pool)"
+    assert "skipped: family not in the pool" in "\n".join(MS.variant_notes(MS.Results(tmp_path)))
+
+
+def test_auroc_says_why_it_is_missing(tmp_path: Path) -> None:
+    write_variant(tmp_path, vfile("llm_only", "test", "llm_only", seconds=[1.0], pos=0, neg=4))
+    write_variant(tmp_path, vfile("llm_only", "ood", "llm_only", seconds=[1.0], pos=5, neg=0))
+    row = table_rows(tmp_path)["LLM only"]
+    assert row[1] == "n/a (no tipping run)" and row[2] == "n/a (one class only)"
+    write_variant(tmp_path, vfile("llm_only", "ood", "llm_only", seconds=[1.0], scored=0))
+    assert table_rows(tmp_path)["LLM only"][2] == "n/a (no run had a score)"
+
+
+def test_the_variants_section_is_in_the_summary_and_its_text_states_no_result(
+    tmp_path: Path,
+) -> None:
+    write_variant(tmp_path, vfile("classic_ews", "test", "classic_ews", seconds=[0.01], auroc=0.77))
+    text = MS.build_summary(MS.Results(tmp_path))
+    assert "## Variants, run level" in text and "0.77 [0.67, 0.87]" in text
+    section = text.split("## Variants, run level")[1].split("## Run settings")[0]
+    assert all(sentence in section for sentence in MS.VARIANT_DEFINITIONS)
+    # the definitions are fixed text: no digit other than the "90%", "p95" and "pass^3" names
+    for sentence in MS.VARIANT_DEFINITIONS:
+        stripped = sentence.replace("90%", "").replace("p95", "").replace("pass^3", "")
+        stripped = stripped.replace("95th", "").replace("0.80", "").replace("(cap 6)", "")
+        stripped = stripped.replace("5 quantile", "").replace("3 seeds", "").replace("five", "")
+        assert not any(ch.isdigit() for ch in stripped), sentence
+
+
+# The real-data table
+
+
+def test_the_real_table_reads_both_real_splits_from_files(tmp_path: Path) -> None:
+    write_variant(
+        tmp_path,
+        vfile("classic_ews", "real", "classic_ews", seconds=[0.1], pos=4, neg=6, auroc=0.6),
+    )
+    write_variant(
+        tmp_path,
+        vfile("classic_ews", "real_control", "classic_ews", seconds=[0.1], pos=0, neg=5,
+              control_alert=0.4, n_control=5),
+    )  # fmt: skip
+    res = MS.Results(tmp_path)
+    rows = {line.split(" | ")[0].strip("| "): line for line in MS.real_table(res)[2:]}
+    classic = rows["Classic EWS baseline"].strip("|").split(" | ")
+    assert classic[1].strip() == "0.60 [0.50, 0.70]"
+    assert classic[4].strip() == "0.40 (n=5)"
+    assert "not run" in rows["LLM only"]
+    text = MS.build_summary(res)
+    assert "## Real data (test only)" in text and "not a pre-blackout run" in text
+    assert "surrogates" in text
+
+
+def test_the_real_section_is_absent_when_no_real_split_was_run(tmp_path: Path) -> None:
+    write_variant(tmp_path, vfile("classic_ews", "test", "classic_ews", seconds=[0.1], auroc=0.7))
+    assert MS.real_section(MS.Results(tmp_path)) == []

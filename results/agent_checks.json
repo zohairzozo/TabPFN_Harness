@@ -1,0 +1,51 @@
+{
+  "confident_at": 0.8,
+  "variants": {
+    "agent_test": {
+      "n_runs": 18,
+      "strategy_counts": {
+        "knn": 10,
+        "random": 8
+      },
+      "n_control_runs": 9,
+      "n_control_without_recommendation": 2,
+      "n_control_recommended_alert": 0,
+      "n_control_confident_alert": 0,
+      "n_control_final_alert": 1
+    },
+    "agent_ood": {
+      "n_runs": 18,
+      "strategy_counts": {
+        "knn": 16,
+        "random": 2
+      },
+      "n_control_runs": 9,
+      "n_control_without_recommendation": 1,
+      "n_control_recommended_alert": 0,
+      "n_control_confident_alert": 0,
+      "n_control_final_alert": 0
+    },
+    "naive_agent_test": {
+      "n_runs": 18,
+      "strategy_counts": {
+        "none": 18
+      },
+      "n_control_runs": 9,
+      "n_control_without_recommendation": 0,
+      "n_control_recommended_alert": 0,
+      "n_control_confident_alert": 0,
+      "n_control_final_alert": 0
+    },
+    "naive_agent_ood": {
+      "n_runs": 18,
+      "strategy_counts": {
+        "none": 18
+      },
+      "n_control_runs": 9,
+      "n_control_without_recommendation": 0,
+      "n_control_recommended_alert": 0,
+      "n_control_confident_alert": 0,
+      "n_control_final_alert": 0
+    }
+  }
+}
