@@ -105,6 +105,7 @@ class ReliabilityData:
     n: int
 
     def to_dict(self) -> dict[str, Any]:
+        """The reliability data as a plain dictionary."""
         return {"levels": list(self.levels), "observed": list(self.observed), "n": self.n}
 
 

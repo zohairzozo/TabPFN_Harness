@@ -11,11 +11,15 @@ EXPECTED_QUANTILE_LEVELS: tuple[float, ...] = tuple(k / 100 for k in range(1, 10
 
 
 class TipPFNBackend:
-    """Stub for TipPFN (kausable GmbH, arXiv 2605.12308). It always raises NotImplementedError.
+    """Stub for TipPFN. It always raises NotImplementedError.
+
+    TipPFN is described in arXiv 2605.12308, "In-context learning to predict critical
+    transitions in dynamical systems" (Sevinchan et al., kausable). Only the abstract of that
+    paper was checked, on 2026-10-31, to confirm the identifier and the title.
 
     This is NOT a reimplementation and does not reproduce TipPFN. It marks where the real
     backend would plug in. The description below is our understanding from the project
-    brief. The paper was not read for this stub, so treat every line as unconfirmed.
+    brief. The paper body was not read for this stub, so treat every line as unconfirmed.
 
     Expected input (as we understand it):
       - A time-indexed feature table for the series being scored: one row per time step
@@ -42,12 +46,14 @@ class TipPFNBackend:
     name = "tippfn"
 
     def fit(self, context_X: np.ndarray, context_y: np.ndarray) -> None:
+        """Raise NotImplementedError: the TipPFN backend is a stub."""
         raise NotImplementedError(
             "TipPFN is not publicly available. This stub only documents the expected "
             "interface. See the class docstring."
         )
 
     def predict(self, query_X: np.ndarray) -> PFNOutput:
+        """Raise NotImplementedError: the TipPFN backend is a stub."""
         raise NotImplementedError(
             "TipPFN is not publicly available. This stub only documents the expected "
             "interface. See the class docstring."

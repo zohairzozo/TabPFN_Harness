@@ -128,7 +128,7 @@ The alarm threshold is set on the validation controls only, so that at most the 
 
 ## TabPFN + gate
 
-The gate (docs/GATE.md) decides per run whether to trust it. A blocked run abstains on all its windows. A run is BAD if its 90% interval covers less than 0.80 of its window targets. Thresholds are tuned on in-prior validation runs only and frozen before any held-out run. Scores are p_critical. CIs come from a bootstrap over runs (trajectories).
+The gate (docs/GATE.md) decides per run whether to trust it. A blocked run abstains on all its windows. A run is BAD if its 90% interval covers less than 0.80 of its window targets. Thresholds are tuned on in-prior validation runs only. Held-out simulated results had already been seen before the gate was designed, so they are not blind (docs/AUDIT.md). Scores are p_critical. CIs come from a bootstrap over runs (trajectories).
 
 ### Tuning
 
@@ -173,7 +173,7 @@ AUROC on accepted runs and on all runs are computed on different sets of traject
 
 ## Variants, run level
 
-One row per variant, on the same trajectories. The test and out-of-prior splits are held out: the gate was tuned and frozen before they were run.
+One row per variant, on the same trajectories. The test and out-of-prior splits are held out. Their numbers are not blind: the gate was designed after ungated results on them had been seen (docs/AUDIT.md).
 
 | Variant | In-prior AUROC | Out-of-prior AUROC | 90% coverage (in-prior / out-of-prior) | Calibration error (in-prior / out-of-prior) | False alarms on controls (in-prior / out-of-prior) | Share of BAD runs blocked (in-prior / out-of-prior) | p95 latency | Tool calls per verdict | pass^3: seeds that agree |
 |---|---|---|---|---|---|---|---|---|---|
@@ -203,14 +203,43 @@ Two real datasets, never in the context pool and never used to tune the gate. Th
 
 | Variant | Daphnia (surrogate labels): AUROC | Daphnia: alert on extinct populations | Daphnia: alert on persisting populations | Grid (normal operation): false-alarm rate |
 |---|---|---|---|---|
-| Classic EWS baseline | n/a (no run had a score) | 0.00 (n=6) | 0.00 (n=3) | 0.67 (n=3) |
+| Classic EWS baseline | n/a (no run had a score) (all 9 runs decided no alert: the AUROC only ranks the confidence of one repeated decision) | 0.00 (n=6) | 0.00 (n=3) | 0.67 (n=3) |
 | LLM only | 0.78 [0.42, 1.00] | 0.67 (n=6) | 0.00 (n=3) | 0.00 (n=3) |
-| Naive agent (random context, no gate) | 0.06 [0.00, 0.25] | 0.00 (n=6) | 0.00 (n=3) | 0.67 (n=3) |
-| Full harness (agent + gate) | n/a (no run had a score) | 0.00 (n=6) | 0.00 (n=3) | 0.67 (n=3) |
+| Naive agent (random context, no gate) | 0.06 [0.00, 0.25] (all 9 runs decided no alert: the AUROC only ranks the confidence of one repeated decision) | 0.00 (n=6) | 0.00 (n=3) | 0.67 (n=3) |
+| Full harness (agent + gate) | n/a (no run had a score) (all 9 runs decided abstain: the AUROC only ranks the confidence of one repeated decision) | 0.00 (n=6) | 0.00 (n=3) | 0.67 (n=3) |
 | Family-matched oracle (ORACLE) | n/a (tipping runs skipped: family not in the pool) | n/a (no such run) | n/a (no such run) | n/a (no such run) |
 
 - Runs per variant on the Daphnia split: Classic EWS baseline: 9; LLM only: 9; Naive agent: 9; Full harness: 9; Family-matched oracle: 0.
 - Runs per variant on the grid split: Classic EWS baseline: 3; LLM only: 3; Naive agent: 3; Full harness: 3; Family-matched oracle: 0.
+- Decisions per variant on the Daphnia split: Classic EWS baseline: no alert 9; LLM only: no alert 5, alert 4; Naive agent: no alert 9; Full harness: abstain 9.
+- Decisions per variant on the grid split: Classic EWS baseline: alert 2, no alert 1; LLM only: no alert 3; Naive agent: alert 2, no alert 1; Full harness: alert 2, no alert 1.
+
+## Early warning: detection and lead time (window level)
+
+The variants table scores one verdict at the end of each series. This asks how long before the tip the first alarm comes, at the alert thresholds frozen in the gate config (nothing is tuned here). Lead time is in simulation time units.
+
+| Split | Strategy | Tipping runs | Alarm before the tip | Lead time, median [q25, q75] | Gate-accepted runs: alarm before the tip | Gate-accepted runs: median lead time |
+|---|---|---|---|---|---|---|
+| In-prior test | random | 54 | 54 of 54 | 74.4 [33.7, 222.5] | 54 of 54 | 74.4 |
+| In-prior test | knn | 54 | 49 of 54 | 92.8 [64.7, 255.4] | 43 of 44 | 92.8 |
+| Out-of-prior | random | 36 | 35 of 36 | 330.9 [277.4, 416.6] | 34 of 35 | 329.3 |
+| Out-of-prior | knn | 36 | 36 of 36 | 327.1 [255.5, 412.3] | 34 of 34 | 327.1 |
+
+- Alert thresholds (frozen, from the gate config): random 0.1899, knn 0.1427.
+- One window of the series spans 12.7 time units, so a lead time below that is no warning.
+- The first alarm can be a false one: 36 of 54 held-out control trajectories (random context) also alarm in some window, so these lead times are an upper bound on useful warning.
+- The first alarm can be a false one: 28 of 54 held-out control trajectories (knn context) also alarm in some window, so these lead times are an upper bound on useful warning.
+
+## Sharpness: is the PFN better than a prior that ignores the query?
+
+Coverage is cheap when intervals are wide. The reference is the climatology: constant quantiles of the context pool target values. A skill below zero is worse than that reference. A width close to the climatology width is not sharper than ignoring the query.
+
+| Split | Strategy | Median 90% interval width | Climatology width | Pinball skill vs climatology | Gate-accepted runs: pinball skill |
+|---|---|---|---|---|---|
+| In-prior test | random | 0.863 (0.97 of the climatology) | 0.892 | 0.244 | 0.244 |
+| In-prior test | knn | 0.795 (0.89 of the climatology) | 0.892 | 0.298 | 0.383 |
+| Out-of-prior | random | 0.931 (1.04 of the climatology) | 0.892 | -0.490 | -0.483 |
+| Out-of-prior | knn | 0.840 (0.94 of the climatology) | 0.892 | -0.960 | -0.923 |
 
 ## Run settings
 
@@ -235,6 +264,7 @@ Two real datasets, never in the context pool and never used to tune the gate. Th
 - knn p_critical: held-out window false-alarm rate 0.079 is above 1.5 times the target 0.050. The validation threshold did not transfer.
 - ‡ family_matched on controls: the p_critical alarm threshold is at the smallest positive float, so p_critical was exactly 0 on at least 95% of validation control windows. The score is degenerate on controls (a constant context target gives a constant prediction), so its false-alarm rate says nothing about the method.
 - family_matched ood: 36 trajectories skipped (no pool rows in family 'noise_tipping'; no pool rows in family 'rate_tipping').
+- Gate blocks on the held-out tipping runs (PFN with the gate and the full harness, in-prior test and out-of-prior): 21 of 216 runs were blocked. Failed checks behind them: context_not_degenerate 18, ood_share 3. A run can fail more than one check.
 
 ## Definitions
 

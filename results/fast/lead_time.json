@@ -1,0 +1,113 @@
+{
+  "rule": "alarm = a window whose p_critical is at or above the strategy alert threshold frozen in configs/gate.yaml; lead time = tip time minus the end time of the first alarm window; a trajectory with no alarm before the tip is a miss",
+  "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
+  "alert_thresholds": {
+    "random": 0.18987940152847654,
+    "knn": 0.14265158151044804
+  },
+  "window_span_time": 12.700000000000001,
+  "tipping": {
+    "test": {
+      "random": {
+        "all_runs": {
+          "n_runs": 54,
+          "n_detected": 54,
+          "detection_rate": 1.0,
+          "lead_median": 74.42500000000001,
+          "lead_q25": 33.669999999999995,
+          "lead_q75": 222.48000000000002
+        },
+        "gate_accepted_runs": {
+          "n_runs": 54,
+          "n_detected": 54,
+          "detection_rate": 1.0,
+          "lead_median": 74.42500000000001,
+          "lead_q25": 33.669999999999995,
+          "lead_q75": 222.48000000000002
+        }
+      },
+      "knn": {
+        "all_runs": {
+          "n_runs": 54,
+          "n_detected": 49,
+          "detection_rate": 0.9074074074074074,
+          "lead_median": 92.83999999999999,
+          "lead_q25": 64.72999999999999,
+          "lead_q75": 255.39999999999998
+        },
+        "gate_accepted_runs": {
+          "n_runs": 44,
+          "n_detected": 43,
+          "detection_rate": 0.9772727272727273,
+          "lead_median": 92.83999999999999,
+          "lead_q25": 64.36999999999999,
+          "lead_q75": 247.72499999999997
+        }
+      }
+    },
+    "ood": {
+      "random": {
+        "all_runs": {
+          "n_runs": 36,
+          "n_detected": 35,
+          "detection_rate": 0.9722222222222222,
+          "lead_median": 330.93,
+          "lead_q25": 277.4,
+          "lead_q75": 416.57
+        },
+        "gate_accepted_runs": {
+          "n_runs": 35,
+          "n_detected": 34,
+          "detection_rate": 0.9714285714285714,
+          "lead_median": 329.28,
+          "lead_q25": 275.845,
+          "lead_q75": 406.7175
+        }
+      },
+      "knn": {
+        "all_runs": {
+          "n_runs": 36,
+          "n_detected": 36,
+          "detection_rate": 1.0,
+          "lead_median": 327.055,
+          "lead_q25": 255.5,
+          "lead_q75": 412.3175
+        },
+        "gate_accepted_runs": {
+          "n_runs": 34,
+          "n_detected": 34,
+          "detection_rate": 1.0,
+          "lead_median": 327.055,
+          "lead_q25": 275.7825,
+          "lead_q75": 405.35749999999996
+        }
+      }
+    }
+  },
+  "controls": {
+    "random": {
+      "all_runs": {
+        "n_runs": 54,
+        "n_with_alarm": 36,
+        "share": 0.6666666666666666
+      },
+      "gate_accepted_runs": {
+        "n_runs": 53,
+        "n_with_alarm": 35,
+        "share": 0.660377358490566
+      }
+    },
+    "knn": {
+      "all_runs": {
+        "n_runs": 54,
+        "n_with_alarm": 28,
+        "share": 0.5185185185185185
+      },
+      "gate_accepted_runs": {
+        "n_runs": 21,
+        "n_with_alarm": 17,
+        "share": 0.8095238095238095
+      }
+    }
+  }
+}

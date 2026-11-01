@@ -43,6 +43,7 @@ USER_PROMPT = "A new query is ready. Use your tools, then give your verdict."
 
 
 def system_prompt(max_tool_calls: int, max_contexts: int) -> str:
+    """The system prompt of the full agent, with its limits filled in."""
     return _SYSTEM_PROMPT.format(
         max_tool_calls=max_tool_calls, max_contexts=max_contexts, max_words=MAX_RATIONALE_WORDS
     )
@@ -94,12 +95,15 @@ the end of the series is close to tipping.
 
 
 def naive_system_prompt(max_tool_calls: int) -> str:
+    """The system prompt of the naive agent, with its limits filled in."""
     return _NAIVE_SYSTEM_PROMPT.format(max_tool_calls=max_tool_calls, max_words=MAX_RATIONALE_WORDS)
 
 
 def llm_only_system_prompt() -> str:
+    """The system prompt of the LLM-only baseline, which sees no PFN output."""
     return _LLM_ONLY_SYSTEM_PROMPT
 
 
 def llm_only_user_prompt(summary_text: str) -> str:
+    """The user prompt of the LLM-only baseline: the query summary and the ask."""
     return f"Here is the summary of the query.\n\n{summary_text}\n\nGive your answer."

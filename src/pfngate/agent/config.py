@@ -35,6 +35,7 @@ class AgentConfig:
     source: Path
 
     def model_for(self, debug: bool) -> str:
+        """The model for a run, or the debug model when debug is set."""
         return self.debug_model if debug else self.model
 
     def price_for(self, model_name: str) -> tuple[float, float] | None:
@@ -53,6 +54,7 @@ class AgentConfig:
 
 
 def load_agent_config(path: Path = DEFAULT_AGENT_CONFIG) -> AgentConfig:
+    """Read configs/agent.yaml into an AgentConfig."""
     with path.open(encoding="utf-8") as f:
         raw = yaml.safe_load(f)
     if raw["prices"].get("approximate") is not True:

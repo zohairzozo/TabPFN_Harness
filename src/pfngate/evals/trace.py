@@ -129,6 +129,7 @@ class Tracer:
         )
 
     def close(self) -> None:
+        """Close the trace file, if it is still open."""
         if not self._file.closed:
             self._file.close()
 

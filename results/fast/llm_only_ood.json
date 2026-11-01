@@ -1,0 +1,374 @@
+{
+  "method": "llm_only",
+  "split": "ood",
+  "dataset_splits": [
+    "test_out_of_prior"
+  ],
+  "held_out": true,
+  "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+  "llm_mode": "replay",
+  "debug_model": false,
+  "seeds_per_scenario": 1,
+  "limit": 3,
+  "n_runs": 6,
+  "usage": {
+    "n_runs": 6,
+    "model_requests": 6,
+    "replayed_requests": 6,
+    "tokens_in": 6456,
+    "tokens_out": 10926,
+    "llm_seconds": 73.0483566999319,
+    "cost_usd_approx": 0.0,
+    "cost_note": "approximate: prices in configs/agent.yaml, as recorded",
+    "temperature_applied_runs": 6,
+    "stop_reasons": {
+      "completed": 6,
+      "tool_cap": 0,
+      "request_cap": 0,
+      "bad_output": 0
+    }
+  },
+  "summary": {
+    "n_runs": 6,
+    "latency_seconds": {
+      "n": 6,
+      "mean": 12.174726116655316,
+      "p50": 10.696312099986244,
+      "p95": 20.61040320000029,
+      "max": 23.218305899994448
+    },
+    "llm_seconds_mean": 12.174726116655316,
+    "pfn_seconds_mean": 0.0,
+    "tool_calls": {
+      "n": 6,
+      "mean": 0.0,
+      "max": 0
+    },
+    "pass_k": {
+      "k": 3,
+      "n_scenarios": 0,
+      "n_agree": 0,
+      "share": null,
+      "n_incomplete": 6,
+      "decisions": {}
+    },
+    "pfn": null
+  },
+  "metrics": {
+    "llm_only": {
+      "n_runs": 6,
+      "n_positive_end": 3,
+      "n_negative_end": 3,
+      "n_middle_end": 0,
+      "n_control_runs": 3,
+      "decisions": {
+        "alert": 3,
+        "no_alert": 3,
+        "abstain": 0
+      },
+      "abstention": {
+        "value": 0.0,
+        "n": 6,
+        "ci": [
+          0.0,
+          0.0
+        ]
+      },
+      "recall_end": {
+        "value": 0.6666666666666666,
+        "n": 3,
+        "ci": [
+          0.0,
+          1.0
+        ]
+      },
+      "false_alarm_end": {
+        "value": 0.3333333333333333,
+        "n": 3,
+        "ci": [
+          0.0,
+          1.0
+        ]
+      },
+      "control_alert": {
+        "value": 0.3333333333333333,
+        "n": 3,
+        "ci": [
+          0.0,
+          1.0
+        ]
+      },
+      "precision_end": {
+        "value": 0.6666666666666666,
+        "n": 3,
+        "ci": [
+          0.0,
+          1.0
+        ]
+      },
+      "n_scored": 6,
+      "auroc_end": {
+        "auroc": 0.6111111111111112,
+        "ci_low": 0.02250000000000227,
+        "ci_high": 1.0
+      }
+    }
+  },
+  "trace": "llm_only-ood-20261031T215852Z-33ccca49.jsonl",
+  "wall_seconds": 2.186305799987167,
+  "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
+  "runs": [
+    {
+      "record": {
+        "run_id": "llm_only-ood-20261031T215852Z-33ccca49.0000",
+        "trajectory_id": "rate_L1_slow/4000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 0,
+        "n_model_requests": 1,
+        "n_replayed_requests": 1,
+        "llm_seconds": 11.982323599979281,
+        "tokens_in": 1076,
+        "tokens_out": 1751,
+        "cost_usd_approx": 0.0,
+        "answer": {
+          "decision": "no_alert",
+          "probability": 0.3
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "consistent": true
+      },
+      "ground_truth": {
+        "scenario_id": "rate_L1_slow",
+        "role": "out_of_prior",
+        "family": "rate_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.011499999999999773,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 11.982323599979281,
+        "pfn_seconds": 0.0,
+        "total_seconds": 11.982323599979281
+      }
+    },
+    {
+      "record": {
+        "run_id": "llm_only-ood-20261031T215852Z-33ccca49.0001",
+        "trajectory_id": "noise_N1_slow/4000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 0,
+        "n_model_requests": 1,
+        "n_replayed_requests": 1,
+        "llm_seconds": 9.410300599993207,
+        "tokens_in": 1076,
+        "tokens_out": 1241,
+        "cost_usd_approx": 0.0,
+        "answer": {
+          "decision": "alert",
+          "probability": 0.65
+        },
+        "decision": "alert",
+        "defaulted": false,
+        "consistent": true
+      },
+      "ground_truth": {
+        "scenario_id": "noise_N1_slow",
+        "role": "out_of_prior",
+        "family": "noise_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.014799999999999045,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 9.410300599993207,
+        "pfn_seconds": 0.0,
+        "total_seconds": 9.410300599993207
+      }
+    },
+    {
+      "record": {
+        "run_id": "llm_only-ood-20261031T215852Z-33ccca49.0002",
+        "trajectory_id": "noise_N3_fast/4000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 0,
+        "n_model_requests": 1,
+        "n_replayed_requests": 1,
+        "llm_seconds": 12.786695100017823,
+        "tokens_in": 1076,
+        "tokens_out": 2295,
+        "cost_usd_approx": 0.0,
+        "answer": {
+          "decision": "alert",
+          "probability": 0.6
+        },
+        "decision": "alert",
+        "defaulted": false,
+        "consistent": true
+      },
+      "ground_truth": {
+        "scenario_id": "noise_N3_fast",
+        "role": "out_of_prior",
+        "family": "noise_tipping",
+        "split": "test_out_of_prior",
+        "end_target": 0.005699999999999932,
+        "end_label": "positive",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 12.786695100017823,
+        "pfn_seconds": 0.0,
+        "total_seconds": 12.786695100017823
+      }
+    },
+    {
+      "record": {
+        "run_id": "llm_only-ood-20261031T215852Z-33ccca49.0003",
+        "trajectory_id": "ou_L1/4000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 0,
+        "n_model_requests": 1,
+        "n_replayed_requests": 1,
+        "llm_seconds": 7.529415799945127,
+        "tokens_in": 1076,
+        "tokens_out": 1087,
+        "cost_usd_approx": 0.0,
+        "answer": {
+          "decision": "no_alert",
+          "probability": 0.25
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "consistent": true
+      },
+      "ground_truth": {
+        "scenario_id": "ou_L1",
+        "role": "control",
+        "family": "control_ou",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 7.529415799945127,
+        "pfn_seconds": 0.0,
+        "total_seconds": 7.529415799945127
+      }
+    },
+    {
+      "record": {
+        "run_id": "llm_only-ood-20261031T215852Z-33ccca49.0004",
+        "trajectory_id": "short_ramp_L2/4000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 0,
+        "n_model_requests": 1,
+        "n_replayed_requests": 1,
+        "llm_seconds": 8.121315700002015,
+        "tokens_in": 1076,
+        "tokens_out": 1400,
+        "cost_usd_approx": 0.0,
+        "answer": {
+          "decision": "no_alert",
+          "probability": 0.35
+        },
+        "decision": "no_alert",
+        "defaulted": false,
+        "consistent": true
+      },
+      "ground_truth": {
+        "scenario_id": "short_ramp_L2",
+        "role": "control",
+        "family": "control_short_ramp",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "no_alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 8.121315700002015,
+        "pfn_seconds": 0.0,
+        "total_seconds": 8.121315700002015
+      }
+    },
+    {
+      "record": {
+        "run_id": "llm_only-ood-20261031T215852Z-33ccca49.0005",
+        "trajectory_id": "regime_L3/4000",
+        "model": "openrouter:nvidia/nemotron-3.5-super-vl:free",
+        "temperature_requested": 0.0,
+        "temperature_applied": true,
+        "stop_reason": "completed",
+        "stop_detail": null,
+        "n_tool_calls": 0,
+        "n_model_requests": 1,
+        "n_replayed_requests": 1,
+        "llm_seconds": 23.218305899994448,
+        "tokens_in": 1076,
+        "tokens_out": 3152,
+        "cost_usd_approx": 0.0,
+        "answer": {
+          "decision": "alert",
+          "probability": 0.65
+        },
+        "decision": "alert",
+        "defaulted": false,
+        "consistent": true
+      },
+      "ground_truth": {
+        "scenario_id": "regime_L3",
+        "role": "control",
+        "family": "control_regime_change",
+        "split": "test_out_of_prior",
+        "end_target": 1.0,
+        "end_label": "negative",
+        "used_by_variant": false
+      },
+      "decision": "alert",
+      "accepted": null,
+      "pfn_quality": null,
+      "timing": {
+        "llm_seconds": 23.218305899994448,
+        "pfn_seconds": 0.0,
+        "total_seconds": 23.218305899994448
+      }
+    }
+  ]
+}

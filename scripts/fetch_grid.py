@@ -71,20 +71,25 @@ class RemoteFile(io.RawIOBase):
         self.bytes_read = 0
 
     def readable(self) -> bool:
+        """The remote file can be read."""
         return True
 
     def seekable(self) -> bool:
+        """The remote file can seek."""
         return True
 
     def tell(self) -> int:
+        """The current position in the remote file."""
         return self.pos
 
     def seek(self, offset: int, whence: int = 0) -> int:
+        """Move to a position in the remote file, as a file object does."""
         base = {0: 0, 1: self.pos, 2: self.size}[whence]
         self.pos = base + offset
         return self.pos
 
     def read(self, n: int = -1) -> bytes:
+        """Read n bytes with HTTP range requests."""
         if n < 0 or self.pos + n > self.size:
             n = self.size - self.pos
         if n <= 0:
@@ -100,18 +105,21 @@ class RemoteFile(io.RawIOBase):
         return data
 
     def readinto(self, b: bytearray) -> int:  # type: ignore[override]
+        """Read into a buffer and return the number of bytes read."""
         data = self.read(len(b))
         b[: len(data)] = data
         return len(data)
 
 
 def get_json(url: str) -> dict[str, Any]:
+    """Fetch a URL and parse the JSON it returns."""
     req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
     with urllib.request.urlopen(req, timeout=60) as resp:
         return json.load(resp)
 
 
 def record_files() -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """The files of the Zenodo record, from its API."""
     rec = get_json(API)
     return rec, rec["files"]
 
@@ -128,6 +136,7 @@ def allowed_area(member: str) -> str | None:
 
 
 def cmd_list(_: argparse.Namespace) -> None:
+    """Command: print the files of the Zenodo record."""
     rec, files = record_files()
     meta = rec["metadata"]
     print(
@@ -145,6 +154,7 @@ def cmd_list(_: argparse.Namespace) -> None:
 
 
 def open_remote_zip(name: str) -> tuple[zipfile.ZipFile, RemoteFile]:
+    """Open a zip on Zenodo for reading, with range requests."""
     _, files = record_files()
     info = next(f for f in files if f["key"] == name)
     remote = RemoteFile(info["links"]["self"], int(info["size"]))
@@ -152,6 +162,7 @@ def open_remote_zip(name: str) -> tuple[zipfile.ZipFile, RemoteFile]:
 
 
 def cmd_members(_: argparse.Namespace) -> None:
+    """Command: list the members of the data zips."""
     for name in DATA_ZIPS:
         zf, remote = open_remote_zip(name)
         print(f"\n{name}: {len(zf.infolist())} members (read {remote.bytes_read:,} bytes to list)")
@@ -236,6 +247,7 @@ def find_stationary_days(
 
 
 def sha256_file(path: Path) -> str:
+    """SHA-256 of a file, as a hex string."""
     h = hashlib.sha256()
     with path.open("rb") as f:
         for block in iter(lambda: f.read(1 << 20), b""):
@@ -244,6 +256,7 @@ def sha256_file(path: Path) -> str:
 
 
 def cmd_fetch(args: argparse.Namespace) -> None:
+    """Command: fetch one area and year into data/raw/grid."""
     member = f"Data_cleansed/{args.area}/{args.year}.zip"
     area = allowed_area(member)
     if area is None:
@@ -313,6 +326,7 @@ def record_source(
 
 
 def main() -> None:
+    """Command-line entry point for the grid fetch script."""
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawTextHelpFormatter
     )

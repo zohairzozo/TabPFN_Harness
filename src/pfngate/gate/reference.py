@@ -178,6 +178,7 @@ class PoolDistance:
         self._tree = cKDTree((_features(pool) - self.mean) / self.std)
 
     def distances(self, query_X: np.ndarray, query_trajectory_id: str) -> np.ndarray:
+        """Distances of query windows to the pool, leaving out the own trajectory."""
         if query_trajectory_id in self.trajectories:
             raise ValueError(f"query trajectory {query_trajectory_id} is in the pool")
         z = (np.asarray(query_X, dtype=float) - self.mean) / self.std

@@ -15,7 +15,7 @@
   "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
   "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
   "seeds_per_scenario": 1,
-  "limit": 5,
+  "limit": 3,
   "n_runs": 1,
   "skipped": [],
   "usage": null,
@@ -23,13 +23,13 @@
     "n_runs": 1,
     "latency_seconds": {
       "n": 1,
-      "mean": 0.004294200101867318,
-      "p50": 0.004294200101867318,
-      "p95": 0.004294200101867318,
-      "max": 0.004294200101867318
+      "mean": 0.005008700070902705,
+      "p50": 0.005008700070902705,
+      "p95": 0.005008700070902705,
+      "max": 0.005008700070902705
     },
     "llm_seconds_mean": 0.0,
-    "pfn_seconds_mean": 0.004294200101867318,
+    "pfn_seconds_mean": 0.005008700070902705,
     "tool_calls": null,
     "pass_k": {
       "k": 3,
@@ -94,8 +94,8 @@
       "auroc_end": null
     }
   },
-  "trace": "classic_ews-real_control-20261031T152417Z-c2e2bc58.jsonl",
-  "wall_seconds": 0.5121592999203131,
+  "trace": "classic_ews-real_control-20261031T215838Z-6e93dd31.jsonl",
+  "wall_seconds": 0.5023235999979079,
   "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
   "runs": [
     {
@@ -106,7 +106,7 @@
         "score_defined": true,
         "alarm_threshold": 0.5,
         "decision": "alert",
-        "seconds": 0.004294200101867318
+        "seconds": 0.005008700070902705
       },
       "ground_truth": {
         "scenario_id": "grid_fingrid",
@@ -122,8 +122,8 @@
       "pfn_quality": null,
       "timing": {
         "llm_seconds": 0.0,
-        "pfn_seconds": 0.004294200101867318,
-        "total_seconds": 0.004294200101867318
+        "pfn_seconds": 0.005008700070902705,
+        "total_seconds": 0.005008700070902705
       }
     }
   ]

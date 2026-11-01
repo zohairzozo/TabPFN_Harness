@@ -22,6 +22,7 @@ class SeedSet:
     count: int
 
     def seeds(self) -> list[int]:
+        """The seeds of a seed set, as a list."""
         return list(range(self.start, self.start + self.count))
 
     def __contains__(self, seed: object) -> bool:
@@ -49,6 +50,7 @@ class CommonConfig:
 
 
 def read_yaml(path: Path) -> dict[str, Any]:
+    """Read a YAML file as a dictionary."""
     with path.open(encoding="utf-8") as f:
         data = yaml.safe_load(f)
     if not isinstance(data, dict):
@@ -57,6 +59,7 @@ def read_yaml(path: Path) -> dict[str, Any]:
 
 
 def load_common(config_dir: Path = DEFAULT_CONFIG_DIR) -> CommonConfig:
+    """Read the common scenario file: seed sets and shared settings."""
     raw = read_yaml(config_dir / COMMON_FILE)
     time = raw["time"]
     labels = raw["labels"]

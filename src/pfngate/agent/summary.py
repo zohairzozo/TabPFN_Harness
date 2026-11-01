@@ -14,10 +14,12 @@ TREND_NOTE = "trend is the mean of the last third of the windows minus the mean 
 
 
 def r4(value: float) -> float:
+    """Round a number to four decimals, as a float."""
     return round(float(value), 4)
 
 
 def third(n: int) -> int:
+    """A third of n, rounded down and never below one."""
     return max(1, n // 3)
 
 

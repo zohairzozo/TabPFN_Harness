@@ -32,6 +32,7 @@ class PFNConfig:
 
 
 def load_pfn_config(path: Path = DEFAULT_PFN_CONFIG) -> PFNConfig:
+    """Read configs/pfn.yaml into a PFNConfig."""
     with path.open(encoding="utf-8") as f:
         raw = yaml.safe_load(f)
     cfg = PFNConfig(

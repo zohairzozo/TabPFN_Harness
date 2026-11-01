@@ -52,6 +52,7 @@ class RunBudget:
     contexts_built: int = 0
 
     def charge_tool(self, name: str) -> None:
+        """Count one tool call, or raise if the run has used its cap."""
         if self.tool_calls >= self.max_tool_calls:
             raise ToolCapExceeded(
                 f"tool call cap of {self.max_tool_calls} reached, '{name}' was refused"
@@ -60,6 +61,7 @@ class RunBudget:
 
     @property
     def contexts_left(self) -> int:
+        """How many more contexts the run may still build."""
         return self.max_contexts - self.contexts_built
 
 
@@ -95,6 +97,7 @@ class RunData:
 
     @classmethod
     def create(cls, run_id: str, query: pd.DataFrame, harness: AgentHarness) -> RunData:
+        """Make the data of one run, with its query columns sanitised."""
         clean = sanitise_query(query)
         return cls(
             run_id=run_id,
@@ -112,16 +115,19 @@ class RunStore:
         self._lock = threading.Lock()
 
     def put(self, data: RunData) -> None:
+        """Add the data of a run to the store. A run id is used once."""
         with self._lock:
             if data.run_id in self._runs:
                 raise ValueError(f"run id {data.run_id} is already in the store")
             self._runs[data.run_id] = data
 
     def get(self, run_id: str) -> RunData:
+        """The data of one run in the store."""
         with self._lock:
             return self._runs[run_id]
 
     def drop(self, run_id: str) -> None:
+        """Remove the data of a run from the store, if it is there."""
         with self._lock:
             self._runs.pop(run_id, None)
 
@@ -139,4 +145,5 @@ class AgentDeps(LLMDeps):
 
     @property
     def data(self) -> RunData:
+        """The data of this run, read from the store."""
         return self.store.get(self.run_id)

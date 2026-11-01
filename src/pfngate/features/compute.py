@@ -43,6 +43,7 @@ def linear_detrend(w: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
 
 
 def lag1_autocorrelation(x: np.ndarray) -> np.ndarray:
+    """Lag-one autocorrelation along the last axis of an array."""
     c = x - x.mean(axis=-1, keepdims=True)
     return _ratio((c[..., 1:] * c[..., :-1]).sum(axis=-1), (c * c).sum(axis=-1))
 

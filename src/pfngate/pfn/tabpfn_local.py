@@ -43,6 +43,7 @@ class TabPFNLocal:
         self._fit_seconds = 0.0
 
     def fit(self, context_X: np.ndarray, context_y: np.ndarray) -> None:
+        """Fit a local TabPFN regressor on the context rows."""
         from tabpfn import TabPFNRegressor
         from tabpfn.constants import ModelVersion
 
@@ -58,6 +59,7 @@ class TabPFNLocal:
         self._reg, self._n_context, self._n_features = reg, X.shape[0], X.shape[1]
 
     def predict(self, query_X: np.ndarray) -> PFNOutput:
+        """Predict with the fitted local TabPFN regressor."""
         if self._reg is None:
             raise RuntimeError("call fit before predict")
         X = check_query(query_X, self._n_features)

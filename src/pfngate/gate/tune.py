@@ -91,6 +91,7 @@ class GridPoint:
 
 
 def grid_points() -> list[GridPoint]:
+    """All points of the tuning grid, in a fixed order."""
     g = TUNING_GRID
     return [
         GridPoint(a, b, c)
@@ -118,6 +119,7 @@ def failed_checks(r: RunRecord, p: GridPoint) -> tuple[str, ...]:
 
 
 def evaluate_point(records: Sequence[RunRecord], p: GridPoint) -> dict[str, Any]:
+    """Score one grid point: the checks on each run and the blocking decisions."""
     failed = [failed_checks(r, p) for r in records]
     m = blocking_metrics(failed, [r.bad for r in records])
     m["abstention_rate"] = sum(bool(f) for f in failed) / len(records) if records else None
@@ -225,6 +227,7 @@ def validation_files(results_dir: Path) -> list[Path]:
 
 
 def load_validation_runs(results_dir: Path, gate: GateConfig) -> list[RunRecord]:
+    """Load the validation result files the tuner needs, or fail if one is missing."""
     missing = [p.name for p in validation_files(results_dir) if not p.exists()]
     if missing:
         raise TooFewRunsError(f"missing gated validation runs: {', '.join(missing)}")

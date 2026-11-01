@@ -10,6 +10,7 @@ from pfngate.report.criteria import DEFAULT_CRITERIA, REPO_ROOT
 
 
 def main() -> int:
+    """Command-line entry point: build the report and print where it is."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results-dir", default=REPO_ROOT / "results", type=Path)
     parser.add_argument("--criteria", default=DEFAULT_CRITERIA, type=Path)

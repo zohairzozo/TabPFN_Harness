@@ -73,15 +73,18 @@ class Run:
 
     @property
     def seed(self) -> int | None:
+        """The seed of the run: the number at the end of its trajectory id."""
         tail = self.trajectory_id.rsplit("/", 1)[-1]
         return int(tail) if tail.isdigit() else None
 
 
 def read_json(path: Path) -> dict[str, Any]:
+    """Read a JSON file as a dictionary."""
     return json.loads(path.read_text(encoding="utf-8"))
 
 
 def final_decision(run: dict[str, Any]) -> str | None:
+    """The final decision of a run record, as a string."""
     decision = run.get("decision")
     return decision.get("decision") if isinstance(decision, dict) else decision
 
@@ -109,6 +112,7 @@ def strength_of(variant: str, rec: dict[str, Any]) -> tuple[float | None, str]:
 
 
 def variant_numbers(rec: dict[str, Any], gt: dict[str, Any]) -> dict[str, Any]:
+    """The numbers of a variant record that the failure list shows."""
     final = rec.get("final") or {}
     verdict = rec.get("verdict") or {}
     numbers: dict[str, Any] = {
@@ -134,6 +138,7 @@ def variant_numbers(rec: dict[str, Any], gt: dict[str, Any]) -> dict[str, Any]:
 
 
 def variant_runs(results_dir: Path, splits: tuple[str, ...]) -> list[Run]:
+    """Read every run of the variant result files for the given splits."""
     out: list[Run] = []
     for variant, prefix in VARIANT_FILES.items():
         for split in splits:
@@ -240,6 +245,7 @@ class Traces:
         self.cache: dict[str, dict[str, list[int]]] = {}
 
     def lines(self, trace_name: str | None, trajectory_id: str) -> dict[str, Any]:
+        """The trace file and the line numbers of one trajectory."""
         if not trace_name:
             return {"trace_file": None, "lines": []}
         name = Path(trace_name).name
@@ -258,10 +264,12 @@ class Traces:
 
 
 def is_false_alarm(r: Run) -> bool:
+    """True if a run is a control that alerted."""
     return r.role == "control" and r.decision == "alert"
 
 
 def severity(category: str, r: Run, floor: float | None) -> tuple[float | None, str]:
+    """The severity of a failure in its category, and what it measures."""
     if category.startswith("a_"):
         return r.strength, r.strength_basis
     if category.startswith("b_") and r.coverage_90 is not None and floor is not None:
@@ -274,6 +282,7 @@ def severity(category: str, r: Run, floor: float | None) -> tuple[float | None, 
 
 
 def select(category: str, runs: list[Run]) -> list[Run]:
+    """The runs that fall in a failure category."""
     if category.startswith("a_"):
         return [r for r in runs if r.variant in VARIANT_FILES and is_false_alarm(r)]
     if category.startswith("b_"):
@@ -295,6 +304,7 @@ def population(category: str, runs: list[Run]) -> list[Run]:
 
 
 def example(category: str, r: Run, floor: float | None, traces: Traces) -> dict[str, Any]:
+    """One ranked example of a failure, as a dictionary for the JSON file."""
     sev, basis = severity(category, r, floor)
     return {
         "severity": sev,
@@ -312,17 +322,20 @@ def example(category: str, r: Run, floor: float | None, traces: Traces) -> dict[
 
 
 def rank_key(item: tuple[float | None, Run]) -> tuple[Any, ...]:
+    """Sort key: most severe first, then variant, split and trajectory id."""
     sev, r = item
     return (-(sev if sev is not None else float("-inf")), r.variant, r.split, r.trajectory_id)
 
 
 def count_by(runs: list[Run], key: str) -> dict[str, int]:
+    """Count runs by one attribute, as a sorted dictionary."""
     return dict(sorted(Counter(getattr(r, key) for r in runs).items()))
 
 
 def category_block(
     category: str, runs: list[Run], floor: float | None, top: int, traces: Traces
 ) -> dict[str, Any]:
+    """One category: its failure count, the population and the top examples."""
     chosen = select(category, runs)
     pool = population(category, runs)
     ranked = sorted(((severity(category, r, floor)[0], r) for r in chosen), key=rank_key)
@@ -338,16 +351,19 @@ def category_block(
 
 
 def share(n: int, total: int) -> str:
+    """A count out of a total, as text."""
     return f"{n} of {total}"
 
 
 def by_variant_text(block: dict[str, Any]) -> str:
+    """The failures by variant, as text."""
     runs, fails = block["runs_by_variant"], block["failures_by_variant"]
     parts = [f"{v} {share(fails.get(v, 0), n)}" for v, n in runs.items() if fails.get(v)]
     return ", ".join(parts) if parts else "none"
 
 
 def overview(category: str, block: dict[str, Any], runs: list[Run]) -> str:
+    """The plain-English paragraph for one category, with its counts."""
     n, total = block["n_failures"], block["n_runs_counted_out_of"]
     split_text = ", ".join(f"{s} {c}" for s, c in block["failures_by_split"].items()) or "none"
     head = f"{block['title']}: {share(n, total)} runs."
@@ -384,6 +400,7 @@ def overview(category: str, block: dict[str, Any], runs: list[Run]) -> str:
 
 
 def build(results_dir: Path, top: int, include_val: bool) -> dict[str, Any]:
+    """Build the failure report for a results folder."""
     splits = ("val", *HELD_OUT) if include_val else HELD_OUT
     runs = variant_runs(results_dir, splits) + pfn_gate_runs(results_dir, include_val)
     floor = min_coverage()
@@ -407,6 +424,7 @@ def build(results_dir: Path, top: int, include_val: bool) -> dict[str, Any]:
 
 
 def main() -> int:
+    """Command-line entry point: write failures.json and print the overviews."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results-dir", default=str(REPO_ROOT / "results"), type=Path)
     parser.add_argument("--top", default=5, type=int)

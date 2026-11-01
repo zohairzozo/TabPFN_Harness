@@ -4,7 +4,7 @@ Status: **approved design (2026-10-26).** No simulator code exists yet.
 
 This file defines what the model is asked to predict for each window of a simulated time series. The scenario specs are in `configs/scenarios/`, and the splits are in `docs/SPLITS.md`.
 
-We build our own small suite of simulated series, in the spirit of the kausable TipPFN paper (arXiv 2605.12308). We do **not** reproduce that paper, its prior, its labels or its results.
+We build our own small suite of simulated series, in the spirit of the kausable TipPFN paper, "In-context learning to predict critical transitions in dynamical systems" (arXiv 2605.12308; only its abstract was checked). We do **not** reproduce that paper, its prior, its labels or its results.
 
 ## Terms
 

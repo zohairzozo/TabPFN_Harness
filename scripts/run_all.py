@@ -12,7 +12,7 @@ Stages, in order:
 
 Profiles (how much of each split is run):
   default  --limit 3 --seeds-per-scenario 3   the trial size used for all results so far
-  --fast   --limit 5 --seeds-per-scenario 1   5 scenarios of each kind, 1 seed each; writes to
+  --fast   --limit 3 --seeds-per-scenario 1   the first seed of the recorded scenarios; writes to
                                               results/fast/ so it never overwrites results/
   --all    no limit, all seeds                the full split sizes of docs/SPLITS.md (hours)
 
@@ -20,14 +20,20 @@ The gate is plain Python and is only read here: this script never edits or tunes
 A daily-cap error from the LLM provider (429) is not retried: the LLM stages that are left are
 marked skipped, the summary and manifest are still written, and a later run continues from the
 recorded responses.
+
+A missing answer can only be recorded with a network and an OPENROUTER_API_KEY. Without them
+the stage is skipped at once, with the reason, and the run is marked incomplete (exit 1)
+instead of retrying for half an hour.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import os
 import platform
 import shutil
+import socket
 import subprocess
 import sys
 import time
@@ -58,7 +64,7 @@ MODULES: dict[str, tuple[str, str]] = {
 LLM_VARIANTS = ("llm_only", "naive", "agent")
 PROFILES: dict[str, dict[str, int | None]] = {
     "default": {"limit": 3, "seeds": 3},
-    "fast": {"limit": 5, "seeds": 1},
+    "fast": {"limit": 3, "seeds": 1},
     "all": {"limit": None, "seeds": None},
 }
 SHARED_FILES = ("baseline_ews.json", "gate_tuning.json", "timing_tabpfn.json")
@@ -75,6 +81,16 @@ PACKAGES = (
     "pytest",
 )
 MAX_TRIES = 5
+PROVIDER_HOST = "openrouter.ai"
+KEY_NAME = "OPENROUTER_API_KEY"
+NO_NETWORK_MARKERS = (
+    "getaddrinfo",
+    "Name or service not known",
+    "Temporary failure in name resolution",
+    "nodename nor servname",
+    "network is off",
+    "network disabled",
+)
 
 
 class Run:
@@ -91,8 +107,45 @@ class Run:
         self.skip_checks = args.skip_checks
         self.stages: list[dict[str, Any]] = []
         self.quota_out = False
+        self.incomplete: list[str] = []  # why the run could not do everything it was asked
+        self.blocker: str | None = None
+        self.blocker_checked = False
         self.started = time.perf_counter()
         self.started_utc = datetime.now(UTC).isoformat(timespec="seconds")
+
+
+def network_available(host: str = PROVIDER_HOST) -> bool:
+    """True if the provider host name resolves, which it does not when the network is off."""
+    try:
+        socket.getaddrinfo(host, 443)
+    except OSError:
+        return False
+    return True
+
+
+def have_llm_key() -> bool:
+    """True if the provider key is set in the environment or in .env. The value is not read out."""
+    if os.environ.get(KEY_NAME):
+        return True
+    env = REPO_ROOT / ".env"
+    if not env.exists():
+        return False
+    for line in env.read_text(encoding="utf-8").splitlines():
+        name, _, value = line.partition("=")
+        if name.strip() == KEY_NAME and value.strip():
+            return True
+    return False
+
+
+def recording_blocker(run: Run) -> str | None:
+    """Why a missing LLM answer cannot be recorded now, or None if it can."""
+    if not run.blocker_checked:
+        if not network_available():
+            run.blocker = "there is no network"
+        elif not have_llm_key():
+            run.blocker = f"{KEY_NAME} is not set"
+        run.blocker_checked = True
+    return run.blocker
 
 
 def run_command(
@@ -118,6 +171,7 @@ def run_command(
 
 
 def skip(run: Run, name: str, reason: str) -> None:
+    """Record a stage that was skipped, with its reason."""
     print(f"  [{name}] skipped: {reason}")
     run.stages.append(
         {"stage": name, "skipped": reason, "exit_code": None, "seconds": 0.0, "llm_mode": None}
@@ -125,6 +179,7 @@ def skip(run: Run, name: str, reason: str) -> None:
 
 
 def variant_command(run: Run, variant: str, split: str, mode: str | None) -> list[str]:
+    """The command line for one variant on one split."""
     module, _ = MODULES[variant]
     cmd = [PYTHON, "-W", "ignore::DeprecationWarning", "-m", module, "--split", split]
     if module.endswith("run_reference"):
@@ -141,10 +196,12 @@ def variant_command(run: Run, variant: str, split: str, mode: str | None) -> lis
 
 
 def cache_has_entries(run: Run) -> bool:
+    """True if the LLM cache folder holds at least one recorded response."""
     return run.llm_cache.exists() and any(run.llm_cache.glob("*.json"))
 
 
 def run_variant(run: Run, variant: str, split: str) -> None:
+    """Run one variant on one split, replaying or recording as the cache allows."""
     name = f"{variant}_{split}"
     if variant not in LLM_VARIANTS:
         run_command(run, name, variant_command(run, variant, split, None) + [])
@@ -162,6 +219,12 @@ def run_variant(run: Run, variant: str, split: str) -> None:
     if run.quota_out:
         skip(run, name, "provider daily cap reached earlier in this run")
         return
+    blocker = recording_blocker(run)
+    if blocker:
+        reason = f"no recorded answer for this sample, and {blocker}. Record it once online."
+        skip(run, name, reason)
+        run.incomplete.append(f"{name}: {reason}")
+        return
     for _attempt in range(MAX_TRIES):
         proc = run_command(run, name, variant_command(run, variant, split, "record"), mode="record")
         text = proc.stderr + proc.stdout
@@ -170,10 +233,15 @@ def run_variant(run: Run, variant: str, split: str) -> None:
         if "free-models-per-day" in text:
             run.quota_out = True  # not retried: a later run continues from the saved responses
             return
+        if any(marker in text for marker in NO_NETWORK_MARKERS):
+            run.blocker, run.blocker_checked = "there is no network", True  # not retried
+            run.incomplete.append(f"{name}: the network went away while recording")
+            return
         time.sleep(20)  # a timeout (504) from the provider: the finished responses are saved
 
 
 def check_stage(run: Run) -> None:
+    """Stage 1: ruff and pytest."""
     print("1. ruff and pytest")
     if run.skip_checks:
         for name in ("ruff_check", "ruff_format", "pytest"):
@@ -185,6 +253,7 @@ def check_stage(run: Run) -> None:
 
 
 def gate_stage(run: Run) -> dict[str, Any]:
+    """Stage 2: check the gate hash against configs/gate.frozen.sha256."""
     print("2. gate")
     start = time.perf_counter()
     info: dict[str, Any] = {}
@@ -206,6 +275,7 @@ def gate_stage(run: Run) -> dict[str, Any]:
 
 
 def prepare_results_dir(run: Run) -> None:
+    """Make the results folder for this profile, copying shared files for fast."""
     run.results_dir.mkdir(parents=True, exist_ok=True)
     if run.results_dir.name != "fast":
         return
@@ -216,6 +286,7 @@ def prepare_results_dir(run: Run) -> None:
 
 
 def percentiles(values: list[float]) -> dict[str, float | int] | None:
+    """The 50th and 95th percentiles of values, or None if there are none."""
     if not values:
         return None
     a = np.asarray(values, dtype=float)
@@ -306,10 +377,13 @@ def variant_manifest(run: Run, variant: str) -> dict[str, Any]:
 
 
 def run_start_time(run: Run) -> float:
+    """The start time of the run as a Unix timestamp."""
     return datetime.fromisoformat(run.started_utc).timestamp() - 1.0
 
 
 def git_info() -> dict[str, Any]:
+    """The git commit, branch and uncommitted file count of the checkout."""
+
     def git(*a: str) -> str:
         return subprocess.run(
             ["git", *a], cwd=REPO_ROOT, capture_output=True, text=True, check=False
@@ -323,6 +397,7 @@ def git_info() -> dict[str, Any]:
 
 
 def package_versions() -> dict[str, str | None]:
+    """The installed versions of the packages the results depend on."""
     out: dict[str, str | None] = {}
     for name in PACKAGES:
         try:
@@ -333,6 +408,7 @@ def package_versions() -> dict[str, str | None]:
 
 
 def seeds_info(run: Run) -> dict[str, Any]:
+    """The seed settings from the config files and the run options."""
     pfn = yaml.safe_load((REPO_ROOT / "configs" / "pfn.yaml").read_text(encoding="utf-8"))
     common = yaml.safe_load(
         (REPO_ROOT / "configs" / "scenarios" / "_common.yaml").read_text(encoding="utf-8")
@@ -364,14 +440,29 @@ def seconds_by_stage(stages: list[dict[str, Any]]) -> dict[str, float]:
     return out
 
 
+def pfn_models(run: Run) -> dict[str, Any]:
+    """The PFN backend and model version, read from a result file of this run."""
+    path = run.results_dir / "agent_test.json"
+    if not path.exists():
+        return {"pfn_backend": None}
+    settings = json.loads(path.read_text(encoding="utf-8")).get("settings", {})
+    return {
+        "pfn_backend": settings.get("backend"),
+        "pfn_model_version": settings.get("model_version"),
+        "pfn_package_version": settings.get("package_version"),
+    }
+
+
 def write_manifest(run: Run, gate: dict[str, Any], failed: bool) -> Path:
+    """Write results/run_manifest.json from the stages and the results."""
     agent_cfg = yaml.safe_load((REPO_ROOT / "configs" / "agent.yaml").read_text(encoding="utf-8"))
     variants = {v: variant_manifest(run, v) for v in run.variants}
     manifest = {
         "generated_utc": datetime.now(UTC).isoformat(timespec="seconds"),
         "started_utc": run.started_utc,
         "profile": run.profile,
-        "complete": not failed and not run.quota_out,
+        "complete": not failed and not run.quota_out and not run.incomplete,
+        "incomplete_reasons": run.incomplete,
         "llm_daily_cap_reached": run.quota_out,
         "git": git_info(),
         "python": platform.python_version(),
@@ -380,7 +471,7 @@ def write_manifest(run: Run, gate: dict[str, Any], failed: bool) -> Path:
         "models": {
             "llm_agent": agent_cfg.get("model"),
             "llm_debug": agent_cfg.get("debug_model"),
-            "pfn_backend": "see variants[*].models and results settings",
+            **pfn_models(run),
         },
         "seeds": seeds_info(run),
         "gate": gate,
@@ -401,12 +492,37 @@ def write_manifest(run: Run, gate: dict[str, Any], failed: bool) -> Path:
     return path
 
 
+def pfn_cache_has_entries() -> bool:
+    """True if the PFN cache holds outputs: the analyses read it instead of recomputing."""
+    folder = REPO_ROOT / "results" / "cache" / "pfn"
+    return folder.is_dir() and any(folder.glob("*.json"))
+
+
+def analysis_stages(run: Run) -> None:
+    """The lead-time and sharpness analyses, which the summary then reads."""
+    base = ["--results-dir", str(run.results_dir)]
+    cache = REPO_ROOT / "results" / "cache" / "pfn"
+    if pfn_cache_has_entries():
+        cmd = [PYTHON, "scripts/lead_time.py", *base, "--cache-dir", str(cache)]
+        run_command(run, "lead_time", cmd)
+    else:
+        reason = "the PFN cache is empty and the analysis would recompute every window"
+        skip(run, "lead_time", reason)
+        run.incomplete.append(f"lead_time: {reason}")
+    run_command(run, "sharpness", [PYTHON, "scripts/sharpness.py", *base])
+
+
 def main() -> int:
+    """Command-line entry point: run the whole suite and write the manifest."""
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawTextHelpFormatter
     )
     profile = parser.add_mutually_exclusive_group()
-    profile.add_argument("--fast", action="store_true", help="5 scenarios per kind, 1 seed each")
+    profile.add_argument(
+        "--fast",
+        action="store_true",
+        help="the first seed of the recorded scenarios: replays offline",
+    )
     profile.add_argument("--all", action="store_true", help="no limit: the full split sizes")
     parser.add_argument("--variants", default=",".join(VARIANTS), type=lambda s: s.split(","))
     parser.add_argument("--splits", default=",".join(SPLITS), type=lambda s: s.split(","))
@@ -429,7 +545,8 @@ def main() -> int:
         for split in run.splits:
             run_variant(run, variant, split)
 
-    print("4. summary")
+    print("4. analysis and summary")
+    analysis_stages(run)
     summary_cmd = [PYTHON, "scripts/make_summary.py", "--results-dir", str(run.results_dir)]
     run_command(run, "make_summary", summary_cmd)
     run_command(
@@ -447,7 +564,9 @@ def main() -> int:
     failed = any_stage_failed(run.stages)
     path = write_manifest(run, gate, failed)
     print(f"wrote {path}")
-    return 1 if failed else 0
+    for reason in run.incomplete:
+        print(f"incomplete: {reason}")
+    return 1 if failed or run.incomplete else 0
 
 
 if __name__ == "__main__":

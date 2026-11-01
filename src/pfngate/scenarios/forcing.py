@@ -29,6 +29,7 @@ def drive_and_noise(
     noise: Mapping[str, float],
     t: np.ndarray,
 ) -> tuple[np.ndarray, np.ndarray]:
+    """The control ramp and noise settings of a scenario spec."""
     form = ramp["form"]
     zeros = np.zeros_like(t)
     if form in ("linear", "linear_then_hold"):

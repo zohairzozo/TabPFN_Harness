@@ -47,6 +47,7 @@ class Scenario:
         return [s for name in self.seed_sets for s in self.common.seed_sets[name].seeds()]
 
     def split_for(self, seed: int) -> str:
+        """The split name of a seed, from the seed sets it belongs to."""
         for name in self.seed_sets:
             if seed in self.common.seed_sets[name]:
                 return self.common.seed_sets[name].split
@@ -55,6 +56,7 @@ class Scenario:
         )
 
     def x0(self) -> list[float]:
+        """The initial state of the scenario, from its spec."""
         kind = self.initial_state["kind"]
         if kind == "lower_branch_equilibrium":
             return [lower_branch_equilibrium(self.params["p0"])]
@@ -63,6 +65,7 @@ class Scenario:
         raise ValueError(f"unknown initial_state kind '{kind}'")
 
     def generate(self, seed: int) -> Trajectory:
+        """Generate one trajectory of the scenario for a seed."""
         split = self.split_for(seed)
         c = self.common
         ss = np.random.SeedSequence([zlib.crc32(self.scenario_id.encode()), seed])

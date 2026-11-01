@@ -48,6 +48,7 @@ class FitPredict:
     compute_seconds: float = 0.0
 
     def __call__(self, context: pd.DataFrame, query: pd.DataFrame) -> tuple[PFNOutput, bool]:
+        """Fit and predict on a context and query, using the cache when it can."""
         key = cache_key(
             self.cfg,
             backend=self.backend.name,

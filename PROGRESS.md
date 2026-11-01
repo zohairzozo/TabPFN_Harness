@@ -400,6 +400,68 @@ You chose to keep claude-sonnet-5-5 and claude-haiku-5-5 even though temperature
 - Tests: `tests/test_demo.py` (the rules, the fallback search, failing safely, and the whole demo run with every non-loopback socket call blocked and recorded: none are made, and `evaluate` is called with `llm_mode="replay"`). Time budget is 180 s and checked by the demo.
 - Not done: the README. Nothing is committed.
 
+### 2026-10-31 (README rendered from results)
+
+- **`README.md`** is rewritten in the requested order: what it is and why, the results table, three failures, how to run it (`make demo`, `make full`, `make report`), what is a stand-in, limits, and next steps. It replaces the four-line skeleton.
+- **`scripts/render_readme.py`** fills two generated blocks between HTML comment markers: `results` (the verdict line from `results/report/criteria.json` and the "Variants, run level" table from `results/summary.md`) and `failures` (one sentence each for the top-ranked false alarm, missed block and agent disagreement in `results/failures.json`). Over-blocking is left out on purpose. `--check` fails if the README is out of date.
+- The three failures are the top example of each of those kinds, not a judgement of which is most telling. The rule is in the script's docstring.
+- **Test:** `tests/test_render_readme.py`. The prose outside the generated blocks has no digits. Every number in the whole README is in a result file (or `data/SOURCES.md`). The README is up to date with the results. The renderer is checked on made-up results.
+- Not done: the README is not wired into `make`; run `uv run python scripts/render_readme.py` after new results. Nothing is committed.
+
+### 2026-10-31 (cleanup pass and git audit)
+
+- Dead code: removed bullets_html from src/pfngate/report/page.py. Nothing referred to it. Kept, because only tests use them: reliability_diagram and ReliabilityData.to_dict (evals/calibration.py), read_trace (evals/trace.py) and context_xy (pfn/context.py). Removing them would also mean removing their tests, so they are left for a decision.
+- Unused imports: none (ruff F401 is clean).
+- Docstrings: 254 one-line docstrings added. Every public function and method in src/pfngate and scripts now has one. 46 public functions already had a multi-line docstring and were left as they are. Behaviour is unchanged: insertions only, and two Protocol methods now have a docstring as their body instead of an ellipsis.
+- ruff format reformatted 3 files. ruff check is clean. The full pytest run gave 493 passed, 1 skipped.
+- Git audit: no .env value, token, model weight or raw data file is tracked. Items to review are in the reply, not deleted: tracked PFN cache files under results/fast/cache, interview.docx (you asked for it to stay uncommitted), the demo transcript with a local path, and the two commit subjects that start with a stray dash.
+- Nothing is committed by this session.
+
+### 2026-10-31 (report and README fixes after review)
+
+- Gallery plot for the real Daphnia split: the result files call it "real" and the loader calls it "real_tipping", so the lookup missed and the card said the scenario could not be found. `real_split_of` in `report/gallery.py` maps the names. The Daphnia card now has its plot.
+- Before-and-after table: four groups (no agent and no gate; an agent but no gate; the full harness; the oracle as an upper bound). The naive agent was wrongly under "After".
+- The dagger and double-dagger marks now have their legend under the tables, read from `results/summary.md` (a table keeps the paragraph under it in `text_sources.py`).
+- Provenance: nested bullets of `data/SOURCES.md` keep their own lines, and the PFN backend, model version, package version and context cap are read from `results/agent_test.json` instead of a placeholder.
+- Gallery numbers use plain-word labels, flags read yes or no, empty lists read none, and decisions read without underscores. Gate values that are whole numbers show without decimals.
+- README: says that the PFN cache in `results/cache/pfn` is not in git, so a fresh clone runs `make full` once, online, before `make demo` works offline.
+- Tests added to `tests/test_report.py` for each fix. Not done: untracking `results/fast/cache/pfn` and `interview.docx` (needs a separate yes). Nothing is committed.
+
+### 2026-10-31 (fixes for the high and medium items of docs/AUDIT.md)
+
+Fixed, each with tests:
+- **H3** `scripts/lead_time.py` writes `results/lead_time.json` (first alarm and lead time at the frozen alert thresholds; the control share that alarms anywhere is beside it, because the first alarm can be false). `make_summary` and the README show it. No new tuning.
+- **H2 (partly)** the report and the README now say, in plain words, when the numbers come from a tree with uncommitted files. Commit and rerun `make full` to clear it. Not done by me: committing.
+- **M1** the report check is strict: a number must be text quoted from summary.md, SOURCES.md or failures.json, or a number the page formatted from data (`page.num` records it). A typed number is refused even if some result file holds the same value. The README test is strict in the same way. The old coarse check stays for comparison. The strict check found 12 numbers the coarse one had hidden (rationale quotes, thousands separators); both are now handled honestly.
+- **M3** `scripts/sharpness.py` writes `results/sharpness.json` (interval width and pinball skill against a climatology of the pool targets). The summary also says which gate checks cause the blocks.
+- **M4** the real-data table flags an AUROC computed over one repeated decision, and lists each variant decisions on the real splits. The README has the real-data table.
+- **M5** every required criterion has an interval (exact binomial for shares, bootstrap for coverage) and is marked undecided when it spans the threshold. The verdict rule is unchanged.
+- **M6** `run_all` no longer retries when there is no network or no key: it skips the stage with the reason and exits 1. The demo reads a small tracked fixture (`results/demo_cache/pfn`, 12 entries) when the full PFN cache is absent, writes its run output to `results/cache/demo`, and prints repo-relative paths. `results/demo/` is untracked and ignored.
+- **M7** the arXiv identifier is confirmed by its abstract page (title and authors); the stub and `docs/LABELS.md` now say so, and say that only the abstract was read.
+- **M8** the README says the results used the gated weights, that the package Apache declaration is for its code, and that the weights terms are not quoted here.
+
+Decided by you, then done:
+- **H1** the claim now says exactly what happened: tuned on in-prior validation runs only; held-out simulated results had been computed and read before the gate was designed, so they are not blind. Changed in `README.md`, the report method text, the two generated sentences in `make_summary.py`, and the status lines of `docs/GATE.md`. The `docs/SPLITS.md` heading is a design rule and is left as it is.
+- **M2** disclosed in the README limits and the report method text. The agent tools are unchanged, so no LLM stage needed recording again.
+- **Fast profile** `--fast` is now `--limit 3 --seeds-per-scenario 1`, a subset of the recorded default sample, so it replays offline. This changes the earlier 5-scenarios spec. A test pins it as a subset.
+- **Licence** `LICENSE` (MIT, 2026, Zohair Ahmed Shehzad) added; the README says it does not cover the TabPFN weights. `pyproject.toml` was not given a licence field, because that would make uv rebuild the package, which needs a network.
+
+Verification, run in an isolated scratch copy with every non-loopback network call blocked:
+- `run_all --fast` replayed all LLM stages, ran the lead-time and sharpness analyses and wrote its outputs in 317 s. Its only non-zero stage was pytest: two tests in `tests/test_replay.py` assert their own network-block message, so an outer block changes the message and fails them. They pass in a normal run, and the suite has 550 other passes.
+- `make demo` with only the tracked caches (no PFN cache, no run logs) finished in 4 s and replayed both runs to the recorded decisions. The transcript holds no machine path.
+- Not done: a run with the Wi-Fi switched off. The block is in the process, not the adapter.
+
+One accident, mine, now repaired. While re-running, a launch command joined its steps with `&&` only at the start, so when the copy step failed the rest ran in the real tree: `run_all --fast` (a full, valid run of the new fast profile, now in `results/fast/`), then a recursive delete of `results/cache/pfn`, `run_logs` and the old demo output. The PFN cache (4,005 files) was restored from an untouched copy, and every entry of the demo fixture is in it again. `run_logs` and the old demo output are logs and ignored files and were not restored. To undo the stray fast run, restore the tracked files of `results/fast` from git and remove its untracked files. Later launch scripts stop on the first error and refuse to run outside the copy.
+
+LOW items from the audit, listed and not fixed:
+- L1 the "90%" in labels is typed by hand (`page.py` NUMBER_LABELS, `configs/release_criteria.yaml`); the strict check allows that one name-number and a test ties it to `configs/gate.yaml`.
+- L2 the report wall clock is that of the replay run, not the recorded run.
+- L3 knn picks one context per trajectory from all its windows, the late ones included (mild look-ahead for the window-level tables).
+- L4 in-prior test uses the scenario parameters of the context pool, with other seeds.
+- L5 "noise-induced tipping" ramps the noise level, so variance rises before the escape.
+- L6 the full harness gives the same decision on all three seeds in only a quarter of the scenarios (pass^3); one free model, replayed.
+- L7 two commit subjects are garbled; the old copies of `interview.docx` and the fast PFN cache remain in history.
+
 ## Decisions
 
 - Model version: v3.5. Keep the model version in the results JSON for every run. Never redistribute the weights.

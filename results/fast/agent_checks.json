@@ -1,4 +1,51 @@
 {
   "confident_at": 0.8,
-  "variants": {}
+  "variants": {
+    "agent_test": {
+      "n_runs": 6,
+      "strategy_counts": {
+        "knn": 3,
+        "random": 3
+      },
+      "n_control_runs": 3,
+      "n_control_without_recommendation": 0,
+      "n_control_recommended_alert": 0,
+      "n_control_confident_alert": 0,
+      "n_control_final_alert": 1
+    },
+    "agent_ood": {
+      "n_runs": 6,
+      "strategy_counts": {
+        "knn": 5,
+        "random": 1
+      },
+      "n_control_runs": 3,
+      "n_control_without_recommendation": 0,
+      "n_control_recommended_alert": 0,
+      "n_control_confident_alert": 0,
+      "n_control_final_alert": 0
+    },
+    "naive_agent_test": {
+      "n_runs": 6,
+      "strategy_counts": {
+        "none": 6
+      },
+      "n_control_runs": 3,
+      "n_control_without_recommendation": 0,
+      "n_control_recommended_alert": 0,
+      "n_control_confident_alert": 0,
+      "n_control_final_alert": 0
+    },
+    "naive_agent_ood": {
+      "n_runs": 6,
+      "strategy_counts": {
+        "none": 6
+      },
+      "n_control_runs": 3,
+      "n_control_without_recommendation": 0,
+      "n_control_recommended_alert": 0,
+      "n_control_confident_alert": 0,
+      "n_control_final_alert": 0
+    }
+  }
 }

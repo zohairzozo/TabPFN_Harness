@@ -55,6 +55,7 @@ class TabPFNClient:
         return tabpfn_client
 
     def fit(self, context_X: np.ndarray, context_y: np.ndarray) -> None:
+        """Fit the TabPFN client backend on the context rows."""
         client = self._import_client()
         X, y = check_context(context_X, context_y)
         params = inspect.signature(client.TabPFNRegressor.predict).parameters
@@ -70,6 +71,7 @@ class TabPFNClient:
         self._reg, self._n_context, self._n_features = reg, X.shape[0], X.shape[1]
 
     def predict(self, query_X: np.ndarray) -> PFNOutput:
+        """Predict with the fitted TabPFN client backend."""
         if self._reg is None:
             self._import_client()  # raises the right error if the client is off or missing
             raise RuntimeError("call fit before predict")

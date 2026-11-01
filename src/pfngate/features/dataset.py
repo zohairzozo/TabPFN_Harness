@@ -33,6 +33,7 @@ COLUMNS: tuple[str, ...] = META_COLUMNS + FEATURE_NAMES
 
 
 def trajectory_id(scenario_id: str, seed: int) -> str:
+    """The id of one trajectory: its scenario id and seed."""
     return f"{scenario_id}/{seed}"
 
 

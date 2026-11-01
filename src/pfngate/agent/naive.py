@@ -92,6 +92,7 @@ class NaiveRunRecord(BaseModel):
 
 
 def build_naive_agent(cfg: AgentConfig | None = None) -> Agent[AgentDeps, NaiveVerdict]:
+    """Build the naive agent, which has only the query description and run_pfn."""
     cfg = cfg or load_agent_config()
     return Agent(
         None,

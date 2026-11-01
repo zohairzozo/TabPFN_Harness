@@ -51,6 +51,7 @@ class ContextSelection:
 
     @property
     def size(self) -> int:
+        """The number of rows in the chosen context."""
         return len(self.context)
 
     @property
@@ -76,6 +77,7 @@ def context_xy(selection: ContextSelection) -> tuple[np.ndarray, np.ndarray]:
 
 
 def query_x(query: pd.DataFrame) -> np.ndarray:
+    """The feature matrix of a query, in the fixed feature order."""
     return query[list(FEATURE_NAMES)].to_numpy(float)
 
 

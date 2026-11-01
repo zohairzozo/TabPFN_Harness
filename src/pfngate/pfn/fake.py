@@ -58,6 +58,7 @@ class FakeBackend:
         self._fit_seconds = 0.0
 
     def fit(self, context_X: np.ndarray, context_y: np.ndarray) -> None:
+        """Record a fit of the fake backend and its time. It learns nothing."""
         t0 = time.perf_counter()
         X, y = check_context(context_X, context_y)
         self._n_context, self._n_features = X.shape[0], X.shape[1]
@@ -66,6 +67,7 @@ class FakeBackend:
         self._fit_seconds = time.perf_counter() - t0
 
     def predict(self, query_X: np.ndarray) -> PFNOutput:
+        """Predict fake outputs for the query rows. Needs a fit first."""
         if not self._fitted:
             raise RuntimeError("call fit before predict")
         t0 = time.perf_counter()

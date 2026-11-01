@@ -118,6 +118,7 @@ DEFAULT_RESULTS_DIR = REPO_ROOT / "results"
 
 
 def result_path(results_dir: Path, strategy: str, split_flag: str) -> Path:
+    """The path of the PFN result file for a strategy and split."""
     return results_dir / f"pfn_{strategy}_{split_flag}.json"
 
 
@@ -135,6 +136,7 @@ def load_queries(
 
 
 def window_table(q: pd.DataFrame, out: PFNOutput) -> pd.DataFrame:
+    """Pair the PFN output rows with the query windows, checking they match."""
     if out.n_query != len(q):
         raise ValueError(f"{out.n_query} predictions for {len(q)} windows")
     table = q[["trajectory_id", "scenario_id", "family", "role", "split", "label", "target"]].copy()
@@ -229,6 +231,7 @@ def pool_distance_for(gate_cfg: GateConfig, pool: pd.DataFrame) -> PoolDistance:
 
 
 def decision_counts(decisions: tuple[str, ...] | None) -> dict[str, int] | None:
+    """Count the alert, no-alert and abstain decisions in a list."""
     if decisions is None:
         return None
     return {d: decisions.count(d) for d in ("abstain", "alert", "no_alert")}
@@ -500,6 +503,7 @@ def gate_run(
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Command-line entry point for the PFN evaluation."""
     cfg = load_pfn_config()
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawTextHelpFormatter)
     p.add_argument("--strategy", required=True, choices=STRATEGIES)

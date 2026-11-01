@@ -1,6 +1,6 @@
 # Gate
 
-Status: **approved (2026-10-27) with the five recommended decisions, and implemented** in `src/pfngate/gate/`. Tuning stopped in rounds 1 to 3, because no grid point reached the minimum precision. In round 4 (2026-10-28) the gate went back to round 2's checks, the precision floor was removed (decision 12), and `configs/gate.yaml` was **tuned on validation, frozen and committed before any held-out run**. The held-out results are in `results/summary.md` and `results/figs/reliability.png`.
+Status: **approved (2026-10-27) with the five recommended decisions, and implemented** in `src/pfngate/gate/`. Tuning stopped in rounds 1 to 3, because no grid point reached the minimum precision. In round 4 (2026-10-28) the gate went back to round 2's checks, the precision floor was removed (decision 12), and `configs/gate.yaml` was **tuned on validation, frozen and committed before any held-out gated run**. Ungated held-out PFN and baseline results existed before the gate was designed, so the held-out numbers are not blind (docs/AUDIT.md, H1). The held-out results are in `results/summary.md` and `results/figs/reliability.png`.
 
 **Revision 2** is at the end of this file. On 2026-10-28, four of its decisions were approved and implemented, and the sections above are updated for them:
 - 6: the `knn_balanced` context;
@@ -18,7 +18,7 @@ Decisions 10 and 11 are still open.
 - **Decision 12: no minimum precision.** The tuner picks the grid point with the highest F1 of blocking BAD runs. Ties go to higher precision, then lower abstention on good runs, then the looser point.
   - This replaces decision 3 (precision at least 0.6, highest recall).
   - It is a loosening made after seeing three stopped rounds, and the report says so.
-  - The thresholds are still tuned on validation only, and frozen and committed before any held-out run.
+  - The thresholds are still tuned on validation only, and frozen and committed before any held-out gated run.
 
 The gate decides whether one model run may be trusted. It is plain Python. It reads frozen thresholds from `configs/gate.yaml`, it never sees the ground truth of the query trajectory, and nothing else can change what it returns. An LLM agent may read a gate result and recommend something. It cannot edit the result, the thresholds, or the decision.
 

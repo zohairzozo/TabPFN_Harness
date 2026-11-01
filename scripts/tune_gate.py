@@ -29,10 +29,12 @@ from pfngate.pfn import load_pfn_config
 
 
 def fmt(v: float | None) -> str:
+    """A number as a fixed-width string, or n/a if it is missing."""
     return "  n/a" if v is None else f"{v:5.3f}"
 
 
 def print_tradeoff(record: dict[str, Any]) -> None:
+    """Print the chosen point and the tuning trade-off."""
     chosen = record["chosen"] or {}
     rows = sorted(record["points"], key=lambda r: (r["feasible"], r["f1"] or 0.0),
                   reverse=True)  # fmt: skip
@@ -51,6 +53,7 @@ def print_tradeoff(record: dict[str, Any]) -> None:
 
 
 def main() -> int:
+    """Command-line entry point: tune the gate and write its settings."""
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--results-dir", type=Path, default=REPO_ROOT / "results")
     args = p.parse_args()

@@ -9,10 +9,13 @@ results/demo_transcript.txt, which is only replaced when a run finishes, so the 
 transcript stays as a fallback if a live run fails.
 
 It needs what `make full` leaves behind: results/agent_{test,ood}.json, results/summary.md and
-the caches in results/cache/llm and results/cache/pfn.
+the recorded LLM answers in results/cache/llm (tracked by git) and PFN outputs. The PFN outputs
+come from results/cache/pfn when it has entries, and otherwise from the small tracked fixture
+results/demo_cache/pfn, which holds exactly what the two runs read. So a fresh clone can run
+the demo offline. A fixture miss falls back to a live TabPFN call, which needs weights.
 
-Usage: python scripts/demo.py [--results-dir results] [--out-dir results/demo]
-                              [--transcript results/demo_transcript.txt]
+Usage: python scripts/demo.py [--results-dir results] [--out-dir results/cache/demo]
+                              [--pfn-cache DIR] [--transcript results/demo_transcript.txt]
 """
 
 from __future__ import annotations
@@ -54,6 +57,7 @@ TOOL_SENTENCES = {
     "run_pfn": "asked the PFN to predict from a context",
 }
 SEPARATOR = "-" * 72
+FIXTURE = Path("demo_cache") / "pfn"  # under the results folder, tracked by git
 
 
 class Printer:
@@ -64,10 +68,12 @@ class Printer:
         self.sink = sink
 
     def __call__(self, text: str = "") -> None:
+        """Print a line and keep it for the transcript."""
         self.lines.append(text)
         self.sink(text)
 
     def text(self) -> str:
+        """All lines printed so far, joined with newlines."""
         return "\n".join(self.lines) + "\n"
 
 
@@ -79,6 +85,7 @@ class KeepingStore(RunStore):
         self.kept: dict[str, RunData] = {}
 
     def drop(self, run_id: str) -> None:
+        """Keep a run's data before it is dropped from the store."""
         self.kept[run_id] = self.get(run_id)
         super().drop(run_id)
 
@@ -87,6 +94,7 @@ class KeepingStore(RunStore):
 
 
 def is_correct_accepted_alert(run: dict[str, Any]) -> bool:
+    """Rule one: an accepted run that alerted on a series near tipping."""
     return (
         run["accepted"] is True
         and run["decision"] == "alert"
@@ -95,6 +103,7 @@ def is_correct_accepted_alert(run: dict[str, Any]) -> bool:
 
 
 def is_blocked_bad_run(run: dict[str, Any]) -> bool:
+    """Rule two: a run the gate blocked, whose interval was bad."""
     quality = run.get("pfn_quality") or {}
     return run["accepted"] is False and bool(quality.get("bad"))
 
@@ -132,6 +141,7 @@ def pick(results_dir: Path, rule: Callable[[dict[str, Any]], bool]) -> dict[str,
 
 
 def fmt(value: Any, digits: int = 3) -> str:
+    """A value as text, with floats rounded to a fixed number of digits."""
     if isinstance(value, bool) or value is None:
         return str(value)
     if isinstance(value, float):
@@ -142,6 +152,7 @@ def fmt(value: Any, digits: int = 3) -> str:
 
 
 def trace_rows(trace_path: Path, trajectory_id: str) -> list[dict[str, Any]]:
+    """The trace lines of one trajectory, in order."""
     rows = []
     for line in trace_path.read_text(encoding="utf-8").splitlines():
         if line.strip():
@@ -152,6 +163,7 @@ def trace_rows(trace_path: Path, trajectory_id: str) -> list[dict[str, Any]]:
 
 
 def describe_asks(rows: list[dict[str, Any]], say: Printer) -> None:
+    """Print the agent's tool calls for one run, in plain language."""
     asks = [r for r in rows if str(r["tool"]).startswith("agent_tool")]
     model_calls = sum(str(r["tool"]).startswith("llm") for r in rows)
     say(f"   The agent made {model_calls} model calls and, in this order:")
@@ -187,6 +199,7 @@ def last_window(data: RunData | None, context_hash: str | None) -> dict[str, Any
 
 
 def describe_pfn(window: dict[str, Any] | None, truth: dict[str, Any], say: Printer) -> None:
+    """Print the PFN's last-window interval and p_critical in plain language."""
     if window is None:
         say("   There is no PFN output for the final context (no context was built).")
         return
@@ -203,6 +216,7 @@ def describe_pfn(window: dict[str, Any] | None, truth: dict[str, Any], say: Prin
 
 
 def describe_gate(final: dict[str, Any], gate: dict[str, Any] | None, say: Printer) -> None:
+    """Print every gate check of a run, with its value and threshold."""
     if not gate:
         say("   There was no gate result: the agent built no context.")
         return
@@ -310,6 +324,7 @@ def describe_run(
 
 
 def headline(results_dir: Path, say: Printer) -> None:
+    """Print the headline row of the variants table."""
     table = section_table(read_text(results_dir / "summary.md"), "Variants, run level")
     row = None
     if table:
@@ -322,10 +337,33 @@ def headline(results_dir: Path, say: Printer) -> None:
         say(f"   {plain(header)}: {plain(cell)}")
 
 
+def shown(path: Path) -> str:
+    """A path as printed: relative to the repository when it is inside it, so the transcript
+    holds no machine-specific folder."""
+    try:
+        return path.resolve().relative_to(REPO_ROOT).as_posix()
+    except ValueError:
+        return path.as_posix()
+
+
+def has_entries(folder: Path) -> bool:
+    """True if the folder exists and holds at least one file."""
+    return folder.is_dir() and any(folder.iterdir())
+
+
+def pfn_cache_dir(results_dir: Path, override: Path | None = None) -> Path:
+    """The PFN cache to read: the given one, the full cache if it has entries, else the fixture."""
+    if override is not None:
+        return override
+    full = results_dir / "cache" / "pfn"
+    return full if has_entries(full) else results_dir / FIXTURE
+
+
 def report_lines(results_dir: Path, say: Printer) -> None:
+    """Print the path to the report and its verdict, if the report exists."""
     index = results_dir / "report" / "index.html"
     if index.exists():
-        say(f"The report: {index}")
+        say(f"The report: {shown(index)}")
         criteria = results_dir / "report" / "criteria.json"
         if criteria.exists():
             doc = json.loads(criteria.read_text(encoding="utf-8"))
@@ -334,16 +372,21 @@ def report_lines(results_dir: Path, say: Printer) -> None:
                 f"({doc['required_met']} of {doc['required_total']} required criteria met)."
             )
     else:
-        say(f"The report is not built yet ({index}): run `make report`.")
+        say(f"The report is not built yet ({shown(index)}): run `make report`.")
 
 
-def check_caches(results_dir: Path) -> None:
-    for name in ("llm", "pfn"):
-        folder = results_dir / "cache" / name
-        if not folder.exists() or not any(folder.iterdir()):
-            raise SystemExit(
-                f"{folder} is empty. The demo replays recorded answers: run `make full` once first."
-            )
+def check_caches(results_dir: Path, pfn_dir: Path) -> None:
+    """Stop with a clear message if the recorded answers or the PFN outputs are missing."""
+    llm = results_dir / "cache" / "llm"
+    if not has_entries(llm):
+        raise SystemExit(
+            f"{shown(llm)} is empty. The demo replays recorded answers: run `make full` once first."
+        )
+    if not has_entries(pfn_dir):
+        raise SystemExit(
+            f"No PFN outputs in {shown(pfn_dir)}. Run `make full` once, with a network, or restore "
+            f"the tracked fixture {shown(results_dir / FIXTURE)}."
+        )
 
 
 def clear_previous(out_dir: Path) -> None:
@@ -353,12 +396,15 @@ def clear_previous(out_dir: Path) -> None:
             path.unlink()
 
 
-def run_demo(results_dir: Path, out_dir: Path, say: Printer) -> bool:
+def run_demo(results_dir: Path, out_dir: Path, say: Printer, pfn_dir: Path | None = None) -> bool:
+    """Pick the two runs, replay them and print the walkthrough."""
     start = time.perf_counter()
     say("pfngate demo: two held-out runs of the full harness (agent + gate)")
+    pfn_dir = pfn_cache_dir(results_dir) if pfn_dir is None else pfn_dir
     say("Mode: --llm-mode replay. No network, no API key. The PFN output comes from the cache.")
+    say(f"PFN outputs read from: {shown(pfn_dir)}")
     say()
-    check_caches(results_dir)
+    check_caches(results_dir, pfn_dir)
     assert_committed(DEFAULT_GATE_CONFIG)  # held-out data needs the gate committed (SPLITS.md)
     chosen: list[tuple[str, str, dict[str, Any]]] = []
     for label, text, rule in RULES:
@@ -389,7 +435,7 @@ def run_demo(results_dir: Path, out_dir: Path, say: Printer) -> bool:
             trajectory_ids=[tid],
             store=store,
             results_dir=out_dir,
-            cache_dir=results_dir / "cache" / "pfn",
+            cache_dir=pfn_dir,
             llm_cache_dir=results_dir / "cache" / "llm",
             llm_mode="replay",
             progress=False,
@@ -419,20 +465,22 @@ def save_transcript(path: Path, say: Printer) -> None:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Command-line entry point: run the demo and save the transcript."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--results-dir", type=Path, default=REPO_ROOT / "results")
     parser.add_argument("--out-dir", type=Path, default=None)
+    parser.add_argument("--pfn-cache", type=Path, default=None, help="the PFN outputs to read")
     parser.add_argument("--transcript", type=Path, default=None)
     args = parser.parse_args(argv)
-    out_dir = args.out_dir or args.results_dir / "demo"
+    out_dir = args.out_dir or args.results_dir / "cache" / "demo"  # not tracked by git
     transcript = args.transcript or args.results_dir / "demo_transcript.txt"
     np.random.seed(0)
     say = Printer()
-    ok = run_demo(args.results_dir, out_dir, say)
+    ok = run_demo(args.results_dir, out_dir, say, args.pfn_cache)
     if not ok:  # keep the last good transcript where it is
         transcript = transcript.with_name(transcript.name + ".failed")
     save_transcript(transcript, say)
-    say.sink(f"Saved this transcript to {transcript}")
+    say.sink(f"Saved this transcript to {shown(transcript)}")
     return 0 if ok else 1
 
 

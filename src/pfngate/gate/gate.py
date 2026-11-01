@@ -96,16 +96,19 @@ class GateResult(BaseModel):
         return self
 
     def model_copy(self, *, update: Any = None, deep: bool = False) -> GateResult:
+        """A copy of the gate result with the given fields changed."""
         if update:
             raise TypeError("a GateResult cannot be changed; run the gate again instead")
         return super().model_copy(deep=deep)
 
     @property
     def failed(self) -> tuple[str, ...]:
+        """The names of the required checks that failed."""
         return tuple(c.name for c in self.checks if not c.passed)
 
     @property
     def advisories_failed(self) -> tuple[str, ...]:
+        """The names of the advisory checks that failed."""
         return tuple(a.name for a in self.advisories if not a.passed)
 
 

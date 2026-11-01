@@ -86,6 +86,7 @@ class PFNOutput(BaseModel):
 
     @property
     def n_query(self) -> int:
+        """The number of query rows in the output."""
         return self.quantiles.shape[0]
 
 
@@ -95,12 +96,15 @@ class PFNBackend(Protocol):
 
     name: str
 
-    def fit(self, context_X: np.ndarray, context_y: np.ndarray) -> None: ...
+    def fit(self, context_X: np.ndarray, context_y: np.ndarray) -> None:
+        """Fit the backend on a context: feature rows and their targets."""
 
-    def predict(self, query_X: np.ndarray) -> PFNOutput: ...
+    def predict(self, query_X: np.ndarray) -> PFNOutput:
+        """Predict quantiles and p_critical for query rows, after a fit."""
 
 
 def check_context(context_X: np.ndarray, context_y: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
+    """Check and convert the context features and targets to float arrays."""
     X = np.asarray(context_X, dtype=float)
     y = np.asarray(context_y, dtype=float)
     if X.ndim != 2 or y.ndim != 1 or len(X) != len(y) or len(X) == 0:
@@ -111,6 +115,7 @@ def check_context(context_X: np.ndarray, context_y: np.ndarray) -> tuple[np.ndar
 
 
 def check_query(query_X: np.ndarray, n_features: int) -> np.ndarray:
+    """Check and convert the query features to a float array."""
     X = np.asarray(query_X, dtype=float)
     if X.ndim != 2 or X.shape[1] != n_features or len(X) == 0:
         raise ValueError(f"need query_X of shape (n, {n_features}), got {X.shape}")

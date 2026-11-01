@@ -1,9 +1,17 @@
 """The number check: every number on the report page must come from a file.
 
 The page is parsed back to text. Identifiers (scenario ids, hashes, versions, dates), section
-numbers and years are set aside. Every other number must appear in the files the report reads:
-the JSON and JSONL files in results/, results/summary.md and data/SOURCES.md. A number is
-matched at any rounding from zero to six decimals, and as a percentage.
+numbers and years are set aside. Every other number must be one of two kinds:
+
+- text quoted as it stands from results/summary.md, data/SOURCES.md or the texts of
+  results/failures.json (matched exactly, with no rounding), or an agent rationale quoted from a
+  result file; or
+- a number the page formatted from data, which the page records as it formats it (page.num).
+
+That is the strict check used by the build (exact_allowed). A number typed into the template is
+refused even when some result file happens to hold the same value. The older, coarse check
+(allowed_numbers) accepts any value found anywhere in results/, at any rounding from zero to six
+decimals or as a percentage. It is kept for the README test and to show what the strict check adds.
 """
 
 from __future__ import annotations
@@ -25,6 +33,7 @@ VERSION = re.compile(r"\b\d+(?:\.\d+){2,}\b")
 YEAR = re.compile(r"(?:19|20)\d{2}")
 SECTION_NO = re.compile(r'<span class="secno">.*?</span>', re.S)
 SKIP_BLOCKS = re.compile(r"<(script|style)\b.*?</\1>", re.S | re.I)
+THOUSANDS = re.compile(r"(?<=\d),(?=\d{3}(?!\d))")
 TAG = re.compile(r"<[^>]+>")
 
 
@@ -45,10 +54,12 @@ def variants(value: float) -> Iterator[str]:
 
 
 def numbers_in_text(text: str) -> set[str]:
+    """The set of numbers found in a text, normalised."""
     return {normalise(m) for m in NUMBER.findall(text)}
 
 
 def numbers_in_json(node: Any) -> set[str]:
+    """The set of numbers found in a JSON value, at every rounding."""
     out: set[str] = set()
     if isinstance(node, bool) or node is None:
         return out
@@ -70,6 +81,7 @@ def numbers_in_json(node: Any) -> set[str]:
 def source_files(
     results_dir: Path, data_sources: Path | None, extra: list[Path] | None = None
 ) -> list[Path]:
+    """The files whose numbers the report may show."""
     files = sorted(results_dir.glob("*.json")) + sorted((results_dir / "datasets").glob("*.json"))
     files += sorted((results_dir / "report").glob("*.json"))
     files += sorted((results_dir / "traces").glob("*.jsonl"))
@@ -80,9 +92,52 @@ def source_files(
     return [f for f in dict.fromkeys(files) if f.exists()]
 
 
+def strings_in_json(node: Any) -> list[str]:
+    """Every string value in a JSON document."""
+    if isinstance(node, str):
+        return [node]
+    if isinstance(node, list):
+        return [t for item in node for t in strings_in_json(item)]
+    if isinstance(node, dict):
+        return [t for item in node.values() for t in strings_in_json(item)]
+    return []
+
+
+def verbatim_numbers(results_dir: Path, data_sources: Path | None) -> set[str]:
+    """Numbers in the text the page quotes as it stands: summary.md, SOURCES.md, failure texts.
+
+    These are matched exactly as they are written, with no rounding.
+    """
+    allowed: set[str] = set()
+    for path in [results_dir / "summary.md", data_sources]:
+        if path is not None and path.exists():
+            allowed |= numbers_in_text(path.read_text(encoding="utf-8"))
+    failures = results_dir / "failures.json"
+    if failures.exists():
+        for text in strings_in_json(json.loads(failures.read_text(encoding="utf-8"))):
+            allowed |= numbers_in_text(text)
+    return allowed
+
+
+# Numbers that are part of a name, not a result. The 90 in "90% interval" is the width of the
+# central interval the gate uses (configs/gate.yaml, bad_run.interval is 0.05 to 0.95). A test
+# keeps the name true. It is typed by hand in labels, which the audit lists as a low item.
+NAME_NUMBERS = frozenset({"90"})
+
+
+def exact_allowed(results_dir: Path, data_sources: Path | None, rendered: set[str]) -> set[str]:
+    """The strict set: text quoted verbatim, plus the numbers the page formatted from data.
+
+    A number typed into the template is in neither, even when some result file holds the same
+    value. That is the difference from allowed_numbers, which accepts any value found anywhere.
+    """
+    return verbatim_numbers(results_dir, data_sources) | rendered | NAME_NUMBERS
+
+
 def allowed_numbers(
     results_dir: Path, data_sources: Path | None, extra: list[Path] | None = None
 ) -> set[str]:
+    """All numbers that the source files hold."""
     allowed: set[str] = set()
     for path in source_files(results_dir, data_sources, extra):
         text = path.read_text(encoding="utf-8")
@@ -114,7 +169,8 @@ def is_identifier(token: str) -> bool:
 
 
 def numbers_on_page(page: str) -> list[str]:
-    text = visible_text(page)
+    """The numbers a reader sees on a page, outside identifiers and dates."""
+    text = THOUSANDS.sub("", visible_text(page))  # 432,000 is one number, not two
     for pattern in (DATE, COMPACT_TIME, DOI, VERSION):
         text = pattern.sub(" ", text)
     found: list[str] = []

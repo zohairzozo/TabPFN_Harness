@@ -77,6 +77,7 @@ def find_record(results_dir: Path, example: dict[str, Any]) -> dict[str, Any] | 
 
 
 def gate_checks(gate: dict[str, Any] | None) -> list[GateCheck]:
+    """The gate checks of a gate result, as GateCheck objects."""
     if not gate:
         return []
     return [
@@ -86,6 +87,7 @@ def gate_checks(gate: dict[str, Any] | None) -> list[GateCheck]:
 
 
 def fill_from_record(entry: GalleryEntry, rec: dict[str, Any]) -> None:
+    """Copy the verdict, decision and gate fields of a record into an entry."""
     if rec["kind"] == "run":
         record = rec["record"]
         verdict = record.get("verdict") or {}
@@ -134,24 +136,37 @@ def trace_excerpt(results_dir: Path, example: dict[str, Any]) -> tuple[list[Trac
     return found[:half] + found[-half:], len(found) - EXCERPT_LINES
 
 
+def real_split_of(split: str) -> str | None:
+    """The real split that a result split name stands for, or None for a simulated split.
+
+    The result files call the splits "real" and "real_control". The data loader knows the
+    first one as "real_tipping".
+    """
+    from pfngate.data import REAL_CONTROL_SPLIT, REAL_SPLIT
+
+    names = {"real": REAL_SPLIT, REAL_SPLIT: REAL_SPLIT, REAL_CONTROL_SPLIT: REAL_CONTROL_SPLIT}
+    return names.get(split)
+
+
 def find_trajectory(example: dict[str, Any]) -> Trajectory | None:
     """The trajectory of an example, from the simulator or from the real data on disk."""
-    from pfngate.data import REAL_CONTROL_SPLIT, REAL_SPLIT
     from pfngate.gate import assert_frozen
     from pfngate.scenarios import load_scenarios
 
     sid, seed, split = example["scenario_id"], example["seed"], example["split"]
-    if split in (REAL_SPLIT, REAL_CONTROL_SPLIT):
+    real_split = real_split_of(split)
+    if real_split is not None:
         from pfngate.data.load import real_trajectories
 
         assert_frozen()  # real data is test only: the gate must be frozen before it is read
-        trajectories, _ = real_trajectories(split)
+        trajectories, _ = real_trajectories(real_split)
         return next((t for t in trajectories if t.scenario_id == sid and t.seed == seed), None)
     scenario = load_scenarios().get(sid)
     return scenario.generate(seed) if scenario and seed is not None else None
 
 
 def draw(tr: Trajectory, example: dict[str, Any]) -> bytes:
+    """Draw the scenario plot of an example and return it as PNG bytes."""
     fig, (top, bottom) = plt.subplots(
         2, 1, figsize=(6.4, 3.6), sharex=True, constrained_layout=True, dpi=110
     )
@@ -176,6 +191,7 @@ def draw(tr: Trajectory, example: dict[str, Any]) -> bytes:
 
 
 def build_entry(results_dir: Path, category: str, example: dict[str, Any]) -> GalleryEntry:
+    """Build one gallery entry for an example, with its evidence and plot."""
     entry = GalleryEntry(category=category, example=example)
     rec = find_record(results_dir, example)
     if rec:
@@ -193,6 +209,7 @@ def build_entry(results_dir: Path, category: str, example: dict[str, Any]) -> Ga
 
 
 def build_gallery(results_dir: Path, per_category: int) -> list[GalleryEntry]:
+    """Build the gallery entries: the top examples of each failure category."""
     failures = json.loads((results_dir / "failures.json").read_text(encoding="utf-8"))
     out: list[GalleryEntry] = []
     for category, block in failures["categories"].items():
@@ -201,4 +218,5 @@ def build_gallery(results_dir: Path, per_category: int) -> list[GalleryEntry]:
 
 
 def data_uri(png: bytes) -> str:
+    """A PNG as a data URI, so the page needs no separate file."""
     return "data:image/png;base64," + base64.b64encode(png).decode("ascii")

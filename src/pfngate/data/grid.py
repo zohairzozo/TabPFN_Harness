@@ -48,6 +48,7 @@ class GridConfig:
 
 
 def load_grid_config(path: Path = DEFAULT_GRID_CONFIG) -> GridConfig:
+    """Read configs/real_control.yaml into a GridConfig."""
     with path.open(encoding="utf-8") as f:
         raw = yaml.safe_load(f)
     cfg = GridConfig(
@@ -62,6 +63,7 @@ def load_grid_config(path: Path = DEFAULT_GRID_CONFIG) -> GridConfig:
 
 
 def find_raw_file(cfg: GridConfig, root: Path = REPO_ROOT) -> Path:
+    """The one grid slice that matches the config, or a clear error."""
     files = sorted(root.glob(cfg.raw_glob))
     if not files:
         raise RawDataMissingError(
@@ -76,6 +78,7 @@ def find_raw_file(cfg: GridConfig, root: Path = REPO_ROOT) -> Path:
 
 
 def sha256_of(path: Path) -> str:
+    """SHA-256 of a file, read in blocks."""
     h = hashlib.sha256()
     with path.open("rb") as f:
         for block in iter(lambda: f.read(1 << 20), b""):

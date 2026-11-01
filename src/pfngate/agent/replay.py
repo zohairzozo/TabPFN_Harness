@@ -142,6 +142,7 @@ def request_key(
     model_settings: ModelSettings | None,
     params: ModelRequestParameters,
 ) -> str:
+    """The cache key of a model request: a hash of its canonical form."""
     canonical = canonical_request(model_ref, messages, model_settings, params)
     text = json.dumps(canonical, sort_keys=True, ensure_ascii=False, default=str)
     return hashlib.sha256(text.encode("utf-8")).hexdigest()
@@ -162,9 +163,11 @@ class LLMStore:
         self.directory = directory
 
     def path(self, key: str) -> Path:
+        """The file that holds the response for a cache key."""
         return self.directory / f"{key}.json"
 
     def has_entries(self) -> bool:
+        """True if the cache folder holds at least one recorded response."""
         return self.directory.is_dir() and any(self.directory.glob("*.json"))
 
     def get(self, key: str) -> StoredResponse | None:
@@ -188,6 +191,7 @@ class LLMStore:
         sampling_warnings: list[str],
         latency_s: float | None = None,
     ) -> None:
+        """Write one recorded response under its cache key."""
         path = self.path(key)
         if path.exists():  # an entry is never changed
             return
@@ -228,6 +232,7 @@ class RecordReplayModel(WrapperModel):
 
     @property
     def model_ref(self) -> str:
+        """The provider and model name of the wrapped model, as one string."""
         return f"{self.wrapped.system}:{self.wrapped.model_name}"
 
     async def request(
@@ -236,6 +241,7 @@ class RecordReplayModel(WrapperModel):
         model_settings: ModelSettings | None,
         model_request_parameters: ModelRequestParameters,
     ) -> ModelResponse:
+        """Answer one model request live, from the recording, or from the cache."""
         if self.mode == "live":
             self.live_calls += 1
             t0 = time.perf_counter()
@@ -344,4 +350,5 @@ def add_llm_arguments(parser: Any) -> None:
 
 
 def resolve_llm_mode(mode: str | None, directory: Path) -> LLMMode:
+    """The LLM mode to use: the given one, or replay when a cache exists."""
     return default_llm_mode(directory) if mode is None else mode  # type: ignore[return-value]

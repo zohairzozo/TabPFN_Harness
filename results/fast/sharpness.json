@@ -1,0 +1,80 @@
+{
+  "reference": "constant quantiles of the context pool target values",
+  "levels": [
+    0.05,
+    0.25,
+    0.5,
+    0.75,
+    0.95
+  ],
+  "climatology_quantiles": {
+    "0.05": 0.10825000000000014,
+    "0.25": 0.51625,
+    "0.5": 1.0,
+    "0.75": 1.0,
+    "0.95": 1.0
+  },
+  "climatology_width": 0.8917499999999998,
+  "splits": {
+    "test": {
+      "random": {
+        "all_runs": {
+          "n_runs": 54,
+          "median_width": 0.8634943227198353,
+          "median_width_over_climatology": 0.9683143512417555,
+          "pinball_skill": 0.24418715427660165
+        },
+        "gate_accepted_runs": {
+          "n_runs": 54,
+          "median_width": 0.8634943227198353,
+          "median_width_over_climatology": 0.9683143512417555,
+          "pinball_skill": 0.24418715427660165
+        }
+      },
+      "knn": {
+        "all_runs": {
+          "n_runs": 54,
+          "median_width": 0.7947802060987219,
+          "median_width_over_climatology": 0.8912589919806246,
+          "pinball_skill": 0.2976674338783101
+        },
+        "gate_accepted_runs": {
+          "n_runs": 44,
+          "median_width": 0.8270107599773262,
+          "median_width_over_climatology": 0.9274020296914229,
+          "pinball_skill": 0.3833023510102025
+        }
+      }
+    },
+    "ood": {
+      "random": {
+        "all_runs": {
+          "n_runs": 36,
+          "median_width": 0.9312298587946011,
+          "median_width_over_climatology": 1.0442723395509967,
+          "pinball_skill": -0.4903897717106296
+        },
+        "gate_accepted_runs": {
+          "n_runs": 35,
+          "median_width": 0.9239348653381032,
+          "median_width_over_climatology": 1.0360918030144137,
+          "pinball_skill": -0.48320821218130394
+        }
+      },
+      "knn": {
+        "all_runs": {
+          "n_runs": 36,
+          "median_width": 0.8395554469525426,
+          "median_width_over_climatology": 0.9414695227951139,
+          "pinball_skill": -0.9599874213350592
+        },
+        "gate_accepted_runs": {
+          "n_runs": 34,
+          "median_width": 0.8395554469525426,
+          "median_width_over_climatology": 0.9414695227951139,
+          "pinball_skill": -0.923445606092083
+        }
+      }
+    }
+  }
+}

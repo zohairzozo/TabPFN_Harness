@@ -60,6 +60,7 @@ def auroc_block(labelled: pd.DataFrame, cfg: BaselineConfig) -> dict[str, Any]:
 
 
 def false_alarm_block(controls: pd.DataFrame, cfg: BaselineConfig) -> dict[str, Any]:
+    """The false-alarm rates of the baseline over the control runs."""
     out = {"all_controls": controls}
     out.update({fam: g for fam, g in controls.groupby("family")})
     return {
@@ -100,6 +101,7 @@ def validation_threshold_block(
 
 
 def run(cfg: BaselineConfig) -> dict[str, Any]:
+    """Run the classic early-warning baseline on one split."""
     fc = load_feature_config()
     scenarios = load_scenarios()
     result: dict[str, Any] = {
@@ -234,6 +236,7 @@ def plot(json_path: Path, fig_path: Path) -> Path:
 
 
 def main() -> None:
+    """Command-line entry point for the classic early-warning baseline."""
     cfg = load_baseline_config()
     write_json(cfg.json_path, run(cfg))
     print(f"wrote {cfg.json_path}")

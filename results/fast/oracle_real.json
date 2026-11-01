@@ -20,7 +20,7 @@
   "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
   "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
   "seeds_per_scenario": 1,
-  "limit": 5,
+  "limit": 3,
   "n_runs": 0,
   "skipped": [
     {
@@ -64,8 +64,8 @@
       "n_runs": 0
     }
   },
-  "trace": "oracle-real-20261031T152332Z-aec528fb.jsonl",
-  "wall_seconds": 0.30849269998725504,
+  "trace": "oracle-real-20261031T221513Z-c9125210.jsonl",
+  "wall_seconds": 0.31145099992863834,
   "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
   "runs": []
 }

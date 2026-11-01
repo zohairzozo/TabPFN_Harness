@@ -50,6 +50,7 @@ class BaselineConfig:
 
 
 def load_baseline_config(path: Path = DEFAULT_BASELINE_CONFIG) -> BaselineConfig:
+    """Read configs/baseline_ews.yaml into the baseline settings."""
     with path.open(encoding="utf-8") as f:
         raw = yaml.safe_load(f)
     cfg = BaselineConfig(

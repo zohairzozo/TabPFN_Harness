@@ -104,7 +104,7 @@ def test_a_run_that_does_not_check_out_is_saved_apart(
 ) -> None:
     transcript = tmp_path / "demo_transcript.txt"
     transcript.write_text("the last good transcript\n", encoding="utf-8")
-    monkeypatch.setattr(DEMO, "run_demo", lambda results, out, say: say("partial") or False)
+    monkeypatch.setattr(DEMO, "run_demo", lambda results, out, say, pfn: say("partial") or False)
     code = DEMO.main(
         [
             "--results-dir",
@@ -220,3 +220,86 @@ def test_the_socket_block_really_refuses_and_records_a_network_call(
     with pytest.raises(OSError, match="network disabled"):
         socket.getaddrinfo("openrouter.ai", 443)
     assert attempts == ["create_connection example.com", "getaddrinfo openrouter.ai"]
+
+
+# Fresh-clone robustness (audit M6): the tracked fixture, no machine paths, clear messages
+
+
+def test_the_cache_choice_prefers_an_override_then_the_full_cache_then_the_fixture(
+    tmp_path: Path,
+) -> None:
+    results = tmp_path / "results"
+    assert DEMO.pfn_cache_dir(results) == results / "demo_cache" / "pfn"  # nothing else exists
+    (results / "cache" / "pfn").mkdir(parents=True)
+    assert DEMO.pfn_cache_dir(results) == results / "demo_cache" / "pfn"  # present but empty
+    (results / "cache" / "pfn" / "k.json").write_text("{}")
+    assert DEMO.pfn_cache_dir(results) == results / "cache" / "pfn"
+    assert DEMO.pfn_cache_dir(results, tmp_path / "mine") == tmp_path / "mine"
+
+
+def test_missing_caches_stop_with_a_message_that_says_what_to_do(tmp_path: Path) -> None:
+    results = tmp_path / "results"
+    with pytest.raises(SystemExit, match="make full"):
+        DEMO.check_caches(results, results / "demo_cache" / "pfn")  # no recorded LLM answers
+    (results / "cache" / "llm").mkdir(parents=True)
+    (results / "cache" / "llm" / "a.json").write_text("{}")
+    with pytest.raises(SystemExit, match="fixture"):
+        DEMO.check_caches(results, results / "demo_cache" / "pfn")  # no PFN outputs
+    (results / "demo_cache" / "pfn").mkdir(parents=True)
+    (results / "demo_cache" / "pfn" / "k.json").write_text("{}")
+    DEMO.check_caches(results, results / "demo_cache" / "pfn")  # now fine
+
+
+def test_paths_are_printed_relative_to_the_repository() -> None:
+    assert DEMO.shown(ROOT / "results" / "report" / "index.html") == "results/report/index.html"
+    assert DEMO.shown(Path("elsewhere") / "x.txt") == "elsewhere/x.txt"
+
+
+def test_the_tracked_fixture_alone_is_enough_and_no_model_runs(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    fixture = REAL_RESULTS / "demo_cache" / "pfn"
+    needed = (REAL_RESULTS / "agent_test.json", REAL_RESULTS / "summary.md", fixture)
+    if not all(p.exists() for p in needed):
+        pytest.skip("the tracked demo fixture or the recorded results are missing")
+    attempts = block_sockets(monkeypatch)
+
+    def no_model(*args: Any, **kwargs: Any) -> None:
+        raise AssertionError("a TabPFN fit or predict ran: the fixture is missing an entry")
+
+    monkeypatch.setattr("pfngate.pfn.tabpfn_local.TabPFNLocal.fit", no_model)
+    monkeypatch.setattr("pfngate.pfn.tabpfn_local.TabPFNLocal.predict", no_model)
+    transcript = tmp_path / "demo_transcript.txt"
+    code = DEMO.main(
+        [
+            "--results-dir", str(REAL_RESULTS),
+            "--out-dir", str(tmp_path / "out"),
+            "--pfn-cache", str(fixture),
+            "--transcript", str(transcript),
+        ]
+    )  # fmt: skip
+    out = capsys.readouterr().out
+    assert code == 0, out
+    assert attempts == []
+    saved = transcript.read_text(encoding="utf-8")
+    assert "PFN outputs read from: results/demo_cache/pfn" in saved
+    assert "Gate result: PASSED" in saved and "Gate result: BLOCKED" in saved
+
+
+def test_the_transcript_holds_no_machine_specific_path(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    needed = (REAL_RESULTS / "agent_test.json", REAL_RESULTS / "demo_cache" / "pfn")
+    if not all(p.exists() for p in needed):
+        pytest.skip("no recorded results on this machine")
+    transcript = tmp_path / "demo_transcript.txt"
+    DEMO.main(["--results-dir", str(REAL_RESULTS), "--out-dir", str(tmp_path / "out"),
+               "--transcript", str(transcript)])  # fmt: skip
+    saved = transcript.read_text(encoding="utf-8")
+    assert str(ROOT) not in saved and "Users" not in saved
+    assert "The report: results/report/index.html" in saved or "not built yet" in saved
+
+
+def test_the_default_output_folder_is_not_a_tracked_one() -> None:
+    text = SCRIPT.read_text(encoding="utf-8")
+    assert 'args.results_dir / "cache" / "demo"' in text  # results/cache is ignored by git

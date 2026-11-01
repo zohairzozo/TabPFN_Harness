@@ -65,4 +65,5 @@ details { margin: 8px 0; }
 summary { cursor: pointer; }
 ul { padding-left: 20px; }
 .note { font-size: 0.9rem; color: var(--muted); }
+.warn { margin: 12px 0; padding: 10px 14px; border-left: 4px solid var(--bad); background: var(--bad-bg); border-radius: 6px; }
 """

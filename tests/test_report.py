@@ -14,7 +14,7 @@ from typing import Any
 import pytest
 
 from pfngate.report import page as report_page
-from pfngate.report.build import DEFAULT_SOURCES, UnsourcedNumbersError, build_report
+from pfngate.report.build import UnsourcedNumbersError, build_report
 from pfngate.report.check import (
     allowed_numbers,
     numbers_in_json,
@@ -324,10 +324,8 @@ def test_the_real_report_shows_only_numbers_from_the_result_files(tmp_path: Path
     if not all((REAL_RESULTS / name).exists() for name in needed):
         pytest.skip("no real results on this machine: run make full first")
     out = tmp_path / "report"
-    path = build_report(REAL_RESULTS, out_dir=out, check=False)
+    path = build_report(REAL_RESULTS, out_dir=out)  # the strict check raises on a stray number
     page = path.read_text(encoding="utf-8")
-    allowed = allowed_numbers(REAL_RESULTS, DEFAULT_SOURCES, extra=[out / "criteria.json"])
-    assert unsourced_numbers(page, allowed) == []
     assert "GO" in re.findall(r'<div class="word">([^<]+)</div>', page)[0]
 
 
@@ -339,3 +337,230 @@ def test_no_go_when_a_control_alerts_too_often(tmp_path: Path) -> None:
     verdict = evaluate(results, DEFAULT_CRITERIA)
     failed = [o.key for o in verdict.required if not o.passed]
     assert verdict.verdict == "NO-GO" and failed == ["false_alarms_simulated_controls"]
+
+
+# The fixes after the first review of the page
+
+
+def test_the_result_split_names_map_to_the_real_loader_splits() -> None:
+    from pfngate.data import REAL_CONTROL_SPLIT, REAL_SPLIT
+    from pfngate.report.gallery import real_split_of
+
+    # the result files say "real"; the loader says "real_tipping". The plot lookup used to miss it
+    assert real_split_of("real") == REAL_SPLIT
+    assert real_split_of("real_control") == REAL_CONTROL_SPLIT
+    assert real_split_of(REAL_SPLIT) == REAL_SPLIT
+    assert real_split_of("test") is None and real_split_of("ood") is None
+
+
+def test_variants_are_grouped_by_what_they_have() -> None:
+    group = report_page.variant_group
+    assert group("Classic EWS baseline") == group("LLM only")
+    assert group("Naive agent (random context, no gate)") == "An agent, but no gate"
+    assert group("Full harness (agent + gate)").startswith("After")
+    assert group("Family-matched oracle (ORACLE)").startswith("Upper bound")
+    names = ["Classic EWS baseline", "Naive agent (x)", "Full harness (x)", "Family-matched oracle"]
+    assert len({group(n) for n in names}) == 4
+    assert group("Something else") == "Other"
+
+
+def test_the_before_and_after_table_no_longer_files_the_naive_agent_under_after(
+    tmp_path: Path, sources: Path
+) -> None:
+    results = make_results(tmp_path)
+    summary = (results / "summary.md").read_text(encoding="utf-8")
+    summary = summary.replace(
+        "| Full harness (agent + gate) | 0.98 |",
+        "| Naive agent (random context, no gate) | 0.99 |\n| Full harness (agent + gate) | 0.98 |",
+    )
+    (results / "summary.md").write_text(summary, encoding="utf-8")
+    page = build_report(results, criteria_path=DEFAULT_CRITERIA, sources_path=sources).read_text(
+        encoding="utf-8"
+    )
+    assert "After and bounds" not in page
+    for title in (
+        "Before: no agent and no gate",
+        "An agent, but no gate",
+        "After: the full harness",
+    ):
+        assert title in page
+    assert page.index("An agent, but no gate") < page.index("After: the full harness")
+
+
+def test_the_dagger_legends_come_from_summary_md_and_sit_by_the_table() -> None:
+    summary = (
+        "## AUROC, score = p_critical (x)\n\n| Method | AUROC |\n|---|---|\n| a | 0.5 † |\n\n"
+        "Higher is better. † = the CI includes half.\n\n"
+        "## Checks computed from the results\n\n- ‡ oracle on controls: degenerate score.\n"
+    )
+    from pfngate.report.text_sources import section_table as read_table
+
+    table = read_table(summary, "AUROC, score = p_critical")
+    assert table is not None and table.after == "Higher is better. † = the CI includes half."
+    out = report_page.figures_section(Path("no_such_figs"), summary)
+    assert "† = the CI includes half" in out
+    assert "‡ oracle on controls: degenerate score" in out
+    assert out.index("the CI includes half") > out.index("<table")  # the legend is under the table
+
+
+def test_nested_source_bullets_keep_their_own_lines() -> None:
+    text = (
+        "## f.csv\n\n- **Files used:**\n  - `a.csv`:\n    `abc123`\n  - `b.csv`:\n    `def456`\n"
+        "- **Licence:** CC0\n"
+    )
+    entry = parse_sources(text)[0]
+    items = dict(entry.items)
+    assert items["Files used"] == "- a.csv: abc123\n- b.csv: def456"
+    assert items["Licence"] == "CC0"
+    assert report_page.dl_rows({"a": "x\ny"}) == "<dt>a</dt><dd>x<br>y</dd>"
+
+
+def test_gallery_values_read_in_plain_words() -> None:
+    value, check = report_page.field_value, report_page.check_value
+    assert value("gate_failed", []) == "none" and value("gate_failed", None) == "none"
+    assert value("gate_passed", True) == "yes" and value("gate_passed", False) == "no"
+    assert value("final_decision", "no_alert") == "no alert"
+    assert value("decided_by", "gate_and_decision_mapping") == "gate and decision mapping"
+    assert value("window_decisions", {"no_alert": 9, "alert": 2}) == "no alert 9, alert 2"
+    assert check(200.0) == "200" and check(0.012) == "0.012" and check(1.0) == "1.000"
+    assert check([0.7, 1.0]) == "0.700, 1.000"
+
+
+def test_the_gallery_uses_labels_not_field_names_and_provenance_names_the_pfn_model(
+    tmp_path: Path, sources: Path
+) -> None:
+    results = make_results(tmp_path)
+    doc = json.loads((results / "agent_test.json").read_text(encoding="utf-8"))
+    doc["settings"] = {
+        "backend": "tabpfn_local",
+        "model_version": "v3.5",
+        "package_version": "9.2.0",
+        "max_context": 200,
+    }
+    (results / "agent_test.json").write_text(json.dumps(doc), encoding="utf-8")
+    page = build_report(results, criteria_path=DEFAULT_CRITERIA, sources_path=sources).read_text(
+        encoding="utf-8"
+    )
+    assert "90% interval coverage of the window targets" in page
+    assert "<dt>coverage_90</dt>" not in page and "<dt>window_decisions</dt>" not in page
+    assert "PFN model version" in page and "v3.5" in page
+    assert "see variants" not in page  # the old placeholder for the PFN backend is gone
+
+
+# The strict number check, the intervals and the notice (audit M1, M5, H2)
+
+
+def test_a_typed_number_that_some_result_file_holds_is_still_refused(
+    tmp_path: Path, sources: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    results = make_results(tmp_path)
+    (results / "other_result.json").write_text(json.dumps({"x": 0.618}), encoding="utf-8")
+    monkeypatch.setattr(report_page, "METHOD_PARAGRAPHS", ("<p>We reach 0.618 here.</p>",))
+    with pytest.raises(UnsourcedNumbersError, match=r"0\.618"):
+        build_report(results, criteria_path=DEFAULT_CRITERIA, sources_path=sources)
+    # the coarse check, which accepts any value found anywhere in results/, let it through
+    page = (results / "report" / "index.html").read_text(encoding="utf-8")
+    assert unsourced_numbers(page, allowed_numbers(results, sources)) == []
+
+
+def test_numbers_quoted_from_an_agent_rationale_are_accepted(tmp_path: Path, sources: Path) -> None:
+    results = make_results(tmp_path)
+    doc = json.loads((results / "agent_test.json").read_text(encoding="utf-8"))
+    doc["runs"][1]["record"]["verdict"]["rationale"] = "The last window is 0.4321 with p 0.0987."
+    (results / "agent_test.json").write_text(json.dumps(doc), encoding="utf-8")
+    failures = json.loads((results / "failures.json").read_text(encoding="utf-8"))
+    for block in failures["categories"].values():
+        for ex in block["top"]:
+            ex["trajectory_id"], ex["scenario_id"] = "fold_L1_slow/3000", "fold_L1_slow"
+    (results / "failures.json").write_text(json.dumps(failures), encoding="utf-8")
+    page = build_report(results, criteria_path=DEFAULT_CRITERIA, sources_path=sources).read_text(
+        encoding="utf-8"
+    )
+    assert "0.4321" in page  # shown, and the strict check let it pass as a quotation
+
+
+def test_a_number_with_thousands_commas_is_one_number_and_a_list_is_not() -> None:
+    from pfngate.report.check import numbers_on_page
+
+    assert numbers_on_page("<p>432,000 rows</p>") == ["432000"]
+    assert numbers_on_page("<p>[0.91, 1.00]</p>") == ["0.91", "1.00"]
+
+
+def test_no_number_literal_is_passed_to_the_page_formatters() -> None:
+    import ast
+
+    tree = ast.parse(Path(report_page.__file__).read_text(encoding="utf-8"))
+    formatters = {"num", "note_number", "check_value", "quoted"}
+    typed = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Call) and getattr(node.func, "id", "") in formatters and node.args:
+            first = node.args[0]
+            if isinstance(first, ast.Constant) and isinstance(first.value, int | float):
+                typed.append(first.lineno)
+    assert typed == []  # a literal there would be recorded as if it came from data
+
+
+def test_shares_get_an_exact_interval_and_coverage_a_bootstrap_interval() -> None:
+    from pfngate.report.criteria import bootstrap_mean_ci, clopper_pearson, is_decided
+
+    low, high = clopper_pearson(0, 2)
+    assert low == 0.0 and high == pytest.approx(0.8419, abs=1e-4)
+    assert clopper_pearson(1, 18)[1] == pytest.approx(0.273, abs=1e-3)  # about 0.27, not 0.06
+    assert clopper_pearson(5, 5)[1] == 1.0
+    ci = bootstrap_mean_ci([0.9, 0.95, 1.0, 0.85])
+    assert ci == bootstrap_mean_ci([0.9, 0.95, 1.0, 0.85])  # fixed seed: the same every time
+    assert ci is not None and 0.85 <= ci[0] <= ci[1] <= 1.0
+    assert bootstrap_mean_ci([]) is None
+    # decided means the whole interval is on one side of the threshold
+    assert is_decided(">=", 0.85, (0.90, 0.97)) is True
+    assert is_decided(">=", 0.85, (0.10, 0.60)) is True  # clearly below
+    assert is_decided(">=", 0.85, (0.50, 0.95)) is False
+    assert is_decided("<=", 0.10, (0.00, 0.27)) is False
+    assert is_decided("<=", 0.10, (0.00, 0.05)) is True
+    assert is_decided("<=", 0.10, None) is None
+
+
+def test_an_outcome_whose_interval_spans_the_threshold_is_marked_undecided(
+    tmp_path: Path, sources: Path
+) -> None:
+    results = make_results(tmp_path, recall_blocked=2)
+    verdict = evaluate(results, DEFAULT_CRITERIA)
+    sim = next(o for o in verdict.outcomes if o.key == "false_alarms_simulated_controls")
+    assert sim.value == 0.0 and sim.decided is False  # 0 of 2 controls: the interval is wide
+    assert sim.ci_high == pytest.approx(0.8419, abs=1e-4)
+    assert verdict.verdict == "GO" and sim in verdict.undecided  # the verdict rule is unchanged
+    page = build_report(results, criteria_path=DEFAULT_CRITERIA, sources_path=sources).read_text(
+        encoding="utf-8"
+    )
+    assert "undecided: the interval spans the threshold" in page
+    assert "required results are undecided at 95% confidence" in page
+    doc = json.loads((results / "report" / "criteria.json").read_text(encoding="utf-8"))
+    assert doc["confidence"] == 0.95 and doc["required_undecided"] == len(verdict.undecided)
+
+
+def test_the_page_warns_when_the_numbers_come_from_a_dirty_tree(
+    tmp_path: Path, sources: Path
+) -> None:
+    results = make_results(tmp_path)  # the made-up manifest has uncommitted files
+    page = build_report(results, criteria_path=DEFAULT_CRITERIA, sources_path=sources).read_text(
+        encoding="utf-8"
+    )
+    assert "Not reproducible from git" in page and "abc1234def" in page
+    manifest = json.loads((results / "run_manifest.json").read_text(encoding="utf-8"))
+    manifest["git"]["uncommitted_files"] = 0
+    (results / "run_manifest.json").write_text(json.dumps(manifest), encoding="utf-8")
+    clean = build_report(results, criteria_path=DEFAULT_CRITERIA, sources_path=sources).read_text(
+        encoding="utf-8"
+    )
+    assert "Not reproducible from git" not in clean
+
+
+def test_the_name_number_in_ninety_percent_interval_matches_the_gate_config() -> None:
+    import yaml
+
+    from pfngate.report.check import NAME_NUMBERS
+
+    interval = yaml.safe_load(
+        (REAL_RESULTS.parent / "configs" / "gate.yaml").read_text(encoding="utf-8")
+    )["bad_run"]["interval"]
+    assert round((interval[1] - interval[0]) * 100) == 90 and NAME_NUMBERS == {"90"}

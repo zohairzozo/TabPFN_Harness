@@ -48,6 +48,7 @@ def query_hash(query: pd.DataFrame) -> str:
 
 
 def package_version(backend: str) -> str:
+    """The installed version of the package behind a backend."""
     name = {"tabpfn_local": "tabpfn", "tabpfn_client": "tabpfn-client"}.get(backend)
     if name is None:
         return "-"
@@ -93,12 +94,14 @@ class PFNCache:
         return self.directory / f"{key}.json"
 
     def get(self, key: str) -> PFNOutput | None:
+        """The cached output for a key, or None if there is none."""
         path = self._path(key)
         if not self.enabled or not path.exists():
             return None
         return PFNOutput.model_validate_json(path.read_text(encoding="utf-8"))
 
     def put(self, key: str, output: PFNOutput) -> None:
+        """Store an output under its key, when the cache is enabled."""
         if not self.enabled:
             return
         self.directory.mkdir(parents=True, exist_ok=True)

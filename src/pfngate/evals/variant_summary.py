@@ -31,6 +31,7 @@ def _mean(values: list[float]) -> float | None:
 
 
 def latency_block(seconds: list[float]) -> dict[str, Any]:
+    """Median, 95th percentile and count of latencies, or None if none."""
     if not seconds:
         return {"n": 0, "mean": None, "p50": None, "p95": None, "max": None}
     a = np.asarray(seconds, dtype=float)

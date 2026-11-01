@@ -150,6 +150,7 @@ class GateConfig(_Frozen):
         return tuple(sorted(v.items())) if isinstance(v, dict) else v
 
     def alert_threshold(self, strategy: str) -> float | None:
+        """The alert threshold of a strategy, or None if it has none."""
         return dict(self.alert_thresholds).get(strategy)
 
     @model_validator(mode="after")
@@ -200,6 +201,7 @@ TUNED_CHECKS: frozenset[str] = frozenset({"ood_share", "context_calibration"})
 
 
 def sha256_file(path: Path) -> str:
+    """SHA-256 of a file, as a hex string."""
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 

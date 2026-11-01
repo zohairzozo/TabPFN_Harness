@@ -25,16 +25,19 @@ CONFIDENT = 0.8  # a recommendation at or above this confidence counts as confid
 
 
 def final_decision(run: dict[str, Any]) -> str | None:
+    """The final decision of a run record, as a string."""
     decision = run.get("decision")
     return decision.get("decision") if isinstance(decision, dict) else decision
 
 
 def strategy_of(run: dict[str, Any]) -> str | None:
+    """The context strategy that the final decision of a run used."""
     final = run["record"].get("final") or {}
     return final.get("context_strategy")
 
 
 def check_runs(runs: list[dict[str, Any]]) -> dict[str, Any]:
+    """The checks for one set of runs: strategies used and control alerts."""
     strategies = Counter(strategy_of(r) or "none" for r in runs)
     controls = [r for r in runs if r["ground_truth"]["role"] == "control"]
     verdicts = [r["record"].get("verdict") for r in controls]
@@ -51,6 +54,7 @@ def check_runs(runs: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def build(results_dir: Path) -> dict[str, Any]:
+    """Build the agent checks for every variant and split with a result file."""
     out: dict[str, Any] = {"confident_at": CONFIDENT, "variants": {}}
     for variant in VARIANTS:
         for split in SPLITS:
@@ -62,6 +66,7 @@ def build(results_dir: Path) -> dict[str, Any]:
 
 
 def main() -> None:
+    """Command-line entry point: write results/agent_checks.json."""
     p = argparse.ArgumentParser()
     p.add_argument("--results-dir", type=Path, default=REPO_ROOT / "results")
     args = p.parse_args()

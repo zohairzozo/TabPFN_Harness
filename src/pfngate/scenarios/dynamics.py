@@ -80,6 +80,7 @@ DRIFTS: dict[str, Callable[[Mapping[str, float]], Drift]] = {
 
 
 def make_drift(dynamics: str, params: Mapping[str, float]) -> Drift:
+    """The drift function of a named dynamics kind, or an error if unknown."""
     if dynamics not in DRIFTS:
         raise ValueError(f"unknown dynamics '{dynamics}'; known: {sorted(DRIFTS)}")
     return DRIFTS[dynamics](params)

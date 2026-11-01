@@ -15,7 +15,7 @@
   "gate_config_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
   "frozen_gate_sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc",
   "seeds_per_scenario": 1,
-  "limit": 5,
+  "limit": 3,
   "n_runs": 3,
   "skipped": [],
   "usage": null,
@@ -23,13 +23,13 @@
     "n_runs": 3,
     "latency_seconds": {
       "n": 3,
-      "mean": 0.0029622999718412757,
-      "p50": 0.002674699993804097,
-      "p95": 0.0035827099927701056,
-      "max": 0.0036835999926552176
+      "mean": 0.00220313334527115,
+      "p50": 0.0021850999910384417,
+      "p95": 0.0022542199934832753,
+      "max": 0.0022618999937549233
     },
     "llm_seconds_mean": 0.0,
-    "pfn_seconds_mean": 0.0029622999718412757,
+    "pfn_seconds_mean": 0.00220313334527115,
     "tool_calls": null,
     "pass_k": {
       "k": 3,
@@ -94,8 +94,8 @@
       "auroc_end": null
     }
   },
-  "trace": "classic_ews-real-20261031T152414Z-cb5ea332.jsonl",
-  "wall_seconds": 0.0990367999766022,
+  "trace": "classic_ews-real-20261031T215835Z-5bc7679e.jsonl",
+  "wall_seconds": 0.09036349994130433,
   "scoring": "run level: the label of the last window of each run (agent_metrics.py)",
   "runs": [
     {
@@ -106,7 +106,7 @@
         "score_defined": false,
         "alarm_threshold": 0.5,
         "decision": "no_alert",
-        "seconds": 0.0025285999290645123
+        "seconds": 0.0022618999937549233
       },
       "ground_truth": {
         "scenario_id": "daphnia_constant",
@@ -122,8 +122,8 @@
       "pfn_quality": null,
       "timing": {
         "llm_seconds": 0.0,
-        "pfn_seconds": 0.0025285999290645123,
-        "total_seconds": 0.0025285999290645123
+        "pfn_seconds": 0.0022618999937549233,
+        "total_seconds": 0.0022618999937549233
       }
     },
     {
@@ -134,7 +134,7 @@
         "score_defined": false,
         "alarm_threshold": 0.5,
         "decision": "no_alert",
-        "seconds": 0.002674699993804097
+        "seconds": 0.0021850999910384417
       },
       "ground_truth": {
         "scenario_id": "daphnia_deteriorating",
@@ -150,8 +150,8 @@
       "pfn_quality": null,
       "timing": {
         "llm_seconds": 0.0,
-        "pfn_seconds": 0.002674699993804097,
-        "total_seconds": 0.002674699993804097
+        "pfn_seconds": 0.0021850999910384417,
+        "total_seconds": 0.0021850999910384417
       }
     },
     {
@@ -162,7 +162,7 @@
         "score_defined": false,
         "alarm_threshold": 0.5,
         "decision": "no_alert",
-        "seconds": 0.0036835999926552176
+        "seconds": 0.002162400051020086
       },
       "ground_truth": {
         "scenario_id": "daphnia_constant",
@@ -178,8 +178,8 @@
       "pfn_quality": null,
       "timing": {
         "llm_seconds": 0.0,
-        "pfn_seconds": 0.0036835999926552176,
-        "total_seconds": 0.0036835999926552176
+        "pfn_seconds": 0.002162400051020086,
+        "total_seconds": 0.002162400051020086
       }
     }
   ]

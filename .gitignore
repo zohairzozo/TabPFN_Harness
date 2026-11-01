@@ -21,3 +21,12 @@ __pycache__/
 .venv/
 .pytest_cache/
 .ruff_cache/
+
+# The fast profile writes its own PFN cache. It is a cache, like results/cache/.
+results/fast/cache/
+
+# Kept on disk, never committed.
+interview.docx
+
+# The demo writes its run output to results/cache/demo now; this folder is old output.
+results/demo/

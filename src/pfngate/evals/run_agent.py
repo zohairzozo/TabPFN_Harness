@@ -240,6 +240,7 @@ def evaluate(
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Command-line entry point: run the agent or the naive agent on a split."""
     parser = argparse.ArgumentParser(
         description=__doc__, formatter_class=argparse.RawTextHelpFormatter
     )

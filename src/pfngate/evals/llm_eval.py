@@ -51,6 +51,7 @@ HELD_OUT_LLM_SPLITS: frozenset[str] = frozenset({"test", "ood", "real", "real_co
 
 
 def add_common_arguments(parser: argparse.ArgumentParser) -> None:
+    """Add the arguments that all LLM evaluation scripts share."""
     parser.add_argument("--split", required=True, choices=list(LLM_SPLITS))
     add_llm_arguments(parser)
     parser.add_argument(
@@ -182,6 +183,7 @@ def timing(llm_seconds: float, pfn_seconds: float) -> dict[str, float]:
 def outcome(
     record: dict[str, Any], truth: dict[str, Any], decision: str, score: float | None
 ) -> RunOutcome:
+    """The scored outcome of one run, from its record and its truth."""
     return RunOutcome(
         trajectory_id=record["trajectory_id"],
         role=truth["role"],
@@ -212,10 +214,12 @@ def usage_totals(records: list[dict[str, Any]]) -> dict[str, Any]:
 
 
 def result_path(results_dir: Path, name: str, split: str) -> Path:
+    """The path of the result file for a method and split."""
     return results_dir / f"{name}_{split}.json"
 
 
 def write_result(results_dir: Path, name: str, split: str, payload: dict[str, Any]) -> Path:
+    """Write a result payload to its file and return the path."""
     path = result_path(results_dir, name, split)
     write_json(path, payload)
     return path

@@ -23,6 +23,8 @@ PREFERRED_SPEED = "slow"
 
 
 def pick_scenario(scenarios: list[Scenario]) -> Scenario:
+    """The scenario of a family to draw: middle noise and slow speed preferred."""
+
     def score(sc: Scenario) -> tuple[bool, bool]:
         return (sc.noise_level.endswith(PREFERRED_LEVEL_SUFFIX), sc.speed == PREFERRED_SPEED)
 
@@ -30,6 +32,7 @@ def pick_scenario(scenarios: list[Scenario]) -> Scenario:
 
 
 def plot_family(sc: Scenario, out_path: Path) -> None:
+    """Draw one trajectory of a scenario family and save the figure."""
     seed = sc.seeds()[0]
     tr = sc.generate(seed)
     fig, axes = plt.subplots(3, 1, figsize=(10, 7), sharex=True, constrained_layout=True)
@@ -97,6 +100,7 @@ def plot_family(sc: Scenario, out_path: Path) -> None:
 
 
 def main() -> int:
+    """Command-line entry point: draw one figure per family."""
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     by_family: dict[str, list[Scenario]] = {}
     for sc in load_scenarios().values():

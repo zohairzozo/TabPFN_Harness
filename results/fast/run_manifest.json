@@ -1,13 +1,14 @@
 {
-  "generated_utc": "2026-10-31T15:24:19+00:00",
-  "started_utc": "2026-10-31T15:24:11+00:00",
+  "generated_utc": "2026-10-31T22:16:04+00:00",
+  "started_utc": "2026-10-31T21:56:09+00:00",
   "profile": "fast",
   "complete": true,
+  "incomplete_reasons": [],
   "llm_daily_cap_reached": false,
   "git": {
-    "commit": "118f5e8b02035b1186999ecce9a646c36e216367",
+    "commit": "d55d1aa830f5bed337122c5306da0f3afbb8da17",
     "branch": "main",
-    "uncommitted_files": 102
+    "uncommitted_files": 143
   },
   "python": "3.12.10",
   "platform": "Windows-11-10.0.26300-SP0",
@@ -26,7 +27,9 @@
   "models": {
     "llm_agent": "openrouter:nvidia/nemotron-3.5-super-vl:free",
     "llm_debug": "openrouter:nvidia/nemotron-3.5-lightning:free",
-    "pfn_backend": "see variants[*].models and results settings"
+    "pfn_backend": "tabpfn_local",
+    "pfn_model_version": "v3.5",
+    "pfn_package_version": "9.2.0"
   },
   "seeds": {
     "pfn_seed": 0,
@@ -54,7 +57,7 @@
       }
     },
     "seeds_per_scenario": 1,
-    "limit": 5,
+    "limit": 3,
     "llm_temperature": 0.0
   },
   "gate": {
@@ -62,38 +65,64 @@
     "status": "tuned",
     "sha256": "6e93455997a265384b3a70eec66e942953cd648b89ce678a31d35e3e4d9473bc"
   },
-  "wall_clock_seconds_total": 7.9,
+  "wall_clock_seconds_total": 1195.3,
   "wall_clock_seconds_by_stage": {
-    "ruff_check": 0.0,
-    "ruff_format": 0.0,
-    "pytest": 0.0,
+    "ruff_check": 0.21,
+    "ruff_format": 0.17,
+    "pytest": 124.98,
     "gate_frozen": 0.006,
-    "classic_real": 3.26,
-    "classic_real_control": 4.05,
+    "classic_val": 5.91,
+    "classic_test": 5.89,
+    "classic_ood": 5.77,
+    "classic_real": 2.97,
+    "classic_real_control": 3.84,
+    "llm_only_val": 5.17,
+    "llm_only_test": 5.28,
+    "llm_only_ood": 5.24,
+    "llm_only_real": 4.58,
+    "llm_only_real_control": 3.6,
+    "naive_val": 54.79,
+    "naive_test": 54.38,
+    "naive_ood": 57.27,
+    "naive_real": 23.25,
+    "naive_real_control": 15.14,
+    "agent_val": 169.34,
+    "agent_test": 164.9,
+    "agent_ood": 171.25,
+    "agent_real": 72.21,
+    "agent_real_control": 23.13,
+    "oracle_val": 5.55,
+    "oracle_test": 145.15,
+    "oracle_ood": 11.18,
+    "oracle_real": 3.25,
+    "oracle_real_control": 3.47,
+    "lead_time": 44.71,
+    "sharpness": 1.86,
     "make_summary": 0.26,
-    "agent_checks": 0.11
+    "agent_checks": 0.11,
+    "find_failures": 0.2
   },
   "stages": [
     {
       "stage": "ruff_check",
-      "skipped": "--skip-checks",
-      "exit_code": null,
-      "seconds": 0.0,
-      "llm_mode": null
+      "command": "-m ruff check .",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 0.21
     },
     {
       "stage": "ruff_format",
-      "skipped": "--skip-checks",
-      "exit_code": null,
-      "seconds": 0.0,
-      "llm_mode": null
+      "command": "-m ruff format --check .",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 0.17
     },
     {
       "stage": "pytest",
-      "skipped": "--skip-checks",
-      "exit_code": null,
-      "seconds": 0.0,
-      "llm_mode": null
+      "command": "-m pytest -q",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 124.98
     },
     {
       "stage": "gate_frozen",
@@ -102,18 +131,193 @@
       "llm_mode": null
     },
     {
-      "stage": "classic_real",
-      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split real --variant classic --limit 5 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "stage": "classic_val",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split val --variant classic --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
       "llm_mode": null,
       "exit_code": 0,
-      "seconds": 3.26
+      "seconds": 5.91
+    },
+    {
+      "stage": "classic_test",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split test --variant classic --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 5.89
+    },
+    {
+      "stage": "classic_ood",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split ood --variant classic --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 5.77
+    },
+    {
+      "stage": "classic_real",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split real --variant classic --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 2.97
     },
     {
       "stage": "classic_real_control",
-      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split real_control --variant classic --limit 5 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split real_control --variant classic --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
       "llm_mode": null,
       "exit_code": 0,
-      "seconds": 4.05
+      "seconds": 3.84
+    },
+    {
+      "stage": "llm_only_val",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.baseline_llm --split val --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 5.17
+    },
+    {
+      "stage": "llm_only_test",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.baseline_llm --split test --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 5.28
+    },
+    {
+      "stage": "llm_only_ood",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.baseline_llm --split ood --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 5.24
+    },
+    {
+      "stage": "llm_only_real",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.baseline_llm --split real --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 4.58
+    },
+    {
+      "stage": "llm_only_real_control",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.baseline_llm --split real_control --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 3.6
+    },
+    {
+      "stage": "naive_val",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_agent --split val --variant naive --max-context 200 --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 54.79
+    },
+    {
+      "stage": "naive_test",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_agent --split test --variant naive --max-context 200 --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 54.38
+    },
+    {
+      "stage": "naive_ood",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_agent --split ood --variant naive --max-context 200 --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 57.27
+    },
+    {
+      "stage": "naive_real",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_agent --split real --variant naive --max-context 200 --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 23.25
+    },
+    {
+      "stage": "naive_real_control",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_agent --split real_control --variant naive --max-context 200 --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 15.14
+    },
+    {
+      "stage": "agent_val",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_agent --split val --variant agent --max-context 200 --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 169.34
+    },
+    {
+      "stage": "agent_test",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_agent --split test --variant agent --max-context 200 --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 164.9
+    },
+    {
+      "stage": "agent_ood",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_agent --split ood --variant agent --max-context 200 --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 171.25
+    },
+    {
+      "stage": "agent_real",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_agent --split real --variant agent --max-context 200 --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 72.21
+    },
+    {
+      "stage": "agent_real_control",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_agent --split real_control --variant agent --max-context 200 --llm-mode replay --llm-cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\llm --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": "replay",
+      "exit_code": 0,
+      "seconds": 23.13
+    },
+    {
+      "stage": "oracle_val",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split val --variant oracle --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 5.55
+    },
+    {
+      "stage": "oracle_test",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split test --variant oracle --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 145.15
+    },
+    {
+      "stage": "oracle_ood",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split ood --variant oracle --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 11.18
+    },
+    {
+      "stage": "oracle_real",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split real --variant oracle --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 3.25
+    },
+    {
+      "stage": "oracle_real_control",
+      "command": "-W ignore::DeprecationWarning -m pfngate.evals.run_reference --split real_control --variant oracle --limit 3 --seeds-per-scenario 1 --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 3.47
+    },
+    {
+      "stage": "lead_time",
+      "command": "scripts/lead_time.py --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast --cache-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\cache\\pfn",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 44.71
+    },
+    {
+      "stage": "sharpness",
+      "command": "scripts/sharpness.py --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 1.86
     },
     {
       "stage": "make_summary",
@@ -128,17 +332,36 @@
       "llm_mode": null,
       "exit_code": 0,
       "seconds": 0.11
+    },
+    {
+      "stage": "find_failures",
+      "command": "scripts/find_failures.py --results-dir C:\\Users\\donzo\\Desktop\\TabPFN_Harness\\results\\fast",
+      "llm_mode": null,
+      "exit_code": 0,
+      "seconds": 0.2
     }
   ],
   "totals": {
-    "tokens_in": 0,
-    "tokens_out": 0,
+    "tokens_in": 490986,
+    "tokens_out": 131342,
     "cost_usd_approx": 0.0,
     "cost_note": "approximate: the price table in configs/agent.yaml, where the models used cost 0 (free tier)"
   },
   "variants": {
     "classic": {
       "splits_run": {
+        "val": {
+          "n_runs": 6,
+          "wall_seconds": 2.9
+        },
+        "test": {
+          "n_runs": 6,
+          "wall_seconds": 2.7
+        },
+        "ood": {
+          "n_runs": 6,
+          "wall_seconds": 2.7
+        },
         "real": {
           "n_runs": 3,
           "wall_seconds": 0.1
@@ -151,25 +374,70 @@
       "models": [],
       "llm_modes": [],
       "latency_seconds_overall": {
-        "n": 4,
-        "p50": 0.003,
-        "p95": 0.004
+        "n": 22,
+        "p50": 0.006,
+        "p95": 0.009
       },
       "latency_seconds_by_scenario": {
         "daphnia_constant": {
           "n": 2,
-          "p50": 0.003,
-          "p95": 0.004
+          "p50": 0.002,
+          "p95": 0.002
         },
         "daphnia_deteriorating": {
           "n": 1,
-          "p50": 0.003,
-          "p95": 0.003
+          "p50": 0.002,
+          "p95": 0.002
+        },
+        "fold_L1_slow": {
+          "n": 2,
+          "p50": 0.007,
+          "p95": 0.008
         },
         "grid_fingrid": {
           "n": 1,
-          "p50": 0.004,
-          "p95": 0.004
+          "p50": 0.005,
+          "p95": 0.005
+        },
+        "hopf_L2_slow": {
+          "n": 2,
+          "p50": 0.009,
+          "p95": 0.009
+        },
+        "noise_N1_slow": {
+          "n": 1,
+          "p50": 0.007,
+          "p95": 0.007
+        },
+        "noise_N3_fast": {
+          "n": 1,
+          "p50": 0.005,
+          "p95": 0.005
+        },
+        "ou_L1": {
+          "n": 3,
+          "p50": 0.007,
+          "p95": 0.007
+        },
+        "rate_L1_slow": {
+          "n": 1,
+          "p50": 0.008,
+          "p95": 0.008
+        },
+        "regime_L3": {
+          "n": 3,
+          "p50": 0.006,
+          "p95": 0.007
+        },
+        "short_ramp_L2": {
+          "n": 3,
+          "p50": 0.006,
+          "p95": 0.007
+        },
+        "transcritical_L3_fast": {
+          "n": 2,
+          "p50": 0.003,
+          "p95": 0.003
         }
       },
       "tokens": {
@@ -184,7 +452,417 @@
       "pfn_calls_per_verdict": {
         "agent_run_pfn_tool_calls": 0.0,
         "all_pfn_steps": 0.0,
-        "n_verdicts": 4
+        "n_verdicts": 22
+      }
+    },
+    "llm_only": {
+      "splits_run": {
+        "val": {
+          "n_runs": 6,
+          "wall_seconds": 2.2
+        },
+        "test": {
+          "n_runs": 6,
+          "wall_seconds": 2.2
+        },
+        "ood": {
+          "n_runs": 6,
+          "wall_seconds": 2.2
+        },
+        "real": {
+          "n_runs": 3,
+          "wall_seconds": 1.5
+        },
+        "real_control": {
+          "n_runs": 1,
+          "wall_seconds": 0.1
+        }
+      },
+      "models": [
+        "openrouter:nvidia/nemotron-3.5-super-vl:free"
+      ],
+      "llm_modes": [
+        "replay"
+      ],
+      "latency_seconds_overall": {
+        "n": 22,
+        "p50": 12.385,
+        "p95": 45.7
+      },
+      "latency_seconds_by_scenario": {
+        "daphnia_constant": {
+          "n": 2,
+          "p50": 62.684,
+          "p95": 92.343
+        },
+        "daphnia_deteriorating": {
+          "n": 1,
+          "p50": 32.408,
+          "p95": 32.408
+        },
+        "fold_L1_slow": {
+          "n": 2,
+          "p50": 13.228,
+          "p95": 17.477
+        },
+        "grid_fingrid": {
+          "n": 1,
+          "p50": 25.83,
+          "p95": 25.83
+        },
+        "hopf_L2_slow": {
+          "n": 2,
+          "p50": 8.201,
+          "p95": 9.468
+        },
+        "noise_N1_slow": {
+          "n": 1,
+          "p50": 9.41,
+          "p95": 9.41
+        },
+        "noise_N3_fast": {
+          "n": 1,
+          "p50": 12.787,
+          "p95": 12.787
+        },
+        "ou_L1": {
+          "n": 3,
+          "p50": 8.249,
+          "p95": 9.322
+        },
+        "rate_L1_slow": {
+          "n": 1,
+          "p50": 11.982,
+          "p95": 11.982
+        },
+        "regime_L3": {
+          "n": 3,
+          "p50": 23.218,
+          "p95": 28.22
+        },
+        "short_ramp_L2": {
+          "n": 3,
+          "p50": 8.37,
+          "p95": 42.597
+        },
+        "transcritical_L3_fast": {
+          "n": 2,
+          "p50": 13.206,
+          "p95": 19.078
+        }
+      },
+      "tokens": {
+        "tokens_in": 23665,
+        "tokens_out": 44053
+      },
+      "llm_requests": {
+        "model_requests": 22,
+        "replayed_requests": 22
+      },
+      "cost_usd_approx": 0.0,
+      "pfn_calls_per_verdict": {
+        "agent_run_pfn_tool_calls": 0.0,
+        "all_pfn_steps": 0.0,
+        "n_verdicts": 22
+      }
+    },
+    "naive": {
+      "splits_run": {
+        "val": {
+          "n_runs": 6,
+          "wall_seconds": 51.1
+        },
+        "test": {
+          "n_runs": 6,
+          "wall_seconds": 50.5
+        },
+        "ood": {
+          "n_runs": 6,
+          "wall_seconds": 53.3
+        },
+        "real": {
+          "n_runs": 3,
+          "wall_seconds": 19.4
+        },
+        "real_control": {
+          "n_runs": 1,
+          "wall_seconds": 11.0
+        }
+      },
+      "models": [
+        "openrouter:nvidia/nemotron-3.5-super-vl:free"
+      ],
+      "llm_modes": [
+        "replay"
+      ],
+      "latency_seconds_overall": {
+        "n": 22,
+        "p50": 17.614,
+        "p95": 88.631
+      },
+      "latency_seconds_by_scenario": {
+        "daphnia_constant": {
+          "n": 2,
+          "p50": 15.69,
+          "p95": 16.397
+        },
+        "daphnia_deteriorating": {
+          "n": 1,
+          "p50": 12.821,
+          "p95": 12.821
+        },
+        "fold_L1_slow": {
+          "n": 2,
+          "p50": 15.486,
+          "p95": 16.484
+        },
+        "grid_fingrid": {
+          "n": 1,
+          "p50": 12.907,
+          "p95": 12.907
+        },
+        "hopf_L2_slow": {
+          "n": 2,
+          "p50": 27.128,
+          "p95": 37.753
+        },
+        "noise_N1_slow": {
+          "n": 1,
+          "p50": 90.579,
+          "p95": 90.579
+        },
+        "noise_N3_fast": {
+          "n": 1,
+          "p50": 14.396,
+          "p95": 14.396
+        },
+        "ou_L1": {
+          "n": 3,
+          "p50": 23.95,
+          "p95": 48.855
+        },
+        "rate_L1_slow": {
+          "n": 1,
+          "p50": 16.594,
+          "p95": 16.594
+        },
+        "regime_L3": {
+          "n": 3,
+          "p50": 18.586,
+          "p95": 33.908
+        },
+        "short_ramp_L2": {
+          "n": 3,
+          "p50": 17.464,
+          "p95": 21.591
+        },
+        "transcritical_L3_fast": {
+          "n": 2,
+          "p50": 58.265,
+          "p95": 93.322
+        }
+      },
+      "tokens": {
+        "tokens_in": 95094,
+        "tokens_out": 24615
+      },
+      "llm_requests": {
+        "model_requests": 66,
+        "replayed_requests": 66
+      },
+      "cost_usd_approx": 0.0,
+      "pfn_calls_per_verdict": {
+        "agent_run_pfn_tool_calls": 1.0,
+        "all_pfn_steps": 1.0,
+        "n_verdicts": 22
+      }
+    },
+    "agent": {
+      "splits_run": {
+        "val": {
+          "n_runs": 6,
+          "wall_seconds": 165.5
+        },
+        "test": {
+          "n_runs": 6,
+          "wall_seconds": 161.0
+        },
+        "ood": {
+          "n_runs": 6,
+          "wall_seconds": 167.2
+        },
+        "real": {
+          "n_runs": 3,
+          "wall_seconds": 68.1
+        },
+        "real_control": {
+          "n_runs": 1,
+          "wall_seconds": 18.7
+        }
+      },
+      "models": [
+        "openrouter:nvidia/nemotron-3.5-super-vl:free"
+      ],
+      "llm_modes": [
+        "replay"
+      ],
+      "latency_seconds_overall": {
+        "n": 22,
+        "p50": 62.35,
+        "p95": 121.717
+      },
+      "latency_seconds_by_scenario": {
+        "daphnia_constant": {
+          "n": 2,
+          "p50": 119.224,
+          "p95": 120.903
+        },
+        "daphnia_deteriorating": {
+          "n": 1,
+          "p50": 47.96,
+          "p95": 47.96
+        },
+        "fold_L1_slow": {
+          "n": 2,
+          "p50": 55.203,
+          "p95": 58.635
+        },
+        "grid_fingrid": {
+          "n": 1,
+          "p50": 42.927,
+          "p95": 42.927
+        },
+        "hopf_L2_slow": {
+          "n": 2,
+          "p50": 92.341,
+          "p95": 118.809
+        },
+        "noise_N1_slow": {
+          "n": 1,
+          "p50": 108.149,
+          "p95": 108.149
+        },
+        "noise_N3_fast": {
+          "n": 1,
+          "p50": 83.028,
+          "p95": 83.028
+        },
+        "ou_L1": {
+          "n": 3,
+          "p50": 55.315,
+          "p95": 60.417
+        },
+        "rate_L1_slow": {
+          "n": 1,
+          "p50": 37.16,
+          "p95": 37.16
+        },
+        "regime_L3": {
+          "n": 3,
+          "p50": 64.397,
+          "p95": 84.592
+        },
+        "short_ramp_L2": {
+          "n": 3,
+          "p50": 61.768,
+          "p95": 72.509
+        },
+        "transcritical_L3_fast": {
+          "n": 2,
+          "p50": 117.496,
+          "p95": 174.598
+        }
+      },
+      "tokens": {
+        "tokens_in": 372227,
+        "tokens_out": 62674
+      },
+      "llm_requests": {
+        "model_requests": 118,
+        "replayed_requests": 118
+      },
+      "cost_usd_approx": 0.0,
+      "pfn_calls_per_verdict": {
+        "agent_run_pfn_tool_calls": 1.818,
+        "all_pfn_steps": 1.818,
+        "n_verdicts": 22
+      }
+    },
+    "oracle": {
+      "splits_run": {
+        "val": {
+          "n_runs": 6,
+          "wall_seconds": 2.7
+        },
+        "test": {
+          "n_runs": 6,
+          "wall_seconds": 141.6
+        },
+        "ood": {
+          "n_runs": 3,
+          "wall_seconds": 7.5
+        },
+        "real": {
+          "n_runs": 0,
+          "wall_seconds": 0.3
+        },
+        "real_control": {
+          "n_runs": 0,
+          "wall_seconds": 0.1
+        }
+      },
+      "models": [],
+      "llm_modes": [],
+      "latency_seconds_overall": {
+        "n": 15,
+        "p50": 0.262,
+        "p95": 52.854
+      },
+      "latency_seconds_by_scenario": {
+        "fold_L1_slow": {
+          "n": 2,
+          "p50": 48.607,
+          "p95": 52.03
+        },
+        "hopf_L2_slow": {
+          "n": 2,
+          "p50": 49.331,
+          "p95": 53.435
+        },
+        "ou_L1": {
+          "n": 3,
+          "p50": 0.214,
+          "p95": 0.299
+        },
+        "regime_L3": {
+          "n": 3,
+          "p50": 0.194,
+          "p95": 0.248
+        },
+        "short_ramp_L2": {
+          "n": 3,
+          "p50": 0.164,
+          "p95": 0.252
+        },
+        "transcritical_L3_fast": {
+          "n": 2,
+          "p50": 44.518,
+          "p95": 46.271
+        }
+      },
+      "tokens": {
+        "tokens_in": 0,
+        "tokens_out": 0
+      },
+      "llm_requests": {
+        "model_requests": 0,
+        "replayed_requests": 0
+      },
+      "cost_usd_approx": 0.0,
+      "pfn_calls_per_verdict": {
+        "agent_run_pfn_tool_calls": 0.0,
+        "all_pfn_steps": 1.0,
+        "n_verdicts": 15
       }
     }
   }

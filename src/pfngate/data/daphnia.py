@@ -65,6 +65,7 @@ class RealConfig:
 
 
 def load_real_config(path: Path = DEFAULT_REAL_CONFIG) -> RealConfig:
+    """Read configs/real_tipping.yaml into a RealConfig."""
     with path.open(encoding="utf-8") as f:
         raw = yaml.safe_load(f)
     cfg = RealConfig(

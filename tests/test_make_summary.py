@@ -523,3 +523,126 @@ def test_the_real_table_reads_both_real_splits_from_files(tmp_path: Path) -> Non
 def test_the_real_section_is_absent_when_no_real_split_was_run(tmp_path: Path) -> None:
     write_variant(tmp_path, vfile("classic_ews", "test", "classic_ews", seconds=[0.1], auroc=0.7))
     assert MS.real_section(MS.Results(tmp_path)) == []
+
+
+# The fixes after the first review: real-data decisions, gate blocks, early warning, sharpness
+
+
+def with_decisions(data: dict[str, Any], decisions: list[str]) -> dict[str, Any]:
+    data["runs"] = [{"timing": {"total_seconds": 0.1}, "decision": d} for d in decisions]
+    data["n_runs"] = len(decisions)
+    return data
+
+
+def test_an_auroc_over_one_repeated_decision_is_flagged_in_the_real_table(tmp_path: Path) -> None:
+    same = vfile("naive_agent", "real", "naive_agent", seconds=[0.1] * 3, pos=2, neg=1, auroc=0.06)
+    write_variant(tmp_path, with_decisions(same, ["no_alert"] * 3))
+    mixed = vfile("llm_only", "real", "llm_only", seconds=[0.1] * 3, pos=2, neg=1, auroc=0.8)
+    write_variant(tmp_path, with_decisions(mixed, ["alert", "no_alert", "alert"]))
+    rows = {
+        line.split(" | ")[0].strip("| "): line for line in MS.real_table(MS.Results(tmp_path))[2:]
+    }
+    assert "all 3 runs decided no alert" in rows["Naive agent (random context, no gate)"]
+    assert "decided" not in rows["LLM only"]  # decisions differ, so the ranking means something
+
+
+def test_the_decisions_per_variant_are_stated_for_each_real_split(tmp_path: Path) -> None:
+    daphnia = vfile("agent", "real", "agent_final", seconds=[0.1] * 4, pos=2, neg=2)
+    write_variant(tmp_path, with_decisions(daphnia, ["abstain"] * 3 + ["alert"]))
+    grid = vfile("agent", "real_control", "agent_final", seconds=[0.1] * 2, pos=0, neg=2)
+    write_variant(tmp_path, with_decisions(grid, ["alert", "no_alert"]))
+    lines = "\n".join(MS.real_sample_lines(MS.Results(tmp_path)))
+    assert "Decisions per variant on the Daphnia split: Full harness: abstain 3, alert 1" in lines
+    assert "Decisions per variant on the grid split: Full harness: alert 1, no alert 1" in lines
+
+
+def test_a_run_without_a_decision_is_not_counted() -> None:
+    assert MS.decision_counts([{"timing": {}}, {"decision": "alert"}]) == {"alert": 1}
+    assert MS.decision_counts([{"decision": {"decision": "no_alert"}}]) == {"no alert": 1}
+
+
+def test_the_gate_blocks_are_attributed_to_the_checks_that_failed(tmp_path: Path) -> None:
+    res = MS.Results(tmp_path)
+    res.pfn = {
+        ("knn", "test"): {
+            "gate": {
+                "n_runs": 54,
+                "n_blocked": 10,
+                "blocked_by_check": {"context_not_degenerate": 10},
+            }
+        },
+        ("random", "ood"): {
+            "gate": {"n_runs": 36, "n_blocked": 1, "blocked_by_check": {"ood_share": 1}}
+        },
+    }
+    res.variants = {
+        ("agent", "ood"): {
+            "gate": {
+                "n_runs": 18,
+                "n_gate_blocked": 6,
+                "blocked_by_check": {"ood_share": 1, "context_not_degenerate": 5},
+            }
+        }
+    }
+    (line,) = MS.gate_block_lines(res)
+    assert "17 of 108 runs were blocked" in line
+    assert "context_not_degenerate 15, ood_share 2" in line  # most common check first
+    assert MS.gate_block_lines(MS.Results(tmp_path / "nothing")) == []
+
+
+def test_the_early_warning_section_reads_lead_time_json_and_says_the_alarm_can_be_false(
+    tmp_path: Path,
+) -> None:
+    block = {
+        "all_runs": {"n_runs": 54, "n_detected": 49, "lead_median": 92.84, "lead_q25": 64.7,
+                     "lead_q75": 255.4},
+        "gate_accepted_runs": {"n_runs": 44, "n_detected": 43, "lead_median": 91.0,
+                               "lead_q25": 60.0, "lead_q75": 250.0},
+    }  # fmt: skip
+    ctrl = {"all_runs": {"n_runs": 54, "n_with_alarm": 28, "share": 0.52}}
+    doc = {
+        "alert_thresholds": {"knn": 0.14268},
+        "window_span_time": 12.7,
+        "tipping": {"test": {"knn": block}},
+        "controls": {"knn": ctrl},
+    }
+    (tmp_path / "lead_time.json").write_text(json.dumps(doc), encoding="utf-8")
+    text = "\n".join(MS.early_warning_section(MS.Results(tmp_path)))
+    assert "| In-prior test | knn | 54 | 49 of 54 | 92.8 [64.7, 255.4] | 43 of 44 | 91.0 |" in text
+    assert "knn 0.1427" in text and "spans 12.7 time units" in text
+    assert "28 of 54 held-out control trajectories (knn context)" in text
+    assert "upper bound on useful warning" in text
+    assert MS.early_warning_section(MS.Results(tmp_path / "nothing")) == []
+
+
+def test_the_sharpness_section_shows_width_against_climatology_and_negative_skill(
+    tmp_path: Path,
+) -> None:
+    part = {"n_runs": 36, "median_width": 0.84, "median_width_over_climatology": 0.94,
+            "pinball_skill": -0.96}  # fmt: skip
+    doc = {
+        "climatology_width": 0.892,
+        "splits": {
+            "ood": {
+                "knn": {"all_runs": part, "gate_accepted_runs": {**part, "pinball_skill": -0.5}}
+            }
+        },
+    }
+    (tmp_path / "sharpness.json").write_text(json.dumps(doc), encoding="utf-8")
+    text = "\n".join(MS.sharpness_section(MS.Results(tmp_path)))
+    assert (
+        "| Out-of-prior | knn | 0.840 (0.94 of the climatology) | 0.892 | -0.960 | -0.500 |" in text
+    )
+    assert "A skill below zero is worse than that reference" in text
+    assert MS.sharpness_section(MS.Results(tmp_path / "nothing")) == []
+
+
+def test_the_new_sections_are_part_of_the_summary(tmp_path: Path) -> None:
+    (tmp_path / "lead_time.json").write_text(
+        json.dumps({"alert_thresholds": {}, "window_span_time": 1.0, "tipping": {}, "controls": {}})
+    )
+    (tmp_path / "sharpness.json").write_text(
+        json.dumps({"climatology_width": 1.0, "splits": {}}), encoding="utf-8"
+    )
+    text = MS.build_summary(MS.Results(tmp_path))
+    assert "## Early warning: detection and lead time" in text and "## Sharpness" in text

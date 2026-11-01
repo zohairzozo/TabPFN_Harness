@@ -11,6 +11,7 @@ Detector = Callable[[list[float], float], bool]
 
 
 def make_detector(spec: Mapping[str, Any], state_names: Sequence[str]) -> Detector | None:
+    """Build the tip detector for a scenario from its spec."""
     kind = spec["kind"]
     if kind == "none":
         return None

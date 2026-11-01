@@ -15,7 +15,8 @@ smoke:
 full:
 	uv run python scripts/run_all.py
 
-# A quick check: 5 scenarios of each kind, 1 seed each, written to results/fast/.
+# A quick check: the first seed of the recorded scenarios, written to results/fast/. It is a subset
+# of the recorded sample, so it replays offline.
 fast:
 	uv run python scripts/run_all.py --fast
 

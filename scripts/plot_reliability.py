@@ -45,6 +45,7 @@ def load_runs(path: Path) -> list[dict[str, Any]]:
 
 
 def accepted(t: dict[str, Any]) -> bool:
+    """True if the gate accepted a trajectory."""
     return not t["gate"]["failed"]
 
 
@@ -62,6 +63,7 @@ def pooled_frequencies(trajectories: list[dict[str, Any]]) -> dict[float, float]
 
 
 def panel_data(results_dir: Path) -> dict[tuple[str, str], dict[str, Any]]:
+    """The observed frequencies for one panel, pooled over windows."""
     out = {}
     for strategy in STRATEGIES:
         for flag, _ in SPLITS:
@@ -77,6 +79,7 @@ def panel_data(results_dir: Path) -> dict[tuple[str, str], dict[str, Any]]:
 
 
 def draw(data: dict[tuple[str, str], dict[str, Any]], out_path: Path) -> Path:
+    """Draw the reliability panels and save the figure."""
     plt.rcParams.update({"font.size": 9, "text.color": INK, "axes.labelcolor": INK})
     fig, axes = plt.subplots(len(STRATEGIES), len(SPLITS), figsize=(9.5, 4.6 * len(STRATEGIES)),
                              facecolor=SURFACE, squeeze=False)  # fmt: skip
@@ -121,6 +124,7 @@ def draw(data: dict[tuple[str, str], dict[str, Any]], out_path: Path) -> Path:
 
 
 def main(argv: list[str] | None = None) -> int:
+    """Command-line entry point: draw the reliability diagram."""
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--results-dir", type=Path, default=REPO_ROOT / "results")
     p.add_argument("--out", type=Path, default=REPO_ROOT / "results" / "figs" / "reliability.png")

@@ -30,6 +30,7 @@ class CheckResult(BaseModel):
 
 
 def min_context_size(n_context: int, threshold: int, source: Source = "fixed") -> CheckResult:
+    """Check that the context has at least the minimum number of rows."""
     passed = n_context >= threshold
     return CheckResult(
         name="min_context_size",

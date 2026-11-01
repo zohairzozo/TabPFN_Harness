@@ -19,6 +19,7 @@ from pfngate.pfn import load_pfn_config
 
 
 def main() -> int:
+    """Command-line entry point: write configs/gate.yaml from the context pool."""
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--max-context", type=int, required=True,
                    help="the max_context the validation runs will use")  # fmt: skip

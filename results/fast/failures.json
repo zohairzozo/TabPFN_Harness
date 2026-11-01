@@ -1,0 +1,755 @@
+{
+  "scope": {
+    "splits": [
+      "test",
+      "ood",
+      "real",
+      "real_control"
+    ],
+    "includes_validation": false,
+    "top_per_category": 5,
+    "min_coverage_of_a_bad_run": 0.8,
+    "note": "Held-out splits only unless validation is included: the gate and alarm thresholds were set on validation. Severity scales differ by variant and are named in each example. Ties are broken by variant, split and trajectory id, in that order. This file ranks and links; it gives no causes."
+  },
+  "n_runs_read": 361,
+  "categories": {
+    "a_false_alarms_on_controls": {
+      "title": "False alarms on negative controls",
+      "n_failures": 6,
+      "n_runs_counted_out_of": 38,
+      "failures_by_variant": {
+        "agent": 2,
+        "classic": 1,
+        "llm_only": 2,
+        "naive_agent": 1
+      },
+      "runs_by_variant": {
+        "agent": 8,
+        "classic": 8,
+        "llm_only": 8,
+        "naive_agent": 8,
+        "oracle": 6
+      },
+      "failures_by_split": {
+        "ood": 1,
+        "real_control": 3,
+        "test": 2
+      },
+      "top": [
+        {
+          "severity": 0.925,
+          "severity_basis": "classic baseline score of the last window",
+          "variant": "classic",
+          "split": "real_control",
+          "scenario_id": "grid_fingrid",
+          "seed": 0,
+          "trajectory_id": "grid_fingrid/0",
+          "role": "control",
+          "result_file": "classic_ews_real_control.json",
+          "trace_file": "fast/traces/classic_ews-real_control-20261031T215838Z-6e93dd31.jsonl",
+          "lines": [
+            [
+              1,
+              1
+            ]
+          ],
+          "numbers": {
+            "end_label": "negative",
+            "end_target": 1.0,
+            "alarm_threshold": 0.5,
+            "n_windows": 83
+          }
+        },
+        {
+          "severity": 0.75,
+          "severity_basis": "the agent's stated confidence",
+          "variant": "naive_agent",
+          "split": "real_control",
+          "scenario_id": "grid_fingrid",
+          "seed": 0,
+          "trajectory_id": "grid_fingrid/0",
+          "role": "control",
+          "result_file": "naive_agent_real_control.json",
+          "trace_file": "fast/traces/naive_agent-real_control-20261031T220216Z-6238f53c.jsonl",
+          "lines": [
+            [
+              1,
+              5
+            ]
+          ],
+          "numbers": {
+            "end_label": "negative",
+            "end_target": 1.0,
+            "verdict_decision": "alert",
+            "verdict_confidence": 0.75,
+            "coverage_90": 0.7590361445783133
+          }
+        },
+        {
+          "severity": 0.65,
+          "severity_basis": "the model's stated probability",
+          "variant": "llm_only",
+          "split": "ood",
+          "scenario_id": "regime_L3",
+          "seed": 4000,
+          "trajectory_id": "regime_L3/4000",
+          "role": "control",
+          "result_file": "llm_only_ood.json",
+          "trace_file": "fast/traces/llm_only-ood-20261031T215852Z-33ccca49.jsonl",
+          "lines": [
+            [
+              6,
+              6
+            ]
+          ],
+          "numbers": {
+            "end_label": "negative",
+            "end_target": 1.0,
+            "answer_probability": 0.65
+          }
+        },
+        {
+          "severity": 0.6,
+          "severity_basis": "the model's stated probability",
+          "variant": "llm_only",
+          "split": "test",
+          "scenario_id": "regime_L3",
+          "seed": 3000,
+          "trajectory_id": "regime_L3/3000",
+          "role": "control",
+          "result_file": "llm_only_test.json",
+          "trace_file": "fast/traces/llm_only-test-20261031T215847Z-d7f61cca.jsonl",
+          "lines": [
+            [
+              6,
+              6
+            ]
+          ],
+          "numbers": {
+            "end_label": "negative",
+            "end_target": 1.0,
+            "answer_probability": 0.6
+          }
+        },
+        {
+          "severity": 0.5874653758751814,
+          "severity_basis": "p_critical of the last window",
+          "variant": "agent",
+          "split": "real_control",
+          "scenario_id": "grid_fingrid",
+          "seed": 0,
+          "trajectory_id": "grid_fingrid/0",
+          "role": "control",
+          "result_file": "agent_real_control.json",
+          "trace_file": "fast/traces/agent-real_control-20261031T221209Z-27155622.jsonl",
+          "lines": [
+            [
+              1,
+              10
+            ]
+          ],
+          "numbers": {
+            "end_label": "negative",
+            "end_target": 1.0,
+            "verdict_decision": "alert",
+            "verdict_confidence": 0.7,
+            "verdict_context_strategy": "knn",
+            "final_decision": "alert",
+            "decided_by": "gate_and_decision_mapping",
+            "gate_passed": true,
+            "gate_failed": [],
+            "last_window_p_critical": 0.5874653758751814,
+            "alert_threshold": 0.14265158151044804,
+            "window_decisions": {
+              "abstain": 0,
+              "alert": 46,
+              "no_alert": 37
+            },
+            "context_strategy": "knn",
+            "followed_verdict_context": true,
+            "coverage_90": 0.7469879518072289
+          }
+        }
+      ]
+    },
+    "b_bad_runs_the_gate_let_through": {
+      "title": "Bad runs the gate let through",
+      "n_failures": 42,
+      "n_runs_counted_out_of": 55,
+      "failures_by_variant": {
+        "agent": 2,
+        "pfn_knn+gate": 22,
+        "pfn_random+gate": 18
+      },
+      "runs_by_variant": {
+        "agent": 4,
+        "pfn_knn+gate": 33,
+        "pfn_random+gate": 18
+      },
+      "failures_by_split": {
+        "ood": 22,
+        "real_control": 1,
+        "test": 19
+      },
+      "top": [
+        {
+          "severity": 0.33790613718411555,
+          "severity_basis": "minimum coverage minus the run's 90% coverage",
+          "variant": "pfn_knn+gate",
+          "split": "ood",
+          "scenario_id": "rate_L2_slow",
+          "seed": 4001,
+          "trajectory_id": "rate_L2_slow/4001",
+          "role": "tipping",
+          "result_file": "pfn_knn_ood.json",
+          "trace_file": "fast/traces/tabpfn_local-knn-ood-20261028T193002Z-efe3f1f0.jsonl",
+          "lines": [],
+          "numbers": {
+            "coverage_90": 0.4620938628158845,
+            "gate_failed": [],
+            "gate_reasons": [],
+            "context_strategy": "knn",
+            "context_size": 200,
+            "n_windows": 277,
+            "window_decisions": {
+              "abstain": 0,
+              "alert": 238,
+              "no_alert": 39
+            },
+            "calibration_error": 0.3649819494584837
+          }
+        },
+        {
+          "severity": 0.3239852398523986,
+          "severity_basis": "minimum coverage minus the run's 90% coverage",
+          "variant": "pfn_knn+gate",
+          "split": "ood",
+          "scenario_id": "rate_L1_slow",
+          "seed": 4001,
+          "trajectory_id": "rate_L1_slow/4001",
+          "role": "tipping",
+          "result_file": "pfn_knn_ood.json",
+          "trace_file": "fast/traces/tabpfn_local-knn-ood-20261028T193002Z-efe3f1f0.jsonl",
+          "lines": [],
+          "numbers": {
+            "coverage_90": 0.47601476014760147,
+            "gate_failed": [],
+            "gate_reasons": [],
+            "context_strategy": "knn",
+            "context_size": 200,
+            "n_windows": 271,
+            "window_decisions": {
+              "abstain": 0,
+              "alert": 187,
+              "no_alert": 84
+            },
+            "calibration_error": 0.38044280442804423
+          }
+        },
+        {
+          "severity": 0.3136186770428016,
+          "severity_basis": "minimum coverage minus the run's 90% coverage",
+          "variant": "pfn_knn+gate",
+          "split": "ood",
+          "scenario_id": "rate_L2_slow",
+          "seed": 4002,
+          "trajectory_id": "rate_L2_slow/4002",
+          "role": "tipping",
+          "result_file": "pfn_knn_ood.json",
+          "trace_file": "fast/traces/tabpfn_local-knn-ood-20261028T193002Z-efe3f1f0.jsonl",
+          "lines": [],
+          "numbers": {
+            "coverage_90": 0.48638132295719844,
+            "gate_failed": [],
+            "gate_reasons": [],
+            "context_strategy": "knn",
+            "context_size": 200,
+            "n_windows": 257,
+            "window_decisions": {
+              "abstain": 0,
+              "alert": 202,
+              "no_alert": 55
+            },
+            "calibration_error": 0.35680933852140073
+          }
+        },
+        {
+          "severity": 0.30000000000000004,
+          "severity_basis": "minimum coverage minus the run's 90% coverage",
+          "variant": "pfn_knn+gate",
+          "split": "ood",
+          "scenario_id": "rate_L1_fast",
+          "seed": 4001,
+          "trajectory_id": "rate_L1_fast/4001",
+          "role": "tipping",
+          "result_file": "pfn_knn_ood.json",
+          "trace_file": "fast/traces/tabpfn_local-knn-ood-20261028T193002Z-efe3f1f0.jsonl",
+          "lines": [],
+          "numbers": {
+            "coverage_90": 0.5,
+            "gate_failed": [],
+            "gate_reasons": [],
+            "context_strategy": "knn",
+            "context_size": 200,
+            "n_windows": 216,
+            "window_decisions": {
+              "abstain": 0,
+              "alert": 150,
+              "no_alert": 66
+            },
+            "calibration_error": 0.3731481481481481
+          }
+        },
+        {
+          "severity": 0.27297297297297307,
+          "severity_basis": "minimum coverage minus the run's 90% coverage",
+          "variant": "pfn_knn+gate",
+          "split": "ood",
+          "scenario_id": "rate_L2_fast",
+          "seed": 4002,
+          "trajectory_id": "rate_L2_fast/4002",
+          "role": "tipping",
+          "result_file": "pfn_knn_ood.json",
+          "trace_file": "fast/traces/tabpfn_local-knn-ood-20261028T193002Z-efe3f1f0.jsonl",
+          "lines": [],
+          "numbers": {
+            "coverage_90": 0.527027027027027,
+            "gate_failed": [],
+            "gate_reasons": [],
+            "context_strategy": "knn",
+            "context_size": 200,
+            "n_windows": 222,
+            "window_decisions": {
+              "abstain": 0,
+              "alert": 158,
+              "no_alert": 64
+            },
+            "calibration_error": 0.3261261261261262
+          }
+        }
+      ]
+    },
+    "c_good_runs_the_gate_blocked": {
+      "title": "Good runs the gate blocked",
+      "n_failures": 39,
+      "n_runs_counted_out_of": 249,
+      "failures_by_variant": {
+        "agent": 3,
+        "pfn_knn+gate": 34,
+        "pfn_random+gate": 2
+      },
+      "runs_by_variant": {
+        "agent": 12,
+        "pfn_knn+gate": 111,
+        "pfn_random+gate": 126
+      },
+      "failures_by_split": {
+        "ood": 22,
+        "real": 1,
+        "test": 16
+      },
+      "top": [
+        {
+          "severity": 0.19999999999999996,
+          "severity_basis": "the run's 90% coverage minus the minimum coverage",
+          "variant": "agent",
+          "split": "ood",
+          "scenario_id": "ou_L1",
+          "seed": 4000,
+          "trajectory_id": "ou_L1/4000",
+          "role": "control",
+          "result_file": "agent_ood.json",
+          "trace_file": "fast/traces/agent-ood-20261031T220805Z-33f2a161.jsonl",
+          "lines": [
+            [
+              39,
+              52
+            ]
+          ],
+          "numbers": {
+            "end_label": "negative",
+            "end_target": 1.0,
+            "verdict_decision": "no_alert",
+            "verdict_confidence": 0.75,
+            "verdict_context_strategy": "knn",
+            "final_decision": "abstain",
+            "decided_by": "gate_and_decision_mapping",
+            "gate_passed": false,
+            "gate_failed": [
+              "context_not_degenerate"
+            ],
+            "last_window_p_critical": 0.02118364289169998,
+            "alert_threshold": 0.14265158151044804,
+            "window_decisions": {
+              "abstain": 305,
+              "alert": 0,
+              "no_alert": 0
+            },
+            "context_strategy": "knn",
+            "followed_verdict_context": true,
+            "coverage_90": 1.0
+          }
+        },
+        {
+          "severity": 0.19999999999999996,
+          "severity_basis": "the run's 90% coverage minus the minimum coverage",
+          "variant": "agent",
+          "split": "ood",
+          "scenario_id": "regime_L3",
+          "seed": 4000,
+          "trajectory_id": "regime_L3/4000",
+          "role": "control",
+          "result_file": "agent_ood.json",
+          "trace_file": "fast/traces/agent-ood-20261031T220805Z-33f2a161.jsonl",
+          "lines": [
+            [
+              67,
+              80
+            ]
+          ],
+          "numbers": {
+            "end_label": "negative",
+            "end_target": 1.0,
+            "verdict_decision": "no_alert",
+            "verdict_confidence": 0.85,
+            "verdict_context_strategy": "knn",
+            "final_decision": "abstain",
+            "decided_by": "gate_and_decision_mapping",
+            "gate_passed": false,
+            "gate_failed": [
+              "context_not_degenerate"
+            ],
+            "last_window_p_critical": 0.052075497181438925,
+            "alert_threshold": 0.14265158151044804,
+            "window_decisions": {
+              "abstain": 305,
+              "alert": 0,
+              "no_alert": 0
+            },
+            "context_strategy": "knn",
+            "followed_verdict_context": true,
+            "coverage_90": 1.0
+          }
+        },
+        {
+          "severity": 0.19999999999999996,
+          "severity_basis": "the run's 90% coverage minus the minimum coverage",
+          "variant": "pfn_knn+gate",
+          "split": "ood",
+          "scenario_id": "ou_L1",
+          "seed": 4000,
+          "trajectory_id": "ou_L1/4000",
+          "role": "control",
+          "result_file": "pfn_knn_controls.json",
+          "trace_file": "fast/traces/tabpfn_local-knn-controls-20261028T194231Z-f6c52b14.jsonl",
+          "lines": [],
+          "numbers": {
+            "coverage_90": 1.0,
+            "gate_failed": [
+              "context_not_degenerate"
+            ],
+            "gate_reasons": [
+              "context_not_degenerate: 8 context rows with target <= 0.2 and 158 with target >= 0.6, need 10 of each"
+            ],
+            "context_strategy": "knn",
+            "context_size": 200,
+            "n_windows": 305,
+            "window_decisions": {
+              "abstain": 305,
+              "alert": 0,
+              "no_alert": 0
+            },
+            "calibration_error": 0.24131147540983608
+          }
+        },
+        {
+          "severity": 0.19999999999999996,
+          "severity_basis": "the run's 90% coverage minus the minimum coverage",
+          "variant": "pfn_knn+gate",
+          "split": "ood",
+          "scenario_id": "ou_L1",
+          "seed": 4001,
+          "trajectory_id": "ou_L1/4001",
+          "role": "control",
+          "result_file": "pfn_knn_controls.json",
+          "trace_file": "fast/traces/tabpfn_local-knn-controls-20261028T194231Z-f6c52b14.jsonl",
+          "lines": [],
+          "numbers": {
+            "coverage_90": 1.0,
+            "gate_failed": [
+              "context_not_degenerate"
+            ],
+            "gate_reasons": [
+              "context_not_degenerate: 7 context rows with target <= 0.2 and 163 with target >= 0.6, need 10 of each"
+            ],
+            "context_strategy": "knn",
+            "context_size": 200,
+            "n_windows": 305,
+            "window_decisions": {
+              "abstain": 305,
+              "alert": 0,
+              "no_alert": 0
+            },
+            "calibration_error": 0.19081967213114756
+          }
+        },
+        {
+          "severity": 0.19999999999999996,
+          "severity_basis": "the run's 90% coverage minus the minimum coverage",
+          "variant": "pfn_knn+gate",
+          "split": "ood",
+          "scenario_id": "ou_L2",
+          "seed": 4001,
+          "trajectory_id": "ou_L2/4001",
+          "role": "control",
+          "result_file": "pfn_knn_controls.json",
+          "trace_file": "fast/traces/tabpfn_local-knn-controls-20261028T194231Z-f6c52b14.jsonl",
+          "lines": [],
+          "numbers": {
+            "coverage_90": 1.0,
+            "gate_failed": [
+              "context_not_degenerate"
+            ],
+            "gate_reasons": [
+              "context_not_degenerate: 7 context rows with target <= 0.2 and 159 with target >= 0.6, need 10 of each"
+            ],
+            "context_strategy": "knn",
+            "context_size": 200,
+            "n_windows": 305,
+            "window_decisions": {
+              "abstain": 305,
+              "alert": 0,
+              "no_alert": 0
+            },
+            "calibration_error": 0.22885245901639348
+          }
+        }
+      ]
+    },
+    "d_agent_disagreed_with_gated_decision": {
+      "title": "Agent recommendation differed from final decision",
+      "n_failures": 8,
+      "n_runs_counted_out_of": 15,
+      "failures_by_variant": {
+        "agent": 8
+      },
+      "runs_by_variant": {
+        "agent": 15
+      },
+      "failures_by_split": {
+        "ood": 3,
+        "real": 3,
+        "test": 2
+      },
+      "top": [
+        {
+          "severity": 0.85,
+          "severity_basis": "the confidence the agent gave its recommendation",
+          "variant": "agent",
+          "split": "ood",
+          "scenario_id": "regime_L3",
+          "seed": 4000,
+          "trajectory_id": "regime_L3/4000",
+          "role": "control",
+          "result_file": "agent_ood.json",
+          "trace_file": "fast/traces/agent-ood-20261031T220805Z-33f2a161.jsonl",
+          "lines": [
+            [
+              67,
+              80
+            ]
+          ],
+          "numbers": {
+            "end_label": "negative",
+            "end_target": 1.0,
+            "verdict_decision": "no_alert",
+            "verdict_confidence": 0.85,
+            "verdict_context_strategy": "knn",
+            "final_decision": "abstain",
+            "decided_by": "gate_and_decision_mapping",
+            "gate_passed": false,
+            "gate_failed": [
+              "context_not_degenerate"
+            ],
+            "last_window_p_critical": 0.052075497181438925,
+            "alert_threshold": 0.14265158151044804,
+            "window_decisions": {
+              "abstain": 305,
+              "alert": 0,
+              "no_alert": 0
+            },
+            "context_strategy": "knn",
+            "followed_verdict_context": true,
+            "coverage_90": 1.0
+          }
+        },
+        {
+          "severity": 0.8,
+          "severity_basis": "the confidence the agent gave its recommendation",
+          "variant": "agent",
+          "split": "real",
+          "scenario_id": "daphnia_constant",
+          "seed": 20,
+          "trajectory_id": "daphnia_constant/20",
+          "role": "tipping",
+          "result_file": "agent_real.json",
+          "trace_file": "fast/traces/agent-real-20261031T221056Z-2e52298f.jsonl",
+          "lines": [
+            [
+              28,
+              39
+            ]
+          ],
+          "numbers": {
+            "end_label": "positive",
+            "end_target": 0.17,
+            "verdict_decision": "no_alert",
+            "verdict_confidence": 0.8,
+            "verdict_context_strategy": "knn",
+            "final_decision": "abstain",
+            "decided_by": "gate_and_decision_mapping",
+            "gate_passed": false,
+            "gate_failed": [
+              "ood_share"
+            ],
+            "last_window_p_critical": 0.037350029047744794,
+            "alert_threshold": 0.14265158151044804,
+            "window_decisions": {
+              "abstain": 9,
+              "alert": 0,
+              "no_alert": 0
+            },
+            "context_strategy": "knn",
+            "followed_verdict_context": true,
+            "coverage_90": 0.7777777777777778
+          }
+        },
+        {
+          "severity": 0.75,
+          "severity_basis": "the confidence the agent gave its recommendation",
+          "variant": "agent",
+          "split": "ood",
+          "scenario_id": "ou_L1",
+          "seed": 4000,
+          "trajectory_id": "ou_L1/4000",
+          "role": "control",
+          "result_file": "agent_ood.json",
+          "trace_file": "fast/traces/agent-ood-20261031T220805Z-33f2a161.jsonl",
+          "lines": [
+            [
+              39,
+              52
+            ]
+          ],
+          "numbers": {
+            "end_label": "negative",
+            "end_target": 1.0,
+            "verdict_decision": "no_alert",
+            "verdict_confidence": 0.75,
+            "verdict_context_strategy": "knn",
+            "final_decision": "abstain",
+            "decided_by": "gate_and_decision_mapping",
+            "gate_passed": false,
+            "gate_failed": [
+              "context_not_degenerate"
+            ],
+            "last_window_p_critical": 0.02118364289169998,
+            "alert_threshold": 0.14265158151044804,
+            "window_decisions": {
+              "abstain": 305,
+              "alert": 0,
+              "no_alert": 0
+            },
+            "context_strategy": "knn",
+            "followed_verdict_context": true,
+            "coverage_90": 1.0
+          }
+        },
+        {
+          "severity": 0.7,
+          "severity_basis": "the confidence the agent gave its recommendation",
+          "variant": "agent",
+          "split": "test",
+          "scenario_id": "transcritical_L3_fast",
+          "seed": 3000,
+          "trajectory_id": "transcritical_L3_fast/3000",
+          "role": "tipping",
+          "result_file": "agent_test.json",
+          "trace_file": "fast/traces/agent-test-20261031T220520Z-7188db61.jsonl",
+          "lines": [
+            [
+              27,
+              40
+            ]
+          ],
+          "numbers": {
+            "end_label": "positive",
+            "end_target": 0.121,
+            "verdict_decision": "no_alert",
+            "verdict_confidence": 0.7,
+            "verdict_context_strategy": "knn",
+            "final_decision": "alert",
+            "decided_by": "gate_and_decision_mapping",
+            "gate_passed": true,
+            "gate_failed": [],
+            "last_window_p_critical": 0.18248061380153177,
+            "alert_threshold": 0.14265158151044804,
+            "window_decisions": {
+              "abstain": 0,
+              "alert": 7,
+              "no_alert": 41
+            },
+            "context_strategy": "knn",
+            "followed_verdict_context": true,
+            "coverage_90": 0.8333333333333334
+          }
+        },
+        {
+          "severity": 0.65,
+          "severity_basis": "the confidence the agent gave its recommendation",
+          "variant": "agent",
+          "split": "ood",
+          "scenario_id": "noise_N1_slow",
+          "seed": 4000,
+          "trajectory_id": "noise_N1_slow/4000",
+          "role": "tipping",
+          "result_file": "agent_ood.json",
+          "trace_file": "fast/traces/agent-ood-20261031T220805Z-33f2a161.jsonl",
+          "lines": [
+            [
+              11,
+              24
+            ]
+          ],
+          "numbers": {
+            "end_label": "positive",
+            "end_target": 0.014799999999999045,
+            "verdict_decision": "abstain",
+            "verdict_confidence": 0.65,
+            "verdict_context_strategy": "knn",
+            "final_decision": "alert",
+            "decided_by": "gate_and_decision_mapping",
+            "gate_passed": true,
+            "gate_failed": [],
+            "last_window_p_critical": 0.18234205602090794,
+            "alert_threshold": 0.14265158151044804,
+            "window_decisions": {
+              "abstain": 0,
+              "alert": 19,
+              "no_alert": 317
+            },
+            "context_strategy": "knn",
+            "followed_verdict_context": true,
+            "coverage_90": 0.9047619047619048
+          }
+        }
+      ]
+    }
+  },
+  "overviews": {
+    "a_false_alarms_on_controls": "False alarms on negative controls: 6 of 38 runs. Control runs that ended in an alert, by variant: agent 2 of 8, classic 1 of 8, llm_only 2 of 8, naive_agent 1 of 8. By splits: ood 1, real_control 3, test 2. The listed examples are ranked by classic baseline score of the last window; the first is classic on grid_fingrid/0 (real_control).",
+    "b_bad_runs_the_gate_let_through": "Bad runs the gate let through: 42 of 55 runs. Runs the gate accepted although their 90% interval covered too little, counted out of all BAD runs that have a gate decision, by variant: agent 2 of 4, pfn_knn+gate 22 of 33, pfn_random+gate 18 of 18. By splits: ood 22, real_control 1, test 19. The listed examples are ranked by minimum coverage minus the run's 90% coverage; the first is pfn_knn+gate on rate_L2_slow/4001 (ood).",
+    "c_good_runs_the_gate_blocked": "Good runs the gate blocked: 39 of 249 runs. Runs the gate blocked although they were not BAD, counted out of all runs with a gate decision that were not BAD, by variant: agent 3 of 12, pfn_knn+gate 34 of 111, pfn_random+gate 2 of 126. By splits: ood 22, real 1, test 16. The listed examples are ranked by the run's 90% coverage minus the minimum coverage; the first is agent on ou_L1/4000 (ood).",
+    "d_agent_disagreed_with_gated_decision": "Agent recommendation differed from final decision: 8 of 15 runs. Runs of the full harness where the agent's recommended decision differs from the final decision, counted out of the agent runs that gave a recommendation: agent 8 of 15. Agent runs with no recommendation: 1. By splits: ood 3, real 3, test 2. The listed examples are ranked by the confidence the agent gave its recommendation; the first is agent on regime_L3/4000 (ood)."
+  }
+}

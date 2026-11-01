@@ -28,6 +28,7 @@ class FeatureConfig:
 
 
 def load_feature_config(path: Path = DEFAULT_FEATURE_CONFIG) -> FeatureConfig:
+    """Read configs/features.yaml into a FeatureConfig."""
     with path.open(encoding="utf-8") as f:
         raw = yaml.safe_load(f)
     cfg = FeatureConfig(

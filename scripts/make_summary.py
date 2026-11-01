@@ -62,6 +62,7 @@ GATE_SPLITS = [
 
 
 def load(path: Path) -> dict[str, Any] | None:
+    """Read a JSON result file, or None if it is missing."""
     return json.loads(path.read_text(encoding="utf-8")) if path.exists() else None
 
 
@@ -73,6 +74,8 @@ class Results:
         self.baseline = load(results_dir / "baseline_ews.json")
         self.timing = load(results_dir / "timing_tabpfn.json")
         self.tuning = load(results_dir / "gate_tuning.json")
+        self.lead_time = load(results_dir / "lead_time.json")
+        self.sharpness = load(results_dir / "sharpness.json")
         self.variants: dict[tuple[str, str], dict[str, Any]] = {}
         for _, method, _ in VARIANTS:
             for split in (*VARIANT_SPLITS, *REAL_VARIANT_SPLITS):
@@ -100,6 +103,7 @@ class Results:
         return (run["auroc"].get(subset) or {}).get(score)
 
     def missing(self, method: str, flag: str) -> str:
+        """The text that says why a result is missing."""
         if method == "baseline":
             return "not run"
         run = self.pfn.get((method, flag))
@@ -110,6 +114,7 @@ class Results:
         return "n/a"
 
     def false_alarm(self, method: str, score: str) -> dict[str, Any] | None:
+        """The false-alarm block of a method, or None if it has none."""
         if method == "baseline":
             if self.baseline is None:
                 return None
@@ -138,6 +143,7 @@ class Results:
         return run["false_alarms"]["thresholds"]["p_critical"] < DEGENERATE_THRESHOLD
 
     def latencies(self, method: str) -> list[float]:
+        """The run latencies of a method, over its held-out splits."""
         return [
             t["latency_seconds"]
             for (m, flag), run in self.pfn.items()
@@ -147,6 +153,7 @@ class Results:
 
 
 def cell(entry: dict[str, Any] | None, fallback: str) -> str:
+    """A table cell from an entry, or the fallback text if there is none."""
     if entry is None:
         return fallback
     text = f"{entry['auroc']:.2f} [{entry['ci_low']:.2f}, {entry['ci_high']:.2f}]"
@@ -158,10 +165,12 @@ def cell(entry: dict[str, Any] | None, fallback: str) -> str:
 
 
 def rate(block: dict[str, Any] | None, key: str = "window_rate") -> str:
+    """A window false-alarm rate as text, or not run if there is no block."""
     return "not run" if block is None else f"{block['all_controls'][key]:.3f}"
 
 
 def latency_cell(res: Results, method: str) -> str:
+    """The median latency of a method as a table cell."""
     if method == "baseline":
         return "not measured"
     lat = res.latencies(method)
@@ -169,6 +178,7 @@ def latency_cell(res: Results, method: str) -> str:
 
 
 def main_table(res: Results, score: str) -> list[str]:
+    """The main AUROC table, one row per method."""
     head = ["Method"] + [f"AUROC {c[0]}" for c in AUROC_COLUMNS]
     head += ["False alarms on held-out controls (window rate)", "Median latency per trajectory (s)"]
     lines = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
@@ -185,6 +195,7 @@ def main_table(res: Results, score: str) -> list[str]:
 
 
 def family_tables(res: Results, score: str) -> list[str]:
+    """The per-family AUROC tables, one per split."""
     out: list[str] = []
     for title, split, flag in AUROC_COLUMNS:
         families: set[str] = set()
@@ -212,6 +223,7 @@ def family_tables(res: Results, score: str) -> list[str]:
 
 
 def false_alarm_table(res: Results) -> list[str]:
+    """The false-alarm table on the held-out controls, per method and score."""
     head = (
         "| Method (score) | Threshold | Target | Validation controls | "
         "Held-out controls: windows | Held-out controls: trajectories with any alarm |"
@@ -235,6 +247,7 @@ def false_alarm_table(res: Results) -> list[str]:
 
 
 def settings_table(res: Results) -> list[str]:
+    """The run settings table: one row per result file."""
     head = [
         "Run",
         "max_context (config default)",
@@ -312,6 +325,7 @@ def comparison_lines(res: Results, score: str) -> list[str]:
 
 
 def check_lines(res: Results) -> list[str]:
+    """The computed checks in plain text, one line each."""
     out = []
     for score in SCORE_TITLES:
         for title, split, flag in AUROC_COLUMNS:
@@ -348,25 +362,30 @@ def check_lines(res: Results) -> list[str]:
             reasons = {s["reason"].split(" for ")[0] for s in run["skipped"]}
             why = "; ".join(sorted(reasons))
             out.append(f"- {strategy} {flag}: {len(run['skipped'])} trajectories skipped ({why}).")
+    out += gate_block_lines(res)
     return out or ["- No check was triggered."]
 
 
 def num(v: float | None, fallback: str = "n/a", digits: int = 2) -> str:
+    """A number as fixed-decimal text, or the fallback if it is missing."""
     return fallback if v is None else f"{v:.{digits}f}"
 
 
 def with_ci(v: float | None, ci: list[float] | None, fallback: str) -> str:
+    """A value with its confidence interval as text."""
     if v is None:
         return fallback
     return f"{v:.2f}" + (f" [{ci[0]:.2f}, {ci[1]:.2f}]" if ci else "")
 
 
 def gate_of(res: Results, strategy: str, flag: str) -> dict[str, Any] | None:
+    """The gate block of a PFN result for a strategy and split."""
     run = res.pfn.get((strategy, flag))
     return None if run is None else run.get("gate")
 
 
 def gate_table(res: Results) -> list[str]:
+    """The gate table: one row per strategy and split."""
     head = [
         "Method", "Split", "Gate", "Runs", "Accepted runs", "Abstention rate",
         "Runs over the width cap (advisory)", "AUROC, accepted runs", "AUROC, all runs",
@@ -406,6 +425,7 @@ def gate_table(res: Results) -> list[str]:
 
 
 def gate_false_alarm_table(res: Results) -> list[str]:
+    """The gate false-alarm table on the held-out controls."""
     head = [
         "Method", "Held-out control runs", "Abstention rate",
         "Window false alarms (abstain = no alarm)", "Window false alarms, accepted runs only",
@@ -431,6 +451,7 @@ def gate_false_alarm_table(res: Results) -> list[str]:
 
 
 def tuned(res: Results) -> bool:
+    """True if the gate has been tuned."""
     return (res.tuning or {}).get("status") == "tuned"
 
 
@@ -483,6 +504,7 @@ def current_gate_sha(res: Results) -> str | None:
 
 
 def tuning_lines(res: Results) -> list[str]:
+    """The lines that summarise the gate tuning."""
     lines = tuning_record_lines(res)
     t, sha = res.tuning, current_gate_sha(res)
     known = {t.get("input_gate_sha256"), t.get("output_gate_sha256")} if t else set()
@@ -496,6 +518,7 @@ def tuning_lines(res: Results) -> list[str]:
 
 
 def tuning_record_lines(res: Results) -> list[str]:
+    """The lines that describe the gate tuning record."""
     t = res.tuning
     if t is None:
         return ["- The gate has not been tuned: results/gate_tuning.json does not exist."]
@@ -601,6 +624,7 @@ def per_split(res: Results, method: str, fn: Any) -> str:
 
 
 def has_result(res: Results, method: str) -> bool:
+    """True if a method has a result for any variant split."""
     return any((method, split) in res.variants for split in VARIANT_SPLITS)
 
 
@@ -611,6 +635,7 @@ def pfn_of(res: Results, method: str, split: str) -> dict[str, Any] | None:
 
 
 def variant_auroc(res: Results, method: str, source: str, split: str) -> str:
+    """The AUROC cell of a variant for a split."""
     d = res.variants.get((method, split))
     if d is None:
         return "not run"
@@ -643,6 +668,8 @@ def variant_coverage(res: Results, method: str) -> str:
 
 
 def variant_calibration(res: Results, method: str) -> str:
+    """The calibration-error cell of a variant, in and out of prior."""
+
     def one(d: dict[str, Any]) -> str:
         p = (d["summary"] or {}).get("pfn")
         return "n/a (no intervals)" if p is None else num(p["calibration_error_mean"], digits=3)
@@ -651,6 +678,8 @@ def variant_calibration(res: Results, method: str) -> str:
 
 
 def variant_false_alarms(res: Results, method: str, source: str) -> str:
+    """The false-alarm cell of a variant, in and out of prior."""
+
     def one(d: dict[str, Any]) -> str:
         m = (d["metrics"].get(source) or {}).get("control_alert") or {}
         if m.get("value") is None:
@@ -661,6 +690,8 @@ def variant_false_alarms(res: Results, method: str, source: str) -> str:
 
 
 def variant_bad_blocked(res: Results, method: str) -> str:
+    """The share of BAD runs blocked, as a variant table cell."""
+
     def one(d: dict[str, Any]) -> str:
         p = (d["summary"] or {}).get("pfn")
         if p is None or not p["gated"]:
@@ -683,6 +714,7 @@ def variant_latency(res: Results, method: str) -> str:
 
 
 def variant_tool_calls(res: Results, method: str) -> str:
+    """The mean tool calls per run of a variant, as a cell."""
     n = total = 0.0
     for split in VARIANT_SPLITS:
         t = ((res.variants.get((method, split)) or {}).get("summary") or {}).get("tool_calls")
@@ -707,6 +739,7 @@ def variant_pass_k(res: Results, method: str) -> str:
 
 
 def variant_table(res: Results) -> list[str]:
+    """The variants table in run-level terms, one row per variant."""
     head = [
         "Variant", "In-prior AUROC", "Out-of-prior AUROC",
         "90% coverage (in-prior / out-of-prior)", "Calibration error (in-prior / out-of-prior)",
@@ -733,6 +766,7 @@ def variant_table(res: Results) -> list[str]:
 
 
 def sample_line(limit: int | None, seeds: int | None) -> str:
+    """The sample size line: scenarios per kind and seeds per scenario."""
     if limit is None:
         kinds = "all scenarios"
     else:
@@ -814,6 +848,7 @@ def real_rate(res: Results, method: str, source: str, split: str, key: str) -> s
 
 
 def real_table(res: Results) -> list[str]:
+    """The real-data table: one row per variant, for the real splits."""
     head = [
         "Variant",
         "Daphnia (surrogate labels): AUROC",
@@ -824,7 +859,7 @@ def real_table(res: Results) -> list[str]:
     lines = ["| " + " | ".join(head) + " |", "|" + "---|" * len(head)]
     for title, method, source in VARIANTS:
         cells = [
-            variant_auroc(res, method, source, "real"),
+            variant_auroc(res, method, source, "real") + same_decision_note(res, method, "real"),
             real_rate(res, method, source, "real", "recall_end"),
             real_rate(res, method, source, "real", "control_alert"),
             real_rate(res, method, source, "real_control", "control_alert"),
@@ -834,6 +869,7 @@ def real_table(res: Results) -> list[str]:
 
 
 def real_section(res: Results) -> list[str]:
+    """The real-data section, or an empty list if there is no real result."""
     if not any(split in REAL_VARIANT_SPLITS for (_, split) in res.variants):
         return []
     return [
@@ -853,6 +889,7 @@ def real_section(res: Results) -> list[str]:
 
 
 def real_sample_lines(res: Results) -> list[str]:
+    """The sample lines of the real-data section."""
     lines = []
     for split, label in (("real", "Daphnia"), ("real_control", "grid")):
         parts = []
@@ -862,15 +899,27 @@ def real_sample_lines(res: Results) -> list[str]:
                 parts.append(f"{title.split(' (')[0]}: {d['n_runs']}")
         if parts:
             lines.append(f"- Runs per variant on the {label} split: " + "; ".join(parts) + ".")
+    for split, label in (("real", "Daphnia"), ("real_control", "grid")):
+        parts = []
+        for title, method, _ in VARIANTS:
+            d = res.variants.get((method, split))
+            if d is not None and d.get("runs"):
+                counts = decision_counts(d["runs"])
+                said = ", ".join(f"{k} {v}" for k, v in counts.items())
+                parts.append(title.split(" (")[0] + ": " + said)
+        if parts:
+            lines.append(f"- Decisions per variant on the {label} split: " + "; ".join(parts) + ".")
     return lines
 
 
 def variants_section(res: Results) -> list[str]:
+    """The variants section, with its notes."""
     return [
         "## Variants, run level",
         "",
         "One row per variant, on the same trajectories. The test and out-of-prior splits are "
-        "held out: the gate was tuned and frozen before they were run.",
+        "held out. Their numbers are not blind: the gate was designed after ungated results "
+        "on them had been seen (docs/AUDIT.md).",
         "",
         *variant_table(res),
         "",
@@ -881,7 +930,169 @@ def variants_section(res: Results) -> list[str]:
     ]
 
 
+def run_decision(run: dict[str, Any]) -> str:
+    """The final decision of a run record, as a word."""
+    decision = run.get("decision")
+    decision = decision.get("decision") if isinstance(decision, dict) else decision
+    return str(decision).replace("_", " ")
+
+
+def decision_counts(runs: list[dict[str, Any]]) -> dict[str, int]:
+    """How many runs ended in each decision, most common first."""
+    counts: dict[str, int] = {}
+    for run in runs:
+        if run.get("decision") is None:
+            continue  # a run record without a decision is not counted
+        word = run_decision(run)
+        counts[word] = counts.get(word, 0) + 1
+    return dict(sorted(counts.items(), key=lambda kv: (-kv[1], kv[0])))
+
+
+def same_decision_note(res: Results, method: str, split: str) -> str:
+    """A note for an AUROC cell when every run of the split got the same decision."""
+    d = res.variants.get((method, split))
+    runs = (d or {}).get("runs") or []
+    counts = decision_counts(runs)
+    if len(runs) > 1 and len(counts) == 1:
+        word = next(iter(counts))
+        return (
+            f" (all {len(runs)} runs decided {word}: the AUROC only ranks the confidence "
+            "of one repeated decision)"
+        )
+    return ""
+
+
+def gate_block_lines(res: Results) -> list[str]:
+    """Which gate checks the held-out blocks came from, pooled over the gated results."""
+    counts: dict[str, int] = {}
+    n_runs = n_blocked = 0
+    sources = [res.pfn.get((s, f)) for s in STRATEGIES for f in ("test", "ood")]
+    sources += [res.variants.get(("agent", split)) for split in VARIANT_SPLITS]
+    for run in sources:
+        gate = (run or {}).get("gate")
+        if not gate:
+            continue
+        n_runs += gate["n_runs"]
+        n_blocked += gate.get("n_blocked", gate.get("n_gate_blocked", 0))
+        for check, n in (gate.get("blocked_by_check") or {}).items():
+            counts[check] = counts.get(check, 0) + n
+    if not n_runs:
+        return []
+    detail = ", ".join(f"{c} {n}" for c, n in sorted(counts.items(), key=lambda kv: -kv[1]))
+    return [
+        "- Gate blocks on the held-out tipping runs (PFN with the gate and the full harness, "
+        f"in-prior test and out-of-prior): {n_blocked} of {n_runs} runs were blocked. Failed "
+        f"checks behind them: {detail or 'none'}. A run can fail more than one check."
+    ]
+
+
+SPLIT_LABELS = {"test": "In-prior test", "ood": "Out-of-prior"}
+
+
+def early_warning_section(res: Results) -> list[str]:
+    """Detection and lead time of the first alarm, from results/lead_time.json."""
+    lt = res.lead_time
+    if lt is None:
+        return []
+    head = [
+        "Split",
+        "Strategy",
+        "Tipping runs",
+        "Alarm before the tip",
+        "Lead time, median [q25, q75]",
+        "Gate-accepted runs: alarm before the tip",
+        "Gate-accepted runs: median lead time",
+    ]
+    lines = [
+        "## Early warning: detection and lead time (window level)",
+        "",
+        "The variants table scores one verdict at the end of each series. This asks how long "
+        "before the tip the first alarm comes, at the alert thresholds frozen in the gate config "
+        "(nothing is tuned here). Lead time is in simulation time units.",
+        "",
+        "| " + " | ".join(head) + " |",
+        "|" + "---|" * len(head),
+    ]
+    for flag, by_strategy in lt["tipping"].items():
+        for strategy, v in by_strategy.items():
+            a, g = v["all_runs"], v["gate_accepted_runs"]
+            lead = (
+                f"{a['lead_median']:.1f} [{a['lead_q25']:.1f}, {a['lead_q75']:.1f}]"
+                if a["lead_median"] is not None
+                else "n/a"
+            )
+            acc_lead = f"{g['lead_median']:.1f}" if g["lead_median"] is not None else "n/a"
+            cells = [
+                SPLIT_LABELS.get(flag, flag),
+                strategy,
+                str(a["n_runs"]),
+                f"{a['n_detected']} of {a['n_runs']}",
+                lead,
+                f"{g['n_detected']} of {g['n_runs']}",
+                acc_lead,
+            ]
+            lines.append("| " + " | ".join(cells) + " |")
+    thresholds = ", ".join(f"{k} {v:.4f}" for k, v in lt["alert_thresholds"].items())
+    lines += [
+        "",
+        f"- Alert thresholds (frozen, from the gate config): {thresholds}.",
+        f"- One window of the series spans {lt['window_span_time']:.1f} time units, so a lead "
+        "time below that is no warning.",
+    ]
+    for strategy, v in lt["controls"].items():
+        c = v["all_runs"]
+        lines.append(
+            f"- The first alarm can be a false one: {c['n_with_alarm']} of {c['n_runs']} held-out "
+            f"control trajectories ({strategy} context) also alarm in some window, so these lead "
+            "times are an upper bound on useful warning."
+        )
+    lines.append("")
+    return lines
+
+
+def sharpness_section(res: Results) -> list[str]:
+    """Interval width and pinball skill against a climatology, from results/sharpness.json."""
+    sh = res.sharpness
+    if sh is None:
+        return []
+    head = [
+        "Split",
+        "Strategy",
+        "Median 90% interval width",
+        "Climatology width",
+        "Pinball skill vs climatology",
+        "Gate-accepted runs: pinball skill",
+    ]
+    lines = [
+        "## Sharpness: is the PFN better than a prior that ignores the query?",
+        "",
+        "Coverage is cheap when intervals are wide. The reference is the climatology: constant "
+        "quantiles of the context pool target values. A skill below zero is worse than that "
+        "reference. A width close to the climatology width is not sharper than ignoring the query.",
+        "",
+        "| " + " | ".join(head) + " |",
+        "|" + "---|" * len(head),
+    ]
+    for flag, by_strategy in sh["splits"].items():
+        for strategy, v in by_strategy.items():
+            a, g = v["all_runs"], v["gate_accepted_runs"]
+            ratio = a["median_width_over_climatology"]
+            width = f"{a['median_width']:.3f} ({ratio:.2f} of the climatology)"
+            cells = [
+                SPLIT_LABELS.get(flag, flag),
+                strategy,
+                width,
+                f"{sh['climatology_width']:.3f}",
+                num(a["pinball_skill"], digits=3),
+                num(g["pinball_skill"], digits=3),
+            ]
+            lines.append("| " + " | ".join(cells) + " |")
+    lines.append("")
+    return lines
+
+
 def build_summary(res: Results) -> str:
+    """Build the whole results summary as one markdown string."""
     lines = [
         "# Results summary",
         "",
@@ -932,8 +1143,9 @@ def build_summary(res: Results) -> str:
         "",
         "The gate (docs/GATE.md) decides per run whether to trust it. A blocked run "
         "abstains on all its windows. A run is BAD if its 90% interval covers less than "
-        "0.80 of its window targets. Thresholds are tuned on in-prior validation runs only "
-        "and frozen before any held-out run. Scores are p_critical. CIs come from a "
+        "0.80 of its window targets. Thresholds are tuned on in-prior validation runs only. "
+        "Held-out simulated results had already been seen before the gate was designed, so they "
+        "are not blind (docs/AUDIT.md). Scores are p_critical. CIs come from a "
         "bootstrap over runs (trajectories).",
         "",
         "### Tuning",
@@ -964,6 +1176,8 @@ def build_summary(res: Results) -> str:
     ]
     lines += variants_section(res)
     lines += real_section(res)
+    lines += early_warning_section(res)
+    lines += sharpness_section(res)
     lines += ["## Run settings", "", *settings_table(res), ""]
     lines += ["## Checks computed from the results", "", *check_lines(res), ""]
     lines += [
@@ -998,6 +1212,7 @@ def build_summary(res: Results) -> str:
 
 
 def main() -> None:
+    """Command-line entry point: write results/summary.md."""
     p = argparse.ArgumentParser()
     p.add_argument("--results-dir", type=Path, default=REPO_ROOT / "results")
     args = p.parse_args()

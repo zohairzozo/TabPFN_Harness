@@ -40,6 +40,7 @@ class LLMOutcome(Generic[T]):  # noqa: UP046  (this project supports Python 3.11
 def run_llm(
     agent: Agent[D, T], prompt: str, *, model: Model, deps: D, cfg: AgentConfig
 ) -> LLMOutcome[T]:
+    """Run one agent on a prompt and return its output with the usage counts."""
     output: T | None = None
     stop: StopReason = "completed"
     detail: str | None = None

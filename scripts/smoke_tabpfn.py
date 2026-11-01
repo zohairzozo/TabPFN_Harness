@@ -83,6 +83,7 @@ def licence_help(version: str) -> str:
 
 
 def main() -> int:
+    """Command-line entry point: smoke-test the TabPFN backend."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         "--model-version",
